@@ -1,0 +1,35 @@
+﻿@{
+
+    @model List<UserAxe>
+}
+
+
+<div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Почта</th>
+                <th scope="col">Количество сессий</th>
+
+            </tr>
+        </thead>
+        <tbody>
+
+            @{
+                for (int i = 0; i < Model.Count; i++)
+                {
+                    <tr>
+                        <th scope="row">@i</th>
+                        <td>@Model[i].UserName</td>
+                        <td>@Model[i].Sessions.Count</td>
+                    </tr>
+
+                }
+            }
+
+        </tbody>
+    </table>
+</div>
+
+

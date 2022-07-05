@@ -1,0 +1,45 @@
+﻿@model Session
+
+
+<div class="accordion accordion-flush">
+    @{
+
+        <h1>Тест огневая подготовка. Вариант @Model.NumVar</h1>
+
+        <p class="text-dark">Результат: @Model.GetRight()/@Model.SessionQuestions.Count</p>
+
+        <p>Время начала: @Model.TimeStart.ToLongDateString() @Model.TimeStart.ToShortTimeString()</p>
+        <p>Время окночания: @Model.TimeFinsih.ToLongDateString() @Model.TimeFinsih.ToShortTimeString()</p>
+
+        <hr />
+
+        //Questions
+
+        foreach (var item in Model.SessionQuestions.
+        OrderBy(x => x.Question.NumQ))
+        {
+
+
+            string className = "text-danger";
+            if (item.Enter == item.Question.Right)
+            {
+                className = "text-success";
+
+            }
+
+
+            <div class="accordion-item">
+                <p>Вопрос: @item.Question.QuestionString</p>
+
+                <p class="@className">Выбранный ответ: @item.Question.GetNum(item.Enter)</p>
+
+                <p class="@className">Верный ответ: @item.Question.GetNum(item.Question.Right)</p>
+
+                <hr />
+
+            </div>
+
+
+        }
+    }
+</div>

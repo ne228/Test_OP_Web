@@ -1,0 +1,77 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Test_OP_Web</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="stylesheet" href="~/css/pie.css" />
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+            <div class="container-fluid">
+
+
+                <a class="navbar-brand" asp-area="" asp-controller="Session" asp-action="Index">Главная</a>
+
+                <div class="nav-item">
+                    <a class="nav-link active text-dark" asp-area="" asp-controller="Session" asp-action="CreateSession">Новый вариант</a>
+                </div>
+
+
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <div class="nav-item nav-item-username">
+
+                        <div class="dropdown">
+                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                @User.Identity.Name
+                            </button>
+
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                @*<div class="dropdown-item">*@
+
+                                   <a class="dropdown-item" asp-controller="Account" asp-action="Logout">Выход</a>
+                                    @*<form asp-controller="Account" asp-action="Logout">
+                                        <input class="nav-link active btn btn-dark" type="submit" value="Выход" />
+                                    </form>*@
+                                @*</div>*@
+                            </div>
+                        </div>
+
+                    </div>
+
+
+                }
+                else
+                {
+                    <div class="nav-item m-1">
+                        <a class="nav-link active  btn btn-primary" asp-controller="Account" asp-action="Login">Вход</a>
+                    </div>
+                    <div class="nav-item m-1">
+                        <a class="nav-link active  btn btn-success" asp-controller="Account" asp-action="Register">Регистрация</a>
+                    </div>
+                }
+
+            </div>
+        </nav>
+    </header>
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="border-top footer text-muted">
+        <div class="container">
+            &copy; 2022 - Test_OP_Web SmallAxe
+        </div>
+    </footer>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

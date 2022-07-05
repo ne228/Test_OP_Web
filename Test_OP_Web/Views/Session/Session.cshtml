@@ -1,0 +1,42 @@
+﻿
+@model Session
+
+
+
+@{
+    double percent = Math.Round((Convert.ToDouble(Model.GetEnterd()) / Convert.ToDouble(Model.SessionQuestions.Count)) * 100);
+    <h1>
+        Тест огневая подготовка. Варианта @Model.NumVar
+
+        <a class="btn btn-success w-25 float-right" asp-controller="Session" asp-action="Complete" asp-route-SessionId="@Model.Id">Закончить сессию</a>
+    </h1>
+
+    <div class="m-2">
+
+        <div class="progress">
+            <div class="progress-bar p-1" role="progressbar" style="width:@percent%" aria-valuenow="@percent" aria-valuemin="0" aria-valuemax="100">@percent%</div>
+        </div>
+
+      
+
+
+    </div>
+    <hr />
+
+
+    foreach (var item in Model.SessionQuestions.OrderBy(x => x.Question.NumQ))
+    {
+        string colorClass = "btn-light";
+
+        if (item.Enter != 0)
+            colorClass = "btn-primary";
+
+        <a class="btn @colorClass w-100 text-left m-1" asp-action="Question" asp-controller="Session"
+           asp-route-SessionId="@Model.Id"
+           asp-route-NumQ="@item.NumQ">
+            @item.Question.QuestionString
+        </a>
+        <br />
+    }
+
+}

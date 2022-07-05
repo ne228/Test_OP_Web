@@ -1,0 +1,56 @@
+﻿
+@{
+
+    @model List<Session>
+
+
+    List<Session> Completed = Model.Where(x => x.Сompleted == true).ToList();
+    List<Session> unComleted = Model.Where(x => x.Сompleted == false).ToList();
+
+
+}
+
+
+@{
+
+    // НЕЗАВЕРЕШЕННЫЕ ТЕСТЫ
+    if (unComleted.Count == 0)
+    {
+        <h2 class="text-center">В данный момент у вас нет начатых тестов. Для выбора варианта нажмите на кнопку</h2>
+        <div class="w-100"> 
+            <a class="btn btn-info w-100" asp-area="" asp-controller="Session" asp-action="CreateSession">Новый вариант</a>
+        </div>
+    }
+    else
+    {
+
+        <h2 class="text-center">Незавершенные тесты</h2>
+        foreach (var item in unComleted)
+        {
+            <a class="btn btn-info w-100 m-1" asp-action="Session" asp-controller="Session" asp-route-Id="@item.Id">
+                @item.NumVar Вариант
+
+            </a>
+
+            <br />
+        }
+    }
+    <br />
+    <hr />
+
+
+    // ЗАВЕРЕШЕННЫЕ ТЕСТЫ
+
+    if (Completed.Count != 0)
+    {
+        <h2 class="text-center">Завершенные тесты</h2>
+        foreach (var item in Completed)
+        {
+            <a class="btn btn-success w-100 m-1 variant-btn" asp-action="Session" asp-controller="Session" asp-route-Id="@item.Id">
+                @item.NumVar Вариант
+                <span class="badge badge-light">@item.GetRight()/@item.SessionQuestions.Count</span>
+            </a>
+            <br />
+        }
+    }
+}

@@ -1,0 +1,90 @@
+﻿@model FilterModel
+
+
+<button class="showFilter">Фильтр</button>
+
+
+<div class="filterForm disActive">
+    <form asp-controller="Admin" asp-action="Index">
+
+
+        <div asp-validation-summary="ModelOnly"></div>
+        <div class="mb-3">
+            <label class="form-label" asp-for="Name"></label>
+            <input class="form-control" asp-for="Name" />
+            <span class="text-danger" asp-validation-for="Name"></span>
+        </div>
+        <div class="mb-3">
+            <label class="form-label" asp-for="NumVStart"></label>
+            <input class="form-control" asp-for="NumVStart" />
+            <span class="text-danger" asp-validation-for="NumVStart"></span>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label" asp-for="NumVFinish"></label>
+            <input class="form-control" asp-for="NumVFinish" />
+            <span class="text-danger" asp-validation-for="NumVFinish"></span>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label" asp-for="DateTimeStart"></label>
+            <input class="form-control" asp-for="DateTimeStart" />
+            <span class="text-danger" asp-validation-for="DateTimeStart"></span>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label" asp-for="DateTimeFinish"></label>
+            <input class="form-control" asp-for="DateTimeFinish" />
+            <span class="text-danger" asp-validation-for="DateTimeFinish"></span>
+        </div>
+        <div class="mb-3">
+            <input class="btn btn-primary" type="submit" value="Поиск" />
+        </div>
+
+    </form>
+</div>
+
+
+<style type="text/css">
+
+    .filterForm {
+        width: 100%;
+        overflow: hidden;
+    }
+
+    .disActive {
+        height: 0px;
+    }
+
+    .active {
+        height: 100%;
+    }
+</style>
+
+<script type="text/javascript">
+
+
+
+    let click = 0;
+
+
+    var btn = document.querySelector(".showFilter");
+
+    var form = document.querySelector(".filterForm");
+
+
+    btn.onclick = function () {
+
+        if (click == 0) {
+            click = 1;
+            form.classList.add("active");
+            form.classList.remove("disActive");
+        }
+        else {
+            click = 0;
+            form.classList.add("disActive");
+            form.classList.remove("active");
+        }
+    };
+
+</script>

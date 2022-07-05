@@ -1,0 +1,32 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    @model CreateSessionModel
+
+    string name = User.Identity.Name;
+}
+<form asp-controller="Session" asp-action="CreateSession">
+
+
+    <div class="m-1">
+        <label class="form-label" asp-validation-for="NumVar"> Введите вариант</label>
+        <input class="form-control" asp-for="NumVar" />
+        <span class="text-danger" asp-validation-for="NumVar"></span>
+    </div>
+    <div class="m-1">
+        @*<label class="form-label" asp-validation-for="Name"> Введите Имя</label>
+            <input class="form-control" asp-for="Name" />
+            <span class="text-danger" asp-validation-for="Name"></span>*@
+        @Html.Hidden("Name", name)
+
+
+    </div>
+    <div class="m-1">
+        <input class="btn btn-primary" type="submit" value="Создать" />
+    </div>
+
+
+
+
+</form>

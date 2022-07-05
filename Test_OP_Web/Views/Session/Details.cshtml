@@ -1,0 +1,109 @@
+﻿@model Session
+@inject IStatisticsService Statisctic
+
+
+<div class="accordion accordion-flush">
+    @{
+
+        Stat stat = Statisctic.GetStatVar(Model.NumVar, Model.Id);
+
+
+        <h1>Тест огневая подготовка. Вариант @Model.NumVar</h1>
+        <hr />
+        <br />
+
+        <div class="info-container">
+            <div class="info-item">
+
+                <p class="info-item-title">Данные</p>
+                <div class="info-item-texts">
+                    <div class="info-item-text">
+                        <dl>
+                            <dt>Имя:</dt>
+                            <dd>@Model.Name</dd>
+                        </dl>
+                    </div>
+
+                    <div class="info-item-text">
+                        <dl>
+                            <dt>Результат:</dt>
+                            <dd>@Model.GetRight()/@Model.SessionQuestions.Count</dd>
+                        </dl>
+                    </div>
+
+                    <div class="info-item-text">
+                        <dl>
+                            <dt>Время начала:</dt>
+                            <dd>@Model.TimeStart.ToLongDateString() @Model.TimeStart.ToShortTimeString()</dd>
+                        </dl>
+                    </div>
+
+                    <div class="info-item-text">
+                        <dl>
+                            <dt>Время окночания:</dt>
+                            <dd>@Model.TimeFinsih.ToLongDateString() @Model.TimeFinsih.ToShortTimeString()</dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="info-item">
+                <div class="newpie text-center">
+                    <p class="info-item-title">Ваш результат</p>
+                    <div class="pie animate no-round component" style="--p: @stat.CurrentPercent; --c: rgb(218,239,20) "> @stat.CurrentPercent% </div>
+                </div>
+            </div>
+
+
+            <div class="info-item">
+                <div class="newpie text-center">
+                    <p class="info-item-title">Средний результат</p>
+                    <div class="pie animate no-round component" style="--p: @stat.AveragePercent; --c: rgba(117, 255, 23, 1); "> @stat.AveragePercent% </div>
+                </div>
+            </div>
+
+        </div>
+
+
+        <hr />
+
+        //Questions
+
+        foreach (var item in Model.SessionQuestions.
+        OrderBy(x => x.Question.NumQ))
+        {
+
+
+            //string className = "text-danger1";
+            string classNameForDiv = "question-anwser-false";
+            if (item.Enter == item.Question.Right)
+            {
+                //className = "text-success1";
+                classNameForDiv = "question-anwser-true";
+
+            }
+
+
+            <div class="accordion-item">
+                <div class="question-item question-string">
+                    <p>Вопрос: @item.Question.QuestionString</p>
+                </div>
+
+                <div class="question-item question-anwser @classNameForDiv">
+                    <p class="">@item.Question.GetNum(item.Enter)</p>
+                </div>
+                <div class="question-item question-right">
+                    <p class="">@item.Question.GetNum(item.Question.Right)</p>
+                </div>
+
+                <hr />
+
+            </div>
+        }
+    }
+</div>
+
+
+<style type="text/css">
+</style>
