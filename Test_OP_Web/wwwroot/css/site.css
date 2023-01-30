@@ -251,8 +251,8 @@ body {
 .question-anwser {
     /* border: solid black 0.5px;*/
     padding: 1% 0% 0 1%;
-    /*border-radius: 10px;
-    cursor: pointer;*/
+    border-radius: 10px;
+    cursor: pointer;
     box-shadow: 0 0 1px rgba(0,0,0,0.5); /* Параметры тени */
     /*border: 1px solid gray;*/
     transition: width 2s, height 2s, background-color 2s, transform 2s;
@@ -279,11 +279,11 @@ body {
 }
 
 .question-anwser-true-div {
-    border: 1px solid limegreen;
+    border: 0.1px solid limegreen;
 }
 
 .question-anwser-false-div {
-    border: 1px solid orangered;
+    border: 0.1px solid orangered;
 }
 
 .question-anwser-true {
@@ -335,4 +335,11 @@ body {
     width: 100%;
     display: flex;
     flex-direction: column;
+}
+#logo {
+    max-width: 50px;
+    max-height: 50px;
+    margin-right: 5px;
+    margin-left: 5px;
+    border-radius: 90px;
 }

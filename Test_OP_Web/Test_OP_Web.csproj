@@ -5,7 +5,82 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Include="wwwroot\anwsers2\Вариант 1.txt" />
+    <None Include="wwwroot\anwsers2\Вариант 10.txt" />
+    <None Include="wwwroot\anwsers2\Вариант 11.txt" />
+    <None Include="wwwroot\anwsers2\Вариант 12.txt" />
+    <None Include="wwwroot\anwsers2\Вариант 13.txt" />
+    <None Include="wwwroot\anwsers2\Вариант 14.txt" />
+    <None Include="wwwroot\anwsers2\Вариант 15.txt" />
+    <None Include="wwwroot\anwsers2\Вариант 16.txt" />
+    <None Include="wwwroot\anwsers2\Вариант 17.txt" />
+    <None Include="wwwroot\anwsers2\Вариант 18.txt" />
+    <None Include="wwwroot\anwsers2\Вариант 19.txt" />
+    <None Include="wwwroot\anwsers2\Вариант 2.txt" />
+    <None Include="wwwroot\anwsers2\Вариант 20.txt" />
+    <None Include="wwwroot\anwsers2\Вариант 21.txt" />
+    <None Include="wwwroot\anwsers2\Вариант 22.txt" />
+    <None Include="wwwroot\anwsers2\Вариант 23.txt" />
+    <None Include="wwwroot\anwsers2\Вариант 24.txt" />
+    <None Include="wwwroot\anwsers2\Вариант 25.txt" />
+    <None Include="wwwroot\anwsers2\Вариант 26.txt" />
+    <None Include="wwwroot\anwsers2\Вариант 27.txt" />
+    <None Include="wwwroot\anwsers2\Вариант 28.txt" />
+    <None Include="wwwroot\anwsers2\Вариант 29.txt" />
+    <None Include="wwwroot\anwsers2\Вариант 3.txt" />
+    <None Include="wwwroot\anwsers2\Вариант 30.txt" />
+    <None Include="wwwroot\anwsers2\Вариант 4.txt" />
+    <None Include="wwwroot\anwsers2\Вариант 5.txt" />
+    <None Include="wwwroot\anwsers2\Вариант 6.txt" />
+    <None Include="wwwroot\anwsers2\Вариант 7.txt" />
+    <None Include="wwwroot\anwsers2\Вариант 8.txt" />
+    <None Include="wwwroot\anwsers2\Вариант 9.txt" />
+    <None Include="wwwroot\css\editOption.css" />
+    <None Include="wwwroot\css\pie.css" />
+    <None Include="wwwroot\css\site.css" />
+    <None Include="wwwroot\favicon.ico" />
+    <None Include="wwwroot\img\logo.svg" />
+    <None Include="wwwroot\js\editQuestion.js" />
+    <None Include="wwwroot\js\site.js" />
+    <None Include="wwwroot\lib\bootstrap\dist\css\bootstrap-grid.css" />
+    <None Include="wwwroot\lib\bootstrap\dist\css\bootstrap-grid.css.map" />
+    <None Include="wwwroot\lib\bootstrap\dist\css\bootstrap-grid.min.css" />
+    <None Include="wwwroot\lib\bootstrap\dist\css\bootstrap-grid.min.css.map" />
+    <None Include="wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.css" />
+    <None Include="wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.css.map" />
+    <None Include="wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.min.css" />
+    <None Include="wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.min.css.map" />
+    <None Include="wwwroot\lib\bootstrap\dist\css\bootstrap.css" />
+    <None Include="wwwroot\lib\bootstrap\dist\css\bootstrap.css.map" />
+    <None Include="wwwroot\lib\bootstrap\dist\css\bootstrap.min.css" />
+    <None Include="wwwroot\lib\bootstrap\dist\css\bootstrap.min.css.map" />
+    <None Include="wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.js" />
+    <None Include="wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.js.map" />
+    <None Include="wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.min.js" />
+    <None Include="wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.min.js.map" />
+    <None Include="wwwroot\lib\bootstrap\dist\js\bootstrap.js" />
+    <None Include="wwwroot\lib\bootstrap\dist\js\bootstrap.js.map" />
+    <None Include="wwwroot\lib\bootstrap\dist\js\bootstrap.min.js" />
+    <None Include="wwwroot\lib\bootstrap\dist\js\bootstrap.min.js.map" />
+    <None Include="wwwroot\lib\bootstrap\LICENSE" />
+    <None Include="wwwroot\lib\jquery-validation-unobtrusive\jquery.validate.unobtrusive.js" />
+    <None Include="wwwroot\lib\jquery-validation-unobtrusive\jquery.validate.unobtrusive.min.js" />
+    <None Include="wwwroot\lib\jquery-validation-unobtrusive\LICENSE.txt" />
+    <None Include="wwwroot\lib\jquery-validation\dist\additional-methods.js" />
+    <None Include="wwwroot\lib\jquery-validation\dist\additional-methods.min.js" />
+    <None Include="wwwroot\lib\jquery-validation\dist\jquery.validate.js" />
+    <None Include="wwwroot\lib\jquery-validation\dist\jquery.validate.min.js" />
+    <None Include="wwwroot\lib\jquery-validation\LICENSE.md" />
+    <None Include="wwwroot\lib\jquery\dist\jquery.js" />
+    <None Include="wwwroot\lib\jquery\dist\jquery.min.js" />
+    <None Include="wwwroot\lib\jquery\dist\jquery.min.map" />
+    <None Include="wwwroot\lib\jquery\LICENSE.txt" />
+    <None Include="wwwroot\OP_DB" />
+    <None Include="wwwroot\test.txt" />
+    <None Include="wwwroot\test2.txt" />
     <None Include="wwwroot\Test_OP.mdf" />
+    <None Include="wwwroot\Test_OP_log.ldf" />
+    <None Include="wwwroot\users.txt" />
   </ItemGroup>
 
   <ItemGroup>
@@ -25,6 +100,10 @@
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="5.0.2" />
     <PackageReference Include="VkNet" Version="1.72.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="resourses\" />
   </ItemGroup>
 
 </Project>

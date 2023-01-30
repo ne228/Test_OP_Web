@@ -113,6 +113,7 @@ namespace Test_OP_Web.Controllers
             return View(model);
         }
 
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> Confirm(int id)
         {
 

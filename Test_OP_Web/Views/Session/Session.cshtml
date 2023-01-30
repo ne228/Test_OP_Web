@@ -32,7 +32,7 @@
         <a class="btn @colorClass w-100 text-left m-1" asp-action="Question" asp-controller="Session"
            asp-route-SessionId="@Model.Id"
            asp-route-NumQ="@item.Question.NumQ">
-            @item.Question.QuestionString
+            @item.Question.NumQ @item.Question.QuestionString
         </a>
         <br />
     }

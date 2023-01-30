@@ -73,9 +73,9 @@
         foreach (var item in Model.SessionQuestions.
         OrderBy(x => x.Question.NumQ))
         {
-
+            var right = item.GetRight();
             string classNameForDiv = "question-anwser-false-div";
-            if (item.GetRight())
+            if (right)
                 classNameForDiv = "question-anwser-true-div";
 
 
@@ -89,7 +89,8 @@
                     @{
                         foreach (var answer in item.Enter)
                         {
-                            if (answer.Right) {
+                            if (answer.Right || right)
+                            {
                                 <p class="question-anwser-true">@answer.Text</p>
                             }
                             else
@@ -117,7 +118,3 @@
         }
     }
 </div>
-
-
-<style type="text/css">
-</style>

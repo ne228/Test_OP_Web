@@ -39,19 +39,20 @@ namespace Test_OP_Web.Controllers
 
         }
 
-
-
         public IActionResult Index()
         {
 
             var UserAxe = _userManager.GetUserAsync(HttpContext.User).Result;
-            var ses = _context.Sessions.Where(x => x.UserAxe == UserAxe).Include(x => x.SessionQuestions).ThenInclude(x => x.Question)
-                .ThenInclude(x => x.Anwsers).ToList();
+            var ses = _context.Sessions.Where(x => x.UserAxe == UserAxe)
+                .Include(x => x.SessionQuestions).ThenInclude(x => x.Question)
+                    .ThenInclude(x => x.Anwsers)
+                .Include(x => x.SessionQuestions).ThenInclude(x => x.Enter)
+                .ToList();
+
 
             return View(ses);
         }
 
-        [Authorize]
         public IActionResult Session(Session session)
         {
             UserAxe UserAxe = _userManager.GetUserAsync(HttpContext.User).Result;

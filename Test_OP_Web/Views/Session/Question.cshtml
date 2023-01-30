@@ -20,7 +20,7 @@
 <div>
 
     <form id="qusetionForm" asp-controller="Session" asp-action="Question" method="post">
-        <h3>@Model.Question.QuestionString</h3>
+        <h3>@Model.Question.NumQ @Model.Question.QuestionString</h3>
 
         <hr />
         @{

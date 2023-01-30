@@ -36,7 +36,6 @@ namespace Test_OP_Web.Data.Options
                 .Include(x => x.SessionQuestions).ThenInclude(x => x.Question.Anwsers)
                 .FirstOrDefault(x => x.Id == Id);
 
-
             if (ses == null)
                 return null;
 
@@ -105,10 +104,7 @@ namespace Test_OP_Web.Data.Options
 
 
             return sessions.ToList();
-
         }
-
-
 
     }
 }

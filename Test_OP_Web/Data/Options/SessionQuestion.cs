@@ -44,9 +44,10 @@ namespace Test_OP_Web.Data.Options
                     return false;
 
 
-
                 if (Question.Anwsers.Any(x => Normilize(x.Text) == Normilize(enter.Text)))
                     return true;
+                else
+                    return false;
             }
 
 

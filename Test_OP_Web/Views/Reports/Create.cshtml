@@ -1,12 +1,11 @@
 ﻿@model Test_OP_Web.Data.Report
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Отчет об ошибке";
 }
 
-<h1>Create</h1>
 
-<h4>Report</h4>
+<h4>Отчет об ошибке</h4>
 <hr />
 <div class="createReport">
    
@@ -16,12 +15,12 @@
             @await Html.PartialAsync("QuestionDetails", Model.Question)
 
             <div class="form-group">
-                <label asp-for="Message" class="control-label"></label>
+                <label asp-for="Message" class="control-label">Сообщение. (Отправь подробное описание ошибки)</label>
                 <input asp-for="Message" class="form-control" />
                 <span asp-validation-for="Message" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Отправить" class="btn btn-primary" />
             </div>
 
             <input type="hidden" asp-for="Question.Id" value="@Model.Question.Id"/>
@@ -29,9 +28,6 @@
 
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

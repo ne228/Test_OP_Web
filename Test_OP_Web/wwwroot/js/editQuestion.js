@@ -29,6 +29,8 @@ function editQuestionString(data) {
         data: data,
         success: function (result) {
 
+            alert('Failed to receive the Data');
+            console.log('Saved ');
             console.log(result);
         },
         error: function () {

@@ -13,6 +13,7 @@ namespace Test_OP_Web.Data.Options
         [Key]
         public int Id { get; set; }
         public string QuestionString { get; set; }
+       
 
         public bool NoVariant { get; set; } = false;
         public int NumQ { get; set; }

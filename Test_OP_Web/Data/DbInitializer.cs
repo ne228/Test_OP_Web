@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Test_OP_Web.Data.Options;
@@ -87,6 +88,7 @@ namespace Test_OP_Web.Data
                 }
 
                 List<Option> options = ParserOptioncs.GetOptions();
+                
                 context.Options.AddRange(options);
 
 
