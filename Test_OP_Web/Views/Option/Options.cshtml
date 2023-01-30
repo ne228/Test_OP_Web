@@ -1,0 +1,14 @@
+﻿@model List<Option>
+
+
+
+<div class="options">
+    <ul class="list-group">
+
+        @{ foreach (var option in Model)
+            {
+                <li class="list-group-item">@Html.ActionLink(option.NumVar + " Вариант", "Option", "Option", new { id = option.Id })</li>
+            }
+        }
+    </ul>
+</div>

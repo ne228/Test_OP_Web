@@ -1,8 +1,9 @@
 ﻿
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
-namespace Test_OP_Web.Data
+namespace Test_OP_Web.Data.Options
 {
     public class Session
     {
@@ -27,9 +28,9 @@ namespace Test_OP_Web.Data
         public int GetRight()
         {
             int count = 0;
-            foreach (var item in SessionQuestions)
+            foreach (var question in SessionQuestions)
             {
-                if (item.Enter == item.Question.Right)
+                if (question.GetRight())
                     count++;
             }
 
@@ -41,15 +42,12 @@ namespace Test_OP_Web.Data
             int count = 0;
             foreach (var item in SessionQuestions)
             {
-                if (item.Enter != 0)
+                var nullAnwsers = item.Question.Anwsers.FirstOrDefault();
+                if (nullAnwsers == null)
                     count++;
             }
 
             return count;
         }
-
-
-        
-
     }
 }

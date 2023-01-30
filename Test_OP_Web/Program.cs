@@ -9,7 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Test_OP_Web.Data;
-using WebAxe.Data;
+using Test_OP_Web.Data.Options;
 
 namespace Test_OP_Web
 {
@@ -21,7 +21,7 @@ namespace Test_OP_Web
 
 
             var host = CreateHostBuilder(args).Build();
-            CreateDbIfNotExists(host);
+            CreateDbIfNotExists(host).Wait();
 
             host.Run();
         }
@@ -37,8 +37,9 @@ namespace Test_OP_Web
 
                     var userManager = services.GetRequiredService<UserManager<UserAxe>>();
                     var rolesManager = services.GetRequiredService<RoleManager<IdentityRole>>();
-                    DbInitializer.Initialize(context);
-                    await DbInitializer.RoleInitialize(userManager, rolesManager);
+                    var logger = services.GetRequiredService<Test_OP_Web.Logging.ILogger>();
+                    DbInitializer.Initialize(context,logger);
+                    await DbInitializer.RoleInitialize(userManager, rolesManager,logger);
 
                 }
                 catch (Exception ex)

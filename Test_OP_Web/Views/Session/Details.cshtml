@@ -74,31 +74,45 @@
         OrderBy(x => x.Question.NumQ))
         {
 
+            string classNameForDiv = "question-anwser-false-div";
+            if (item.GetRight())
+                classNameForDiv = "question-anwser-true-div";
 
-            //string className = "text-danger1";
-            string classNameForDiv = "question-anwser-false";
-            if (item.Enter == item.Question.Right)
-            {
-                //className = "text-success1";
-                classNameForDiv = "question-anwser-true";
-
-            }
 
 
             <div class="accordion-item">
                 <div class="question-item question-string">
-                    <p>Вопрос: @item.Question.QuestionString</p>
+                    <p>Вопрос @item.Question.NumQ: @item.Question.QuestionString</p>
                 </div>
 
                 <div class="question-item question-anwser @classNameForDiv">
-                    <p class="">@item.Question.GetNum(item.Enter)</p>
+                    @{
+                        foreach (var answer in item.Enter)
+                        {
+                            if (answer.Right) {
+                                <p class="question-anwser-true">@answer.Text</p>
+                            }
+                            else
+                            {
+                                <p class="question-anwser-false">@answer.Text</p>
+                            }
+                        }
+                    }
                 </div>
+
                 <div class="question-item question-right">
-                    <p class="">@item.Question.GetNum(item.Question.Right)</p>
+                    @{
+                        foreach (var answer in item.Question.Anwsers.Where(x => x.Right))
+                        {
+                            <p>@answer.Text</p>
+                        }
+                    }
+                    <div>
+                        <a class="text-warning" asp-action="Create" asp-controller="Reports" asp-route-questionId="@item.Question.Id">Я нашел ошибку!</a>
+                    </div>
+
                 </div>
-
                 <hr />
-
             </div>
         }
     }

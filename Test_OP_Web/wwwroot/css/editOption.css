@@ -1,0 +1,58 @@
+﻿@import url('file:///C:\Users\smallaxe\source\repos\Test_OP_Web\Test_OP_Web\wwwroot\css\editOption.css');
+
+input {
+    margin: 0;
+    padding: 0;
+}
+
+.edit-question {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    justify-items: baseline;
+}
+
+.edit-question-item {
+}
+
+
+.edit-anwsers {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: baseline;
+    justify-content: space-between;
+}
+
+
+.edit-anwsers-item {
+    display: flex;
+    flex-direction: row;
+    align-items: baseline;
+    justify-content: space-between;
+    margin: 2px;
+}
+
+.checkboxAnwser {
+    width: 30px;
+    height: 30px;
+}
+
+    .checkboxAnwser input {
+        margin-left: 5px;
+        margin-top: 10px;
+        flex-grow: 1;
+    }
+
+.inputAnwser {
+    flex-grow: 1;
+}
+
+.question-edit-anwsers {
+}
+
+/*.question-edit-anwser{
+    display:flex;
+    flex-direction:row;
+
+}*/

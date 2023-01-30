@@ -1,0 +1,85 @@
+﻿{
+  "NumVar": 20,
+  "Anwsers": [
+    {
+      "NumQ": 1,
+      "Answer": "4"
+    },
+    {
+      "NumQ": 2,
+      "Answer": "1,2,3"
+    },
+    {
+      "NumQ": 3,
+      "Answer": "2,4"
+    },
+    {
+      "NumQ": 4,
+      "Answer": "1"
+    },
+    {
+      "NumQ": 5,
+      "Answer": "2"
+    },
+    {
+      "NumQ": 6,
+      "Answer": "2,4"
+    },
+    {
+      "NumQ": 7,
+      "Answer": "1,3"
+    },
+    {
+      "NumQ": 8,
+      "Answer": "4,3"
+    },
+    {
+      "NumQ": 9,
+      "Answer": "825"
+    },
+    {
+      "NumQ": 10,
+      "Answer": "2"
+    },
+    {
+      "NumQ": 11,
+      "Answer": "25"
+    },
+    {
+      "NumQ": 12,
+      "Answer": "4"
+    },
+    {
+      "NumQ": 13,
+      "Answer": "3"
+    },
+    {
+      "NumQ": 14,
+      "Answer": "3"
+    },
+    {
+      "NumQ": 15,
+      "Answer": "4"
+    },
+    {
+      "NumQ": 16,
+      "Answer": "3"
+    },
+    {
+      "NumQ": 17,
+      "Answer": "4"
+    },
+    {
+      "NumQ": 18,
+      "Answer": "3"
+    },
+    {
+      "NumQ": 19,
+      "Answer": "1"
+    },
+    {
+      "NumQ": 20,
+      "Answer": "4"
+    }
+  ]
+}

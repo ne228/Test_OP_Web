@@ -11,6 +11,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Test_OP_Web.Data;
+using Test_OP_Web.Data.Options;
+using Test_OP_Web.Logging;
 using Test_OP_Web.Services;
 
 namespace Test_OP_Web
@@ -34,11 +36,16 @@ namespace Test_OP_Web
             services.AddTransient<IStatisticsService, StatisticsService>();
 
             services.AddDbContext<OptionContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
-
+                options.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
+            //options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             services.AddIdentity<UserAxe, IdentityRole>()
                 .AddEntityFrameworkStores<OptionContext>()
                 .AddDefaultTokenProviders();
+
+            services.AddTransient<ILogger, Logger>();
+            services.AddTransient<VkNetMethods>();
+            services.AddTransient<StatisticsService>();
+
 
             services.AddDatabaseDeveloperPageExceptionFilter();
         }

@@ -28,6 +28,15 @@ namespace Test_OP_Web.Controllers
         {
             return View();
         }
+
+        [HttpGet]
+        public IActionResult GetPassword(string email)
+        {
+            return View(email);
+        }
+
+       
+
         [HttpPost]
         public async Task<IActionResult> Register(RegisterViewModel model)
         {
@@ -81,6 +90,7 @@ namespace Test_OP_Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginViewModel model)
         {
+
             if (ModelState.IsValid)
             {
                 var user = await _userManager.FindByNameAsync(model.Email);
@@ -131,6 +141,7 @@ namespace Test_OP_Web.Controllers
         //[ValidateAntiForgeryToken]
         [AllowAnonymous]
         public async Task<IActionResult> Logout()
+
         {
             // удаляем аутентификационные куки
             await _signInManager.SignOutAsync();
@@ -138,7 +149,8 @@ namespace Test_OP_Web.Controllers
         }
 
 
-        public IActionResult AccessDenied()        {
+        public IActionResult AccessDenied()
+        {
             return View();
         }
     }

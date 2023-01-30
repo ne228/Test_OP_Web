@@ -10,16 +10,20 @@
         <span class="text-danger" asp-validation-for="Email"></span>
     </div>
     <div class="mb-3">
-        <label class="form-label"  asp-for="Password"></label>
+        <label class="form-label" asp-for="Password"></label>
         <input class="form-control" asp-for="Password" />
         <span class="text-danger" asp-validation-for="Password"></span>
     </div>
     <div class="mb-3 form-check">
         <input class="form-check-input" asp-for="RememberMe" />
         <label class="form-check-label" asp-for="RememberMe"></label>
-
     </div>
+
+
     <div class="mb-3">
         <input class="btn btn-primary" type="submit" value="Войти" />
     </div>
+   
+    @Html.ActionLink("Напомнить пароль", "GetPassword", "Account")
+
 </form>

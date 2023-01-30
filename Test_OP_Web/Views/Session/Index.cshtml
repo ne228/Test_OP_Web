@@ -1,4 +1,5 @@
-﻿
+﻿@using System.Collections
+
 @{
 
     @model List<Session>
@@ -7,17 +8,17 @@
     List<Session> Completed = Model.Where(x => x.Сompleted == true).ToList();
     List<Session> unComleted = Model.Where(x => x.Сompleted == false).ToList();
 
-
 }
 
 
 @{
 
     // НЕЗАВЕРЕШЕННЫЕ ТЕСТЫ
+
     if (unComleted.Count == 0)
     {
         <h2 class="text-center">В данный момент у вас нет начатых тестов. Для выбора варианта нажмите на кнопку</h2>
-        <div class="w-100"> 
+        <div class="w-100">
             <a class="btn btn-info w-100" asp-area="" asp-controller="Session" asp-action="CreateSession">Новый вариант</a>
         </div>
     }

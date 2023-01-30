@@ -4,14 +4,21 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Test_OP_Web.Data;
 using Test_OP_Web.Models;
+using Test_OP_Web.Services;
 
-namespace Test_OP_Web
+namespace Test_OP_Web.Data.Options
 {
     public class OptionContext : IdentityDbContext<UserAxe>
     {
+        public DbSet<Option> Options { get; set; }
+        public DbSet<Question> Questions { get; set; }
 
+        public DbSet<Session> Sessions { get; set; }
+
+        public DbSet<SessionQuestion> OptionQuestion { get; set; }
+        public DbSet<PersonStat> PersonStat { get; set; }
+        public DbSet<Report> Reports { get; set; }
 
         public OptionContext(DbContextOptions<OptionContext> options) : base(options)
         {
@@ -20,10 +27,14 @@ namespace Test_OP_Web
         }
 
 
+
         public Session GetSessionById(int Id, UserAxe userAxe)
         {
 
-            var ses = Sessions.Where(x => x.UserAxe == userAxe).Include(x => x.SessionQuestions).ThenInclude(x => x.Question).FirstOrDefault(x => x.Id == Id);
+            var ses = Sessions.Where(x => x.UserAxe == userAxe)
+                .Include(x => x.SessionQuestions).ThenInclude(x => x.Enter)
+                .Include(x => x.SessionQuestions).ThenInclude(x => x.Question.Anwsers)
+                .FirstOrDefault(x => x.Id == Id);
 
 
             if (ses == null)
@@ -33,7 +44,10 @@ namespace Test_OP_Web
         }
         public Session GetSessionById(int Id)
         {
-            var ses = Sessions.Include(x => x.SessionQuestions).ThenInclude(x => x.Question).FirstOrDefault(x => x.Id == Id);
+            var ses = Sessions
+                .Include(x => x.SessionQuestions).ThenInclude(x => x.Enter)
+                .Include(x => x.SessionQuestions).ThenInclude(x => x.Question.Anwsers)
+                .FirstOrDefault(x => x.Id == Id);
 
 
             if (ses == null)
@@ -41,7 +55,16 @@ namespace Test_OP_Web
 
             return ses;
         }
+        public List<Session> GetSessions()
+        {
+            var ses = Sessions.Include(x => x.SessionQuestions).ThenInclude(x => x.Question.Anwsers).ToList();
 
+
+            if (ses == null)
+                return null;
+
+            return ses;
+        }
 
         public int GetNextQuestionId(int Id, int SessionId)
         {
@@ -63,24 +86,16 @@ namespace Test_OP_Web
 
         }
 
-        public DbSet<Option> Options { get; set; }
-        public DbSet<Question> Questions { get; set; }
-
-        public DbSet<Session> Sessions { get; set; }
-
-        public DbSet<SessionQuestion> SessionQuestion { get; set; }
-
-
         public List<Session> GetSessionsByFilter(FilterModel filterModel)
         {
-            
+
             if (filterModel.Name == null)
                 filterModel.Name = "";
 
 
 
 
-            var sessions = Sessions.Include(x => x.SessionQuestions).ThenInclude(x => x.Question).
+            var sessions = Sessions.Include(x => x.SessionQuestions).ThenInclude(x => x.Question.Anwsers).
                 Where(
                 x => x.Name.Contains(filterModel.Name) &&
                 filterModel.DateTimeStart <= x.TimeStart && x.TimeStart <= filterModel.DateTimeFinish &&
@@ -92,5 +107,8 @@ namespace Test_OP_Web
             return sessions.ToList();
 
         }
+
+
+
     }
 }

@@ -1,0 +1,15 @@
+﻿@model             Question
+@{Layout = null;}
+
+<div class="question-details">
+    <hr />
+    <h5>@Model.QuestionString</h5>
+    <hr />
+    <h6>Вопросы</h6>
+    @{ foreach (var anwser in Model.Anwsers)
+        {
+            <p>@anwser.Text</p>
+        }
+    }
+    <hr />
+</div>

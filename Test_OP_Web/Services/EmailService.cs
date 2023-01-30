@@ -1,9 +1,5 @@
 ﻿using MailKit.Net.Smtp;
 using MimeKit;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-
 using System.Threading.Tasks;
 
 namespace Test_OP_Web.Services
@@ -24,7 +20,7 @@ namespace Test_OP_Web.Services
 
             using (var client = new SmtpClient())
             {
-                 await client.ConnectAsync("smtp.mail.ru", 465, true);
+                await client.ConnectAsync("smtp.mail.ru", 465, true);
                 await client.AuthenticateAsync("potter19.01@mail.ru", "UnpDAE5AKZ0GL1FtGtci");
                 await client.SendAsync(emailMessage);
 

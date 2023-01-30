@@ -1,0 +1,42 @@
+﻿@model IEnumerable<Test_OP_Web.Data.Report>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Message)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DateTime)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Message)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DateTime)
+                </td>
+                <td>
+
+                    <a asp-action="EditQuestion" asp-controller="Option" asp-route-questionId="@item.Question.Id">Редактировать</a> |
+                    <a asp-action="Confirm" asp-controller="Reports" asp-route-Id="@item.Id">Принять</a> 
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
