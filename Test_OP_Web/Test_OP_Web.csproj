@@ -1,8 +1,13 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
+    <TargetFramework>net7.0</TargetFramework>
+    <GenerateRuntimeConfigurationFiles>true</GenerateRuntimeConfigurationFiles>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="resourses\users.txt" />
+  </ItemGroup>
 
   <ItemGroup>
     <None Include="wwwroot\anwsers2\Вариант 1.txt" />
@@ -75,12 +80,8 @@
     <None Include="wwwroot\lib\jquery\dist\jquery.min.js" />
     <None Include="wwwroot\lib\jquery\dist\jquery.min.map" />
     <None Include="wwwroot\lib\jquery\LICENSE.txt" />
-    <None Include="wwwroot\OP_DB" />
     <None Include="wwwroot\test.txt" />
     <None Include="wwwroot\test2.txt" />
-    <None Include="wwwroot\Test_OP.mdf" />
-    <None Include="wwwroot\Test_OP_log.ldf" />
-    <None Include="wwwroot\users.txt" />
   </ItemGroup>
 
   <ItemGroup>
@@ -98,12 +99,11 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="5.0.2" />
+    <PackageReference Include="Serilog" Version="2.12.0" />
+    <PackageReference Include="Serilog.AspNetCore" Version="7.0.0" />
+    <PackageReference Include="Serilog.Sinks.Telegram" Version="0.2.1" />
+    <PackageReference Include="Serilog.Sinks.TelegramClient" Version="2.0.1" />
     <PackageReference Include="VkNet" Version="1.72.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="resourses\" />
   </ItemGroup>
 
 </Project>

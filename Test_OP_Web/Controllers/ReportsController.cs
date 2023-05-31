@@ -11,6 +11,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Test_OP_Web.Data;
 using Test_OP_Web.Data.Options;
+using Test_OP_Web.Models.Reports;
 
 namespace Test_OP_Web.Controllers
 {
@@ -69,7 +70,7 @@ namespace Test_OP_Web.Controllers
                 return NotFound();
 
 
-            var report = new Report()
+            var report = new CreateReporViewModel()
             {
                 Question = question
             };
@@ -82,7 +83,7 @@ namespace Test_OP_Web.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
 
-        public async Task<IActionResult> Create(Report model)
+        public async Task<IActionResult> Create(CreateReporViewModel model)
         {
             if (ModelState.IsValid)
             {
@@ -94,7 +95,7 @@ namespace Test_OP_Web.Controllers
                 var question = _context.Questions
                     .Include(x => x.Anwsers)
                     .AsNoTracking()
-                    .FirstOrDefault(x => x.Id == model.Question.Id);
+                    .FirstOrDefault(x => x.Id == model.QuestionId);
 
                 if (question == null)
                     return NotFound();

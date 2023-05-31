@@ -12,6 +12,8 @@ namespace Test_OP_Web.Data.Options
 
         [Key]
         public int Id { get; set; }
+
+        [Required]
         public string QuestionString { get; set; }
        
 

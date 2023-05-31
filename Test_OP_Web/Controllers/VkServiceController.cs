@@ -42,29 +42,29 @@ namespace Test_OP_Web.Controllers
         }
 
 
-        public string GetPassword(string email)
+        public IActionResult GetPassword(string email)
         {
             if (!VkNetMethods.BoolAuth)
-                return "ошибка авторизации";
+                return View(nameof(GetPassword), "ошибка авторизации");
 
             if (email == "" || email == null)
-                return "Введите email";
+                return View(nameof(GetPassword), "Введите email");
 
             var users = DbInitializer.ParseUsersJson();
 
             var user = users.FirstOrDefault(x => x.Email.ToLower() == email.ToLower());
 
             if (user == null)
-                return "нет user с таким email";
+                return View(nameof(GetPassword), "нет user с таким email");
 
             try
             {
                 VkNetMethods.Send(user.VkId, $"email\n{user.Email}\npass\n{user.Password}");
-                return "сообщение отправлено вам на vk";
+                return View(nameof(GetPassword), "сообщение отправлено вам на vk");
             }
             catch (Exception exc)
             {
-                return "ошиюка " + exc.Message;
+                return View(nameof(GetPassword), "ошиюка " + exc.Message);
             }
 
         }

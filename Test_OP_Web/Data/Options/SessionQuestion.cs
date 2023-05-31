@@ -24,7 +24,8 @@ namespace Test_OP_Web.Data.Options
 
         public string Normilize(string str)
         {
-
+            if (str == null || str.Length == 0)
+                return str;
             str = str.Replace(" ", "");
             str = str.Replace("\n", "");
             str = str.Replace("\t", "");

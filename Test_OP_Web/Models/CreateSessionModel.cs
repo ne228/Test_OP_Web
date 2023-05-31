@@ -10,7 +10,7 @@ namespace Test_OP_Web.Models
     {
 
         [Required(ErrorMessage = "Не указан вариант")]
-        [Range(1, 30,ErrorMessage ="Введите вариант от 1 до 30")]
+        //[Range(1, 30,ErrorMessage ="Введите вариант от 1 до 30")]
         public int NumVar { get; set; }
 
         [Required(ErrorMessage = "Не указао имя")]

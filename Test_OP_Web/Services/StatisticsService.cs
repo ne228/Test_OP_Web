@@ -26,7 +26,7 @@ namespace Test_OP_Web.Services
                 if (q.GetRight())
                     countRight++;
             }
-                       
+
 
             double res = Math.Round(Convert.ToDouble(countRight) / Convert.ToDouble(session.SessionQuestions.Count) * 100);
             return res;
@@ -36,11 +36,10 @@ namespace Test_OP_Web.Services
 
 
 
-        public Stat GetStatVar(int NumVar, int currentSessionId)
+        public async Task<Stat> GetStatVar(int NumVar, int currentSessionId)
         {
             Stat stat = new Stat();
-            var ses = Context.GetSessions().
-                Where(x => x.NumVar == NumVar).ToList();
+            var ses = await Context.GetSessionsByNumVar(NumVar);
 
             if (ses == null)
                 return stat;
@@ -81,7 +80,7 @@ namespace Test_OP_Web.Services
 
 
 
-        public async Task<PersonStat> PersonStat(string email, int NumVar=-1)
+        public async Task<PersonStat> PersonStat(string email, int NumVar = -1)
         {
             PersonStat personStat = new();
             UserAxe user = await Context.Users.FirstOrDefaultAsync(x => x.Email.ToLower() == email.ToLower());
@@ -95,11 +94,11 @@ namespace Test_OP_Web.Services
 
 
             if (NumVar == -1)
-                sessions = Context.GetSessions().Where(x => x.Name.ToLower() == email.ToLower()).ToList();
+                sessions = Context.GetSessions().Result.Where(x => x.Name.ToLower() == email.ToLower()).ToList();
             else
-                sessions = Context.GetSessions().Where(x => x.Name.ToLower() == email.ToLower()
+                sessions = Context.GetSessions().Result.Where(x => x.Name.ToLower() == email.ToLower()
                                                        && x.NumVar == NumVar).ToList();
-                                                        
+
 
 
             double averageAll = 0;
@@ -111,7 +110,7 @@ namespace Test_OP_Web.Services
 
             }
 
-            
+
             if (sessions.Count != 0)
                 averageAll = averageAll / sessions.Count;
 
@@ -122,7 +121,7 @@ namespace Test_OP_Web.Services
 
         }
 
-        public async Task<List<PersonStat>> PersonsStat( int NumVar = -1)
+        public async Task<List<PersonStat>> PersonsStat(int NumVar = -1)
         {
 
             var users = await Context.Users.ToListAsync();
@@ -134,7 +133,7 @@ namespace Test_OP_Web.Services
                 personsStat.Add(await PersonStat(user.Email));
             }
 
-            return personsStat.Where(x=>x.Count>=3).OrderByDescending(x=>x.AveragePercent).ToList();
+            return personsStat.Where(x => x.Count >= 3).OrderByDescending(x => x.AveragePercent).ToList();
         }
 
     }

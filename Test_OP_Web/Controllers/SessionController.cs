@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Test_OP_Web.Data;
@@ -39,15 +40,18 @@ namespace Test_OP_Web.Controllers
 
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
 
             var UserAxe = _userManager.GetUserAsync(HttpContext.User).Result;
-            var ses = _context.Sessions.Where(x => x.UserAxe == UserAxe)
-                .Include(x => x.SessionQuestions).ThenInclude(x => x.Question)
-                    .ThenInclude(x => x.Anwsers)
-                .Include(x => x.SessionQuestions).ThenInclude(x => x.Enter)
-                .ToList();
+            var ses = await _context.Sessions.Where(x => x.UserAxe == UserAxe)
+                
+                .Include(x => x.SessionQuestions)
+                //    .ThenInclude(x => x.Question)
+                //        .ThenInclude(x => x.Anwsers)
+                //.Include(x => x.SessionQuestions).ThenInclude(x => x.Enter)                
+
+                .ToListAsync();
 
 
             return View(ses);
@@ -99,10 +103,15 @@ namespace Test_OP_Web.Controllers
         public IActionResult CreateSession()
         {
 
+
+            var options = _context.Options.OrderBy(x => x.NumVar).ToList();
+            var numVars = new List<int>();
+            foreach (var option in options)
+                numVars.Add(option.NumVar);
+
+            ViewBag.NumVars = numVars;
             return View();
         }
-
-
 
         [HttpPost]
         public IActionResult CreateSession(CreateSessionModel createSessionModel)
@@ -147,7 +156,7 @@ namespace Test_OP_Web.Controllers
             _context.Sessions.Add(session);
             _context.SaveChanges();
 
-            _logger.LogInformation($"{session.Name} created session {session.NumVar}");
+            _logger.LogInformation($"{UserAxe.Email} {session.Name} created session {session.NumVar}");
 
             return RedirectToAction("Session", "Session", new { Id = session.Id });
         }
@@ -247,6 +256,8 @@ namespace Test_OP_Web.Controllers
                                 question.Enter.Remove(question.Enter.FirstOrDefault(x => x.Id == enter.Id));
                             else
                                 question.Enter.Add(enter);
+
+                            _logger.LogInformation($"{UserAxe.Email} send questionID {question.Id}");
                         }
 
                     }
@@ -254,7 +265,7 @@ namespace Test_OP_Web.Controllers
             }
             catch (Exception exc)
             {
-
+                _logger.LogError(exc.Message);
                 return exc.Message;
             }
 
@@ -267,25 +278,36 @@ namespace Test_OP_Web.Controllers
 
         public IActionResult Complete(int SessionId)
         {
+            try
+            {
+                UserAxe UserAxe = _userManager.GetUserAsync(HttpContext.User).Result;
+
+                Session ses;
+                if (_userManager.GetRolesAsync(UserAxe).Result.Contains("admin"))
+                    ses = _context.GetSessionById(SessionId);
+                else
+                    ses = _context.GetSessionById(SessionId, UserAxe);
+
+                if (ses == null)
+                    return View("NoSession");
+
+                ses.Сompleted = true;
+                ses.TimeFinsih = DateTime.Now;
+                ses.GetRight = ses.getRight();
 
 
-            UserAxe UserAxe = _userManager.GetUserAsync(HttpContext.User).Result;
+                _context.SaveChanges();
 
-            Session ses;
-            if (_userManager.GetRolesAsync(UserAxe).Result.Contains("admin"))
-                ses = _context.GetSessionById(SessionId);
-            else
-                ses = _context.GetSessionById(SessionId, UserAxe);
+                _logger.LogInformation($"{UserAxe.Email} complete sessiod {SessionId}");
+                return RedirectToAction("Details", "Session", new { Id = SessionId });
+            }
+            catch (Exception exc)
+            {
+                _logger.LogError(exc.Message);
+                throw exc;
+            }
 
-            if (ses == null)
-                return View("NoSession");
-
-            ses.Сompleted = true;
-            ses.TimeFinsih = DateTime.Now;
-
-            _context.SaveChanges();
-
-            return RedirectToAction("Details", "Session", new { Id = SessionId });
+           
 
         }
 

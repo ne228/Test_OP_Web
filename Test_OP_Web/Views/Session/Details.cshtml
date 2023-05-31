@@ -5,7 +5,7 @@
 <div class="accordion accordion-flush">
     @{
 
-        Stat stat = Statisctic.GetStatVar(Model.NumVar, Model.Id);
+        Stat stat = Statisctic.GetStatVar(Model.NumVar, Model.Id).Result;
 
 
         <h1>Тест огневая подготовка. Вариант @Model.NumVar</h1>
@@ -27,7 +27,7 @@
                     <div class="info-item-text">
                         <dl>
                             <dt>Результат:</dt>
-                            <dd>@Model.GetRight()/@Model.SessionQuestions.Count</dd>
+                            <dd>@Model.getRight()/@Model.SessionQuestions.Count</dd>
                         </dl>
                     </div>
 
@@ -82,7 +82,12 @@
 
             <div class="accordion-item">
                 <div class="question-item question-string">
-                    <p>Вопрос @item.Question.NumQ: @item.Question.QuestionString</p>
+                    <p>
+                        Вопрос @item.Question.NumQ: @item.Question.QuestionString
+                        <a class="text-warning" asp-action="Create" asp-controller="Reports" asp-route-questionId="@item.Question.Id">
+                            <img class="warning" src="~/img/warning.png" alt="Сообщить о ошибке">
+                        </a>
+                    </p>
                 </div>
 
                 <div class="question-item question-anwser @classNameForDiv">
@@ -108,10 +113,6 @@
                             <p>@answer.Text</p>
                         }
                     }
-                    <div>
-                        <a class="text-warning" asp-action="Create" asp-controller="Reports" asp-route-questionId="@item.Question.Id">Я нашел ошибку!</a>
-                    </div>
-
                 </div>
                 <hr />
             </div>

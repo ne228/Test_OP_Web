@@ -30,7 +30,7 @@ namespace Test_OP_Web.Controllers
             _userManager = userManager;
         }
 
-        public  IActionResult Index(FilterModel filterModel)
+        public IActionResult Index(FilterModel filterModel)
         {
 
             try
@@ -54,7 +54,7 @@ namespace Test_OP_Web.Controllers
                 _logger.LogError(exc.Message);
                 return View(filterModel);
             }
-                   }
+        }
 
 
         public IActionResult Session(Session session)

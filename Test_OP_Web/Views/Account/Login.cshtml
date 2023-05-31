@@ -1,7 +1,7 @@
 ﻿@model LoginViewModel
 
 <h2>Вход в приложение</h2>
-<form method="post" asp-controller="Account" asp-action="Login"
+<form method="post" asp-controller="Account" asp-action="Login" id="login_form"
       asp-route-returnUrl="@Model.ReturnUrl">
     <div asp-validation-summary="ModelOnly"></div>
     <div class="mb-3">
@@ -21,7 +21,7 @@
 
 
     <div class="mb-3">
-        <input class="btn btn-primary" type="submit" value="Войти" />
+        <input class="btn btn-primary" type="submit" value="Войти" id="login_btn" />
     </div>
    
     @Html.ActionLink("Напомнить пароль", "GetPassword", "Account")

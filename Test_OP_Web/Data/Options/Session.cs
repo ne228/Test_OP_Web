@@ -25,13 +25,19 @@ namespace Test_OP_Web.Data.Options
 
         public UserAxe UserAxe { get; set; }
 
-        public int GetRight()
+        public int GetRight { get; set; } = 0;
+
+        public int getRight()
         {
             int count = 0;
             foreach (var question in SessionQuestions)
             {
                 if (question.GetRight())
                     count++;
+                else
+                {
+                    var test = "asd";
+                }
             }
 
             return count;

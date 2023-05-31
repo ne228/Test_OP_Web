@@ -96,7 +96,11 @@ body {
 }
 
 .nav-main-text {
+    min-width: 300px;
+    max-height: 50px;
     width: 100%;
+    display: flex;
+    flex-direction: row;
 }
 
 .nav-show-btn {
@@ -336,10 +340,27 @@ body {
     display: flex;
     flex-direction: column;
 }
+
 #logo {
-    max-width: 50px;
-    max-height: 50px;
-    margin-right: 5px;
+    max-width: 32px;
+    max-height: 32px;
+    margin-right: 10px;
+    /*  margin-top:-2px;*/
     margin-left: 5px;
-    border-radius: 90px;
+    border-radius: 100px;
 }
+
+.select-num-var {
+    width: 100%;
+    padding: 10px;
+    font-size: 1.3em;
+}
+
+.warning {
+    width: 32px;
+    height: 32px;
+}
+
+    .warning:hover {
+        background: darken(@button-colour, 10%);
+    }

@@ -1,8 +1,10 @@
-﻿namespace Test_OP_Web.Services
+﻿using System.Threading.Tasks;
+
+namespace Test_OP_Web.Services
 {
     public interface IStatisticsService 
     {
 
-        public Stat GetStatVar(int NumVar, int currentSessionId);
+        public Task<Stat> GetStatVar(int NumVar, int currentSessionId);
     }
 }

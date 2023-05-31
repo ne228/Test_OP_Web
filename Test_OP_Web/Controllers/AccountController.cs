@@ -35,7 +35,7 @@ namespace Test_OP_Web.Controllers
             return View(email);
         }
 
-       
+
 
         [HttpPost]
         public async Task<IActionResult> Register(RegisterViewModel model)

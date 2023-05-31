@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Test_OP_Web.Models;
 using Test_OP_Web.Services;
@@ -31,9 +32,11 @@ namespace Test_OP_Web.Data.Options
         public Session GetSessionById(int Id, UserAxe userAxe)
         {
 
-            var ses = Sessions.Where(x => x.UserAxe == userAxe)
+            var ses = Sessions
+                .Where(x => x.UserAxe == userAxe)
                 .Include(x => x.SessionQuestions).ThenInclude(x => x.Enter)
                 .Include(x => x.SessionQuestions).ThenInclude(x => x.Question.Anwsers)
+                //.AsSplitQuery()
                 .FirstOrDefault(x => x.Id == Id);
 
             if (ses == null)
@@ -46,6 +49,7 @@ namespace Test_OP_Web.Data.Options
             var ses = Sessions
                 .Include(x => x.SessionQuestions).ThenInclude(x => x.Enter)
                 .Include(x => x.SessionQuestions).ThenInclude(x => x.Question.Anwsers)
+                //.AsSplitQuery()
                 .FirstOrDefault(x => x.Id == Id);
 
 
@@ -54,9 +58,34 @@ namespace Test_OP_Web.Data.Options
 
             return ses;
         }
-        public List<Session> GetSessions()
+
+
+        public async Task<List<Session>> GetSessionsByNumVar(int NumVar)
         {
-            var ses = Sessions.Include(x => x.SessionQuestions).ThenInclude(x => x.Question.Anwsers).ToList();
+
+
+            var ses = await Sessions
+                .Where(x => x.NumVar == NumVar)
+                .Include(x => x.SessionQuestions).ThenInclude(x => x.Question.Anwsers)
+                .Include(x => x.SessionQuestions).ThenInclude(x => x.Enter)
+
+                .ToListAsync();
+
+
+            if (ses == null)
+                return null;
+
+            return ses;
+        }
+        public async Task<List<Session>> GetSessions()
+        {
+
+
+            var ses = await Sessions
+                .Include(x => x.SessionQuestions).ThenInclude(x => x.Question.Anwsers)
+                .Include(x => x.SessionQuestions).ThenInclude(x => x.Enter)
+
+                .ToListAsync();
 
 
             if (ses == null)
@@ -92,16 +121,15 @@ namespace Test_OP_Web.Data.Options
                 filterModel.Name = "";
 
 
+            var sessions =
+                Sessions.Include(x => x.SessionQuestions).ThenInclude(x => x.Question.Anwsers)
+                .Include(x => x.SessionQuestions).ThenInclude(x => x.Enter)
 
-
-            var sessions = Sessions.Include(x => x.SessionQuestions).ThenInclude(x => x.Question.Anwsers).
-                Where(
+                .Where(
                 x => x.Name.Contains(filterModel.Name) &&
                 filterModel.DateTimeStart <= x.TimeStart && x.TimeStart <= filterModel.DateTimeFinish &&
                 filterModel.NumVStart <= x.NumVar && x.NumVar <= filterModel.NumVFinish
                 );
-
-
 
             return sessions.ToList();
         }

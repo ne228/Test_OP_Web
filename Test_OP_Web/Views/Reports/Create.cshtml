@@ -1,4 +1,5 @@
-﻿@model Test_OP_Web.Data.Report
+﻿@using Test_OP_Web.Models.Reports;
+@model CreateReporViewModel
 
 @{
     ViewData["Title"] = "Отчет об ошибке";
@@ -23,7 +24,7 @@
                 <input type="submit" value="Отправить" class="btn btn-primary" />
             </div>
 
-            <input type="hidden" asp-for="Question.Id" value="@Model.Question.Id"/>
+        <input type="hidden" asp-for="QuestionId" value="@Model.Question.Id" />
         </form>
 
 </div>

@@ -1,0 +1,59 @@
+﻿@model Option
+
+
+<div class="option list-group-item">
+    <form asp-action="Create" asp-controller="Option" method="post">
+    <div class="list-group">
+
+        <label asp-for="NumVar" class="col-form-label">Input number of Variant:</label>
+        <input asp-for="NumVar" class="form-control" />
+
+
+        @{
+            for (int i = 0; i < Model.Questions.Count; i++)
+            {
+                <div class="edit-question list-group-item">
+
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                    <div class="edit-question-item edit-questionString">
+                        <label class="col-form-label">Input question @(i + 1):</label>
+                        <input asp-for="Questions[i].QuestionString" class="form-control" />
+                        <span asp-validation-for="Questions[i].QuestionString" class="text-danger"></span>
+                    </div>
+                    <hr />
+                    <div class="edit-question-item edit-anwsers">
+                        @{
+                            for (int j = 0; j < Model.Questions[i].Anwsers.Count; j++)
+                            {
+                                var anwser = Model.Questions[i].Anwsers[j];
+
+                                <div class="input-group edit-anwsers-item">
+                                    <div class="checkboxAnwser">
+                                        <input type="checkbox" asp-for="Questions[i].Anwsers[j].Right" />
+                                    </div>
+                                    <div class="inputAnwser">
+                                        <input asp-for="Questions[i].Anwsers[j].Text" class="form-control" />
+                                        <span asp-validation-for="Questions[i].Anwsers[j]" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            }
+                        }
+
+                    </div>
+                    <hr />
+
+                </div>
+
+
+            }
+        }
+        <input class="btn btn-primary" type="submit" value="Create"/>
+    </div>
+
+
+    </form>
+</div>
+
+
+

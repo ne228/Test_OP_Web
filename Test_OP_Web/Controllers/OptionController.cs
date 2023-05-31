@@ -13,7 +13,7 @@ using Test_OP_Web.Data.Options;
 namespace Test_OP_Web.Controllers
 {
 
-    [Authorize(Roles = "admin")]
+    
     public class OptionController : Controller
     {
 
@@ -39,16 +39,97 @@ namespace Test_OP_Web.Controllers
             return View(options);
         }
 
+
+        [HttpGet]
+        [Authorize(Roles = "user")]
+        public async Task<IActionResult> Create()
+        {
+            Option option = new Option { Questions = new() { } };
+            for (int i = 0; i < 20; i++)
+            {
+
+                var question = new Question() { Anwsers = new() };
+                for (int j = 0; j < 6; j++)
+                    question.Anwsers.Add(new Anwser());
+
+
+                option.Questions.Add(question);
+            }
+
+            return View(option);
+
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "user")]
+        public async Task<IActionResult> Create(Option option)
+        {
+            for (int i = 0; i < option.Questions.Count; i++)
+            {
+                Question question = option.Questions[i];
+                if (question.QuestionString == null || question.QuestionString == "")
+                    ModelState.AddModelError($"Questions[{i}].QuestionString", "Question must be not empty");
+
+
+
+                if (question.Anwsers.Where(x => x.Text != null).ToList().Count == 0)
+                    ModelState.AddModelError($"Questions[{i}].QuestionString", "Anwsers must be more then 0 count");
+
+                if (ModelState.IsValid)
+                    question.Anwsers = question.Anwsers.Where(x => x.Text != null).ToList();
+
+                question.NumVar = option.NumVar;
+                question.NumQ = i + 1;
+
+
+                if (question.Anwsers.Count == 1)
+                    question.NoVariant = true;
+            }
+
+            if (ModelState.IsValid)
+            {
+
+                _context.Add(option);
+                _context.SaveChanges();
+
+                RedirectToAction(nameof(ThanksReport));
+            }
+            return View(option);
+        }
+
+        public IActionResult ThanksReport()
+        {
+            return View();
+        }
+
         [Authorize(Roles = "admin")]
         public async Task<IActionResult> Option(int id)
         {
 
-            var options = await _context.Options.Include(x => x.Questions).ThenInclude(x => x.Anwsers).FirstOrDefaultAsync(x => x.Id == id);
+            var option = await _context.Options.Include(x => x.Questions).ThenInclude(x => x.Anwsers).FirstOrDefaultAsync(x => x.Id == id);
 
-            if (options == null)
+            if (option == null)
                 return View("NotFound");
 
-            return View(options);
+            return View(option);
+
+        }
+
+        [Authorize(Roles = "admin")]
+        public async Task<IActionResult> Delete(int id)
+        {
+
+            var option = await _context.Options.Include(x => x.Questions).ThenInclude(x => x.Anwsers).FirstOrDefaultAsync(x => x.Id == id);
+
+            if (option == null)
+                return View("NotFound");
+
+            _context.Remove(option);
+            var res = _context.SaveChanges();
+
+
+
+            return RedirectToAction(nameof(Index));
 
         }
 
@@ -90,12 +171,9 @@ namespace Test_OP_Web.Controllers
             await _context.SaveChangesAsync();
 
 
-            
+
             return "ok";
         }
-
-
-    
 
     }
 }
