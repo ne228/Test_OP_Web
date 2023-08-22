@@ -9,6 +9,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Test_OP_Web.Data;
 using Test_OP_Web.Data.Options;
+using Test_OP_Web.Models;
 
 namespace Test_OP_Web.Controllers
 {
@@ -150,13 +151,13 @@ namespace Test_OP_Web.Controllers
 
         [Authorize(Roles = "admin")]
         [HttpPost]
-        public async Task<string> EditQuestion(Question question)
+        public async Task<IActionResult> EditQuestion(Question question)
         {
 
             var q = await _context.Questions.Include(x => x.Anwsers).FirstOrDefaultAsync(x => x.Id == question.Id);
 
             if (q == null)
-                return "error";
+                return View("Error","ошибка");
 
             q.QuestionString = question.QuestionString;
 
@@ -172,7 +173,7 @@ namespace Test_OP_Web.Controllers
 
 
 
-            return "ok";
+            return RedirectToAction("Index", "Reports");
         }
 
     }

@@ -38,6 +38,18 @@
 
                     @if (User.Identity.IsAuthenticated)
                     {
+                        if (User.IsInRole("admin"))
+                        {
+                            <div class="nav-item1 nav-link active nav-item-username">
+                                <a asp-controller="Admin" asp-action="Index">ADMIN</a>
+                            </div>
+
+                            <div class="nav-item1 nav-link active nav-item-username">
+                                <a asp-controller="Reports" asp-action="Index">Reports</a>
+                            </div>
+                        }
+
+
                         <div class="nav-item1 nav-link active nav-item-username">
                             <a asp-controller="Session" asp-action="Stat">@User.Identity.Name</a>
                         </div>
@@ -45,6 +57,8 @@
                         <div class="nav-item1 nav-item-logout">
                             <a class="nav-link active text-dark" asp-controller="Account" asp-action="Logout">Выход</a>
                         </div>
+
+
                     }
                     else
                     {

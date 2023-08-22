@@ -25,7 +25,7 @@ namespace Test_OP_Web.Data.Options
 
         public UserAxe UserAxe { get; set; }
 
-        public int GetRight { get; set; } = 0;
+        //public int GetRight { get; set; } = 0;
 
         public int getRight()
         {

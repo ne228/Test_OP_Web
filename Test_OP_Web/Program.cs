@@ -22,7 +22,7 @@ namespace Test_OP_Web
             var app = CreateHostBuilder(args);
 
             var logger = GetLogger();
-            app.UseSerilog(logger);
+            //app.UseSerilog(logger);
 
             var host = app.Build();
             CreateDbIfNotExists(host).Wait();
@@ -81,7 +81,7 @@ namespace Test_OP_Web
                        .WriteTo.TeleSink(
                          telegramApiKey: "5982966206:AAGxc5e5eL8VXRleimsx7l5boPJIPIWcrfE",
                          telegramChatId: "467719960",
-                         minimumLevel: LogEventLevel.Warning
+                         minimumLevel: LogEventLevel.Error
                          )
                        // Add a log file that will be replaced by a new log file each day
                        .WriteTo.File(

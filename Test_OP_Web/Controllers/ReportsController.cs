@@ -35,7 +35,9 @@ namespace Test_OP_Web.Controllers
         {
 
             var reports = await _context.Reports
-                .Where(x => x.Confirm == false).Include(x => x.Question)
+                .Where(x => x.Confirm == false)
+                .Include(x => x.Question)
+                .Include(x => x.UserAxe)
                 .ToListAsync();
             return View(reports);
         }

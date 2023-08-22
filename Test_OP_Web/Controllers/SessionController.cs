@@ -47,9 +47,9 @@ namespace Test_OP_Web.Controllers
             var ses = await _context.Sessions.Where(x => x.UserAxe == UserAxe)
                 
                 .Include(x => x.SessionQuestions)
-                //    .ThenInclude(x => x.Question)
-                //        .ThenInclude(x => x.Anwsers)
-                //.Include(x => x.SessionQuestions).ThenInclude(x => x.Enter)                
+                    .ThenInclude(x => x.Question)
+                        .ThenInclude(x => x.Anwsers)
+                .Include(x => x.SessionQuestions).ThenInclude(x => x.Enter)
 
                 .ToListAsync();
 
@@ -123,8 +123,6 @@ namespace Test_OP_Web.Controllers
 
             Option option = _context.Options.Include(x => x.Questions)
                 .FirstOrDefault(x => x.NumVar == createSessionModel.NumVar);
-
-
 
 
             if (option == null)
@@ -219,7 +217,7 @@ namespace Test_OP_Web.Controllers
 
 
                         if (ses.Сompleted)
-                            throw new Exception("Session allready comleted");
+                            throw new Exception($"Session allready comleted\nSessionId {SessionId}, NumQ = {NumQ}, Text = {Text}");
 
 
                         var question = ses.SessionQuestions.FirstOrDefault(x => x.Question.NumQ == NumQ);
@@ -293,7 +291,7 @@ namespace Test_OP_Web.Controllers
 
                 ses.Сompleted = true;
                 ses.TimeFinsih = DateTime.Now;
-                ses.GetRight = ses.getRight();
+                //ses.GetRight = ses.getRight();
 
 
                 _context.SaveChanges();
