@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System;
 using Test_OP_Web.Data;
 using Test_OP_Web.Data.Options;
 using Test_OP_Web.Logging;
@@ -30,10 +31,16 @@ namespace Test_OP_Web
 
             services.AddTransient<IStatisticsService, StatisticsService>();
 
-            var def = Configuration.GetConnectionString("DefaultConnection");
+            
             services.AddDbContext<OptionContext>(options =>
-            options.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
-            //options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));
+                options.UseNpgsql(Configuration.GetConnectionString("PostgresConnection")
+                  //,
+                 //o => o.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery)
+                ));
+            // For data in posgtes
+            AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
+            //options.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
+            //options.UseNpgsql(Configuration.GetConnectionString("PostgresConnection")));
             //options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             services.AddIdentity<UserAxe, IdentityRole>()
                 .AddEntityFrameworkStores<OptionContext>()

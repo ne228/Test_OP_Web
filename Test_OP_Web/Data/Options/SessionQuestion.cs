@@ -9,13 +9,10 @@ namespace Test_OP_Web.Data.Options
     {
         public int Id { get; set; }
 
-
         public int SessionId { get; set; }
         public Question Question { get; set; }
 
         public List<Anwser> Enter { get; set; } = new();
-
-
 
         public bool Right { get; set; }
 

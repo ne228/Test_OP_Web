@@ -17,7 +17,7 @@ namespace Test_OP_Web.Data.Options
 
         public DbSet<Session> Sessions { get; set; }
 
-        public DbSet<SessionQuestion> OptionQuestion { get; set; }
+        public DbSet<SessionQuestion> SessionQuestions { get; set; }
         public DbSet<PersonStat> PersonStat { get; set; }
         public DbSet<Report> Reports { get; set; }
 

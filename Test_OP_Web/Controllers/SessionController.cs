@@ -45,7 +45,7 @@ namespace Test_OP_Web.Controllers
 
             var UserAxe = _userManager.GetUserAsync(HttpContext.User).Result;
             var ses = await _context.Sessions.Where(x => x.UserAxe == UserAxe)
-                
+
                 .Include(x => x.SessionQuestions)
                     .ThenInclude(x => x.Question)
                         .ThenInclude(x => x.Anwsers)
@@ -207,6 +207,10 @@ namespace Test_OP_Web.Controllers
                     {
                         UserAxe UserAxe = _userManager.GetUserAsync(HttpContext.User).Result;
                         Session ses;
+
+
+
+
                         if (_userManager.GetRolesAsync(UserAxe).Result.Contains("admin"))
                             ses = _context.GetSessionById(SessionId);
                         else
@@ -305,7 +309,7 @@ namespace Test_OP_Web.Controllers
                 throw exc;
             }
 
-           
+
 
         }
 

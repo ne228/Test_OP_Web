@@ -12,7 +12,7 @@
     <div class="m-1">
         <label class="form-label" asp-validation-for="NumVar"> Введите вариант</label>
 
-        <select class="form-select form-select-lg mb-3 select-num-var" asp-for="NumVar">
+        <select class="custom-select" asp-for="NumVar">
             @{
                 foreach (var numVar in ViewBag.NumVars)
                 {

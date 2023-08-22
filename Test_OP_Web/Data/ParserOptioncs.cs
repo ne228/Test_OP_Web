@@ -247,11 +247,11 @@ namespace Test_OP_Web.Data
             }
 
         }
-        public static List<Option> GetOptions()
+        public static List<Option> GetOptionsFromTxtFile()
         {
             try
             {
-                string path = Path.Combine("wwwroot/options.json");
+                string path = Path.Combine("wwwroot/options_22_08_2023.json");
                 // асинхронное чтение
                 string jsonString;
                 using (StreamReader reader = new StreamReader(path, Encoding.UTF8))

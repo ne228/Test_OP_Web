@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -174,6 +175,23 @@ namespace Test_OP_Web.Controllers
 
 
             return RedirectToAction("Index", "Reports");
+        }
+
+
+
+        // Сохранить все Вариант в один файл json
+        [Authorize(Roles = "admin")]
+        [HttpGet]
+        public async Task<String> SaveAllOptions()
+        {
+            var options = await _context.Options
+                .Include(x => x.Questions)
+                .ThenInclude(x => x.Anwsers)
+                .AsSplitQuery()
+                .ToListAsync();
+
+            return JsonConvert.SerializeObject(options, Formatting.Indented);
+
         }
 
     }

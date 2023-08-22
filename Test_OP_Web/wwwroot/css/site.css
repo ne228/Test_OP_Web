@@ -364,3 +364,31 @@ body {
     .warning:hover {
         background: darken(@button-colour, 10%);
     }
+
+
+
+.custom-select {
+    position: relative;
+    display: inline-block;
+}
+
+    .custom-select select {
+        appearance: none; /* Скрываем стандартный внешний вид */
+        padding: 5px;
+        border: 1px solid #ccc;
+        width: 200px;
+        max-height: 100px; /* Здесь можно ограничить высоту */
+        overflow-y: auto; /* Добавляем вертикальную прокрутку при необходимости */
+    }
+
+        .custom-select select option {
+            padding: 5px;
+        }
+
+    /* Стилизация стрелочки выпадающего списка */
+    .custom-select::after {
+        content: "\25BC"; /* Unicode символ стрелки вниз */
+        position: absolute;
+        top: 8px;
+        right: 10px;
+    }

@@ -80,17 +80,13 @@ namespace Test_OP_Web.Data
 
 
                 //context.Database.EnsureDeleted();
-
-                if (!context.Database.EnsureCreated())
+                context.Database.EnsureCreated();
+                if (false)
                 {
-                    logger.WriteLine("Db not need created! Allready created");
-                    return;
+                    List<Option> options = ParserOptioncs.GetOptionsFromTxtFile();
+
+                    context.Options.AddRange(options);
                 }
-
-                List<Option> options = ParserOptioncs.GetOptions();
-                
-                context.Options.AddRange(options);
-
 
                 context.SaveChanges();
             }
