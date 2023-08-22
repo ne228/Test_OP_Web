@@ -5,10 +5,12 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Test_OP_Web.Data;
 using Test_OP_Web.Data.Options;
+using Test_OP_Web.Migrations;
 using Test_OP_Web.Models;
 using Test_OP_Web.Services;
 
@@ -198,72 +200,111 @@ namespace Test_OP_Web.Controllers
 
         }
         [HttpPost]
+        [Authorize]
         public async Task<string> Question(string AnswerId, int SessionId, int NumQ, string Text)
         {
             try
             {
-                await Task.Run(() =>
+                //await Task.Run(() =>
+                //{
                 {
+                    Stopwatch stopwatch = new Stopwatch();
+                    Stopwatch stopwatch2 = new Stopwatch();
+                    stopwatch.Start();
+                    stopwatch2.Start();
+                    //UserAxe UserAxe = _userManager.GetUserAsync(HttpContext.User).Result;
+                    //Session ses;
+
+
+
+
+                    //if (_userManager.GetRolesAsync(UserAxe).Result.Contains("admin"))
+                    //    ses = _context.GetSessionById(SessionId);
+                    //else
+                    //    ses = _context.GetSessionById(SessionId, UserAxe);
+
+                    //if (ses == null)
+                    //    throw new Exception("NoSession");
+
+
+                    //if (ses.Сompleted)
+                    //    throw new Exception($"Session allready comleted\nSessionId {SessionId}, NumQ = {NumQ}, Text = {Text}");
+
+
+                    //var question = ses.SessionQuestions.FirstOrDefault(x => x.Question.NumQ == NumQ);
+                    //if (question == null)
+                    //    throw new Exception("NoQuestion");
+
+                    //Проверка на вопрос без вариантов ответа
+
+                    var question = await _context.SessionQuestions.Include(x => x.Question.Anwsers)
+                        .Where(x => x.Question.NumQ == NumQ && x.SessionId == SessionId)
+                         .Select(x => new
+                         {
+                             Question = new
+                             {
+                                 // Выберите только нужные поля из связанной сущности Question
+                                 x.Question.Id,                                 
+                                 x.Question.NoVariant,
+                                 
+
+                                 // ... добавьте остальные нужные поля Question
+                                 Anwsers = x.Question.Anwsers.Select(a => new
+                                 {
+                                     // Выберите только нужные поля из связанных сущностей Anwsers
+                                     a.Id,
+                                     a.Text,
+                                     // ... добавьте остальные нужные поля Anwsers
+                                 }).ToList(),
+                                 
+                                 Enter = x.Enter.Select(a => new
+                                 {
+                                     // Выберите только нужные поля из связанных сущностей Anwsers
+                                     a.Id,
+                                     a.Text,
+                                     // ... добавьте остальные нужные поля Anwsers
+                                 }).ToList()
+                             }
+                         })
+                         .FirstOrDefaultAsync();
+
+                    //.FirstOrDefaultAsync(x =>
+                    //     x.Question.NumQ == NumQ &&
+                    //     x.SessionId == SessionId);
+
+                    stopwatch2.Stop();
+                    if (question == null)
+                        throw new Exception("Question are not exist");
+
+                    
+                    if (question.Question.NoVariant)
                     {
-                        UserAxe UserAxe = _userManager.GetUserAsync(HttpContext.User).Result;
-                        Session ses;
+                        question.Question.Enter.Clear();
+                        question.Question.Enter.Add(new Anwser() { Text = Text });
+                    }
+                    else
+                    {
+                        int anwserId = int.TryParse(AnswerId, out int parsedResult) ? parsedResult : throw new Exception("Ошибка приведения.");
+
+                        var anwser = question.Question.Anwsers.FirstOrDefault(x => x.Id == anwserId)
+                            ?? throw new Exception("NoAnwser");
 
 
-
-
-                        if (_userManager.GetRolesAsync(UserAxe).Result.Contains("admin"))
-                            ses = _context.GetSessionById(SessionId);
+                        if (question.Question.Enter.Any(x => x.Id == anwser.Id))
+                            question.Question.Enter.Remove(anwser);
                         else
-                            ses = _context.GetSessionById(SessionId, UserAxe);
+                            question.Question.Enter.Add(anwser);
 
-                        if (ses == null)
-                            throw new Exception("NoSession");
+                        stopwatch.Stop();
+                        _logger.LogInformation($"DB SELECT: {stopwatch2.ElapsedMilliseconds} ms\n" +
+                                               $"\tALLTIME: {stopwatch.ElapsedMilliseconds} ms");
 
-
-                        if (ses.Сompleted)
-                            throw new Exception($"Session allready comleted\nSessionId {SessionId}, NumQ = {NumQ}, Text = {Text}");
-
-
-                        var question = ses.SessionQuestions.FirstOrDefault(x => x.Question.NumQ == NumQ);
-                        if (question == null)
-                            throw new Exception("NoQuestion");
-
-                        // Проверка на вопрос без вариантов ответа
-
-                        if (question.Question.NoVariant)
-                        {
-                            var answerString = AnswerId;
-                            question.Enter.Clear();
-                            question.Enter.Add(new Anwser() { Text = Text });
-
-                        }
-                        else
-                        {
-                            int anwserId;
-                            try
-                            {
-                                anwserId = Convert.ToInt32(AnswerId);
-                            }
-                            catch (Exception)
-                            {
-                                throw new Exception("Error convertation AnswerID");
-                            }
-
-                            var enter = question.Question.Anwsers.FirstOrDefault(x => x.Id == anwserId);
-
-                            if (enter == null)
-                                throw new Exception("NoAnwser");
-
-                            if (question.Enter.Any(x => x.Id == enter.Id))
-                                question.Enter.Remove(question.Enter.FirstOrDefault(x => x.Id == enter.Id));
-                            else
-                                question.Enter.Add(enter);
-
-                            _logger.LogInformation($"{UserAxe.Email} send questionID {question.Id}");
-                        }
+                        //_logger.LogInformation($"{UserAxe.Email} send questionID {question.Id}");
 
                     }
-                });
+
+                }
+                //});
             }
             catch (Exception exc)
             {

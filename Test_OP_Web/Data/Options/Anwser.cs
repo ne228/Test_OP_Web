@@ -11,7 +11,7 @@ namespace Test_OP_Web.Data.Options
 
         public string Text { get; set; }
 
-        public bool Right { get; set; }
+        public bool Right { get; set; }       
 
 
     }
