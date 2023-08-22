@@ -280,7 +280,7 @@ namespace Test_OP_Web.Controllers
                     if (question.Question.NoVariant)
                     {
                         question.Question.Enter.Clear();
-                        question.Question.Enter.Add(new Anwser() { Text = Text });
+                        question.Question.Enter.Add(new { id = 12,Text = Text });
                     }
                     else
                     {
