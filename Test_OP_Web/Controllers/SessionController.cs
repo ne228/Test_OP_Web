@@ -238,49 +238,19 @@ namespace Test_OP_Web.Controllers
                     //Проверка на вопрос без вариантов ответа
 
                     var question = await _context.SessionQuestions.Include(x => x.Question.Anwsers)
-                        .Where(x => x.Question.NumQ == NumQ && x.SessionId == SessionId)
-                         .Select(x => new
-                         {
-                             Question = new
-                             {
-                                 // Выберите только нужные поля из связанной сущности Question
-                                 x.Question.Id,                                 
-                                 x.Question.NoVariant,
-                                 
-
-                                 // ... добавьте остальные нужные поля Question
-                                 Anwsers = x.Question.Anwsers.Select(a => new
-                                 {
-                                     // Выберите только нужные поля из связанных сущностей Anwsers
-                                     a.Id,
-                                     a.Text,
-                                     // ... добавьте остальные нужные поля Anwsers
-                                 }).ToList(),
-                                 
-                                 Enter = x.Enter.Select(a => new
-                                 {
-                                     // Выберите только нужные поля из связанных сущностей Anwsers
-                                     a.Id,
-                                     a.Text,
-                                     // ... добавьте остальные нужные поля Anwsers
-                                 }).ToList()
-                             }
-                         })
-                         .FirstOrDefaultAsync();
-
-                    //.FirstOrDefaultAsync(x =>
-                    //     x.Question.NumQ == NumQ &&
-                    //     x.SessionId == SessionId);
+                                .FirstOrDefaultAsync(x =>
+                         x.Question.NumQ == NumQ &&
+                         x.SessionId == SessionId);
 
                     stopwatch2.Stop();
                     if (question == null)
                         throw new Exception("Question are not exist");
 
-                    
+
                     if (question.Question.NoVariant)
                     {
-                        question.Question.Enter.Clear();
-                        question.Question.Enter.Add(new { id = 12,Text = Text });
+                        question.Enter.Clear();
+                        question.Enter.Add(new Anwser() { Text = Text });
                     }
                     else
                     {
@@ -290,10 +260,10 @@ namespace Test_OP_Web.Controllers
                             ?? throw new Exception("NoAnwser");
 
 
-                        if (question.Question.Enter.Any(x => x.Id == anwser.Id))
-                            question.Question.Enter.Remove(anwser);
+                        if (question.Enter.Any(x => x.Id == anwser.Id))
+                            question.Enter.Remove(anwser);
                         else
-                            question.Question.Enter.Add(anwser);
+                            question.Enter.Add(anwser);
 
                         stopwatch.Stop();
                         _logger.LogInformation($"DB SELECT: {stopwatch2.ElapsedMilliseconds} ms\n" +
