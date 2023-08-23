@@ -359,6 +359,7 @@ body {
 .warning {
     width: 32px;
     height: 32px;
+    font-size: 12px;
 }
 
     .warning:hover {
@@ -392,3 +393,106 @@ body {
         top: 8px;
         right: 10px;
     }
+
+
+/* Стили для всплывающего окна */
+.custom-alert-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    opacity: 1; /* Начальная прозрачность 0 */
+    transition: opacity 0.3s ease, transform 0.3s ease; /* Анимация для прозрачности и позиции */
+}
+
+    .custom-alert-overlay.show {
+        opacity: 1; /* Конечная прозрачность 1 */
+        transform: translate(-50%, -50%); /* Пример смещения позиции */
+    }
+
+.custom-alert-box {
+    background-color: white;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.2);
+    transition: transform 0.5s ease-in-out;
+}
+.custom-alert-text{
+
+    text-align:center;
+}
+.custom-alert-button {
+    margin-top: 10px;
+    padding: 5px 10px;
+    border: none;
+    background-color: #007bff;
+    color: white;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: transform 0.5s ease-in-out;
+}
+
+
+/*// SHOW ANWSER CLASSEES*/
+
+.show-anwser-container {
+    border: solid 1px groove;
+    border-radius: 8px;
+    padding: 10px;
+    margin-top: 10px;
+    /*opacity: 0.1;*/
+    width: 100%;
+    min-height: 200px;
+    text-align: center;
+    transform: translateX(-200%);
+    transition: transform 0.5s ease-in-out;
+    z-index: -100;
+}
+
+.show {
+    transform: translateX(0);
+    /*opacity: 1;*/
+}
+
+/*.hidden {*/
+/*display: none;*/
+/*width: 0px;
+    height: 0px;
+    overflow:hidden;
+    opacity: 0;
+    transformY()*/
+/*animation: appearAnimation 1s forwards;*/
+/*transition: all 0.5s ease-out;*/
+/*transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;*/
+/*}
+
+.appear {
+    animation: appearAnimation 1s forwards;
+    transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+}
+
+@keyframes appearAnimation {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes lowerAnimation {
+    from {
+        opacity: 1;
+    }
+
+    to {
+        opacity: 0;
+    }
+}*/

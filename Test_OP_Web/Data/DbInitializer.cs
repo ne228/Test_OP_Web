@@ -79,13 +79,15 @@ namespace Test_OP_Web.Data
                 logger.WriteLine("goo connect to db");
 
 
-                //context.Database.EnsureDeleted();
-                context.Database.EnsureCreated();
-                if (false)
+                var deleted = false;
+                //deleted = context.Database.EnsureDeleted();
+                //context.Database.EnsureCreated();
+                if (deleted)
                 {
                     List<Option> options = ParserOptioncs.GetOptionsFromTxtFile();
 
                     context.Options.AddRange(options);
+
                 }
 
                 context.SaveChanges();

@@ -271,6 +271,9 @@ namespace Test_OP_Web.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
+                    b.Property<bool>("Blocked")
+                        .HasColumnType("boolean");
+
                     b.Property<bool>("Correctly")
                         .HasColumnType("boolean");
 

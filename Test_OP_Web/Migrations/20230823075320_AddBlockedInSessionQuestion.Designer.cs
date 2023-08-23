@@ -12,8 +12,8 @@ using Test_OP_Web.Data.Options;
 namespace Test_OP_Web.Migrations
 {
     [DbContext(typeof(OptionContext))]
-    [Migration("20230822095837_addQuestionIdInAnwser")]
-    partial class addQuestionIdInAnwser
+    [Migration("20230823075320_AddBlockedInSessionQuestion")]
+    partial class AddBlockedInSessionQuestion
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -168,11 +168,11 @@ namespace Test_OP_Web.Migrations
                     b.Property<int?>("QuestionId")
                         .HasColumnType("integer");
 
-                    b.Property<int?>("QuestionId1")
-                        .HasColumnType("integer");
-
                     b.Property<bool>("Right")
                         .HasColumnType("boolean");
+
+                    b.Property<int?>("SessionQuestionId")
+                        .HasColumnType("integer");
 
                     b.Property<string>("Text")
                         .HasColumnType("text");
@@ -181,7 +181,7 @@ namespace Test_OP_Web.Migrations
 
                     b.HasIndex("QuestionId");
 
-                    b.HasIndex("QuestionId1");
+                    b.HasIndex("SessionQuestionId");
 
                     b.ToTable("Anwser");
                 });
@@ -273,6 +273,9 @@ namespace Test_OP_Web.Migrations
                         .HasColumnType("integer");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<bool>("Blocked")
+                        .HasColumnType("boolean");
 
                     b.Property<bool>("Correctly")
                         .HasColumnType("boolean");
@@ -473,11 +476,9 @@ namespace Test_OP_Web.Migrations
                         .WithMany("Anwsers")
                         .HasForeignKey("QuestionId");
 
-                    b.HasOne("Test_OP_Web.Data.Options.SessionQuestion", "Question")
+                    b.HasOne("Test_OP_Web.Data.Options.SessionQuestion", null)
                         .WithMany("Enter")
-                        .HasForeignKey("QuestionId1");
-
-                    b.Navigation("Question");
+                        .HasForeignKey("SessionQuestionId");
                 });
 
             modelBuilder.Entity("Test_OP_Web.Data.Options.Question", b =>

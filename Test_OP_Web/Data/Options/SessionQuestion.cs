@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Threading.Tasks;
 
 namespace Test_OP_Web.Data.Options
@@ -15,6 +16,8 @@ namespace Test_OP_Web.Data.Options
         public List<Anwser> Enter { get; set; } = new();
 
         public bool Right { get; set; }
+
+        public bool Blocked { get; set; } = false;
 
         public bool Correctly { get; set; } = false;
 

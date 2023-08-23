@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Test_OP_Web.Migrations
 {
     /// <inheritdoc />
-    public partial class init : Migration
+    public partial class AddBlockedInSessionQuestion : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -192,8 +192,8 @@ namespace Test_OP_Web.Migrations
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    TimeStart = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    TimeFinsih = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    TimeStart = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    TimeFinsih = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
                     NumVar = table.Column<int>(type: "integer", nullable: false),
                     Name = table.Column<string>(type: "text", nullable: true),
                     Сompleted = table.Column<bool>(type: "boolean", nullable: false),
@@ -232,33 +232,6 @@ namespace Test_OP_Web.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "OptionQuestion",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    SessionId = table.Column<int>(type: "integer", nullable: false),
-                    QuestionId = table.Column<int>(type: "integer", nullable: true),
-                    Right = table.Column<bool>(type: "boolean", nullable: false),
-                    Correctly = table.Column<bool>(type: "boolean", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_OptionQuestion", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_OptionQuestion_Questions_QuestionId",
-                        column: x => x.QuestionId,
-                        principalTable: "Questions",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_OptionQuestion_Sessions_SessionId",
-                        column: x => x.SessionId,
-                        principalTable: "Sessions",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Reports",
                 columns: table => new
                 {
@@ -267,7 +240,7 @@ namespace Test_OP_Web.Migrations
                     Message = table.Column<string>(type: "text", nullable: true),
                     Confirm = table.Column<bool>(type: "boolean", nullable: false),
                     QuestionId = table.Column<int>(type: "integer", nullable: false),
-                    DateTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    DateTime = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
                     UserAxeId = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
@@ -287,6 +260,34 @@ namespace Test_OP_Web.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "SessionQuestions",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    SessionId = table.Column<int>(type: "integer", nullable: false),
+                    QuestionId = table.Column<int>(type: "integer", nullable: true),
+                    Right = table.Column<bool>(type: "boolean", nullable: false),
+                    Blocked = table.Column<bool>(type: "boolean", nullable: false),
+                    Correctly = table.Column<bool>(type: "boolean", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_SessionQuestions", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_SessionQuestions_Questions_QuestionId",
+                        column: x => x.QuestionId,
+                        principalTable: "Questions",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_SessionQuestions_Sessions_SessionId",
+                        column: x => x.SessionId,
+                        principalTable: "Sessions",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Anwser",
                 columns: table => new
                 {
@@ -301,14 +302,14 @@ namespace Test_OP_Web.Migrations
                 {
                     table.PrimaryKey("PK_Anwser", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Anwser_OptionQuestion_SessionQuestionId",
-                        column: x => x.SessionQuestionId,
-                        principalTable: "OptionQuestion",
-                        principalColumn: "Id");
-                    table.ForeignKey(
                         name: "FK_Anwser_Questions_QuestionId",
                         column: x => x.QuestionId,
                         principalTable: "Questions",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Anwser_SessionQuestions_SessionQuestionId",
+                        column: x => x.SessionQuestionId,
+                        principalTable: "SessionQuestions",
                         principalColumn: "Id");
                 });
 
@@ -360,16 +361,6 @@ namespace Test_OP_Web.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_OptionQuestion_QuestionId",
-                table: "OptionQuestion",
-                column: "QuestionId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_OptionQuestion_SessionId",
-                table: "OptionQuestion",
-                column: "SessionId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Questions_OptionId",
                 table: "Questions",
                 column: "OptionId");
@@ -383,6 +374,16 @@ namespace Test_OP_Web.Migrations
                 name: "IX_Reports_UserAxeId",
                 table: "Reports",
                 column: "UserAxeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_SessionQuestions_QuestionId",
+                table: "SessionQuestions",
+                column: "QuestionId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_SessionQuestions_SessionId",
+                table: "SessionQuestions",
+                column: "SessionId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Sessions_UserAxeId",
@@ -418,7 +419,7 @@ namespace Test_OP_Web.Migrations
                 name: "Reports");
 
             migrationBuilder.DropTable(
-                name: "OptionQuestion");
+                name: "SessionQuestions");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");

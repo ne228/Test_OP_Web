@@ -5,7 +5,17 @@
     int CountQuestions = (int)ViewData["CountQuestions"];
     Model.Question.Anwsers = Model.Question.Anwsers.OrderBy(x => x.Text).ToList();
 
+    string disable = Model.Blocked ? "disable" : String.Empty;
+
 }
+
+<div id="customAlert" class="custom-alert-overlay" style="display: none;">
+    <div class="custom-alert-box">
+        <p class="custom-alert-text"></p>
+        <button class="btn btn-outline-primary w-100" onclick="hideCustomAlert()">Закрыть</button>
+    </div>
+</div>
+
 
 <h3 class="text-center">Тест огневая подготовка. Вариант @Model.Question.NumVar</h3>
 
@@ -17,71 +27,87 @@
 </div>
 <hr />
 
-<div>
+<div class="tabs">
+    <div class="prev-tab">
+    </div>
+    <div class="tab">
+        <form id="qusetionForm" asp-controller="Session" asp-action="Question" method="post">
+            <h3>
+                @Model.Question.NumQ @Model.Question.QuestionString
+                <a class="align-self-center" asp-action="Create" asp-controller="Reports" asp-route-questionId="@Model.Question.Id">
+                    <img class="warning" src="~/img/warning.png" alt="Сообщить об ошибке" />
 
-    <form id="qusetionForm" asp-controller="Session" asp-action="Question" method="post">
-        <h3>
-            @Model.Question.NumQ @Model.Question.QuestionString
-            <a class="align-self-center" asp-action="Create" asp-controller="Reports" asp-route-questionId="@Model.Question.Id">
-                <img class="warning" src="~/img/warning.png" alt="Сообщить об ошибке" />
-            </a>
-        </h3>
+                </a>
+            </h3>
 
-        <hr />
-        @{
-            if (Model.Question.NoVariant)
-            {
-                var text = "";
-                if (Model.Enter.Count > 0)
-                    text = Model.Enter.FirstOrDefault().Text;
-                <div class="">
-                    <input class="form-control"
-                           value="@text" asp-for="Enter.FirstOrDefault().Text" />
-                    <br />
-                </div>
-            }
-            else
-                for (int i = 0; i < Model.Question.Anwsers.Count; i++)
+            <hr />
+            @{
+                if (Model.Question.NoVariant)
                 {
-                    var answer = Model.Question.Anwsers[i];
-
-
-                    string className = "";
-                    var mybool = Model.Enter.Any(x => x.Id == answer.Id);
-                    if (mybool)
-                        className = "btn-primary";
-                    else
-                        className = "btn-light";
-
-
-                    <div class="question btn @className w-100">
-                        <input class="question-input" type="radio" value="@answer.Id" asp-for="Question.Anwsers[i]" checked="@mybool" />
-                        <span class="">@answer.Text</span>
-
+                    var text = "";
+                    if (Model.Enter.Count > 0)
+                        text = Model.Enter.FirstOrDefault().Text;
+                    <div class="">
+                        <input class="form-control" @disable
+                               value="@text" asp-for="Enter.FirstOrDefault().Text" />
                         <br />
                     </div>
                 }
-        }
+                else
+                    for (int i = 0; i < Model.Question.Anwsers.Count; i++)
+                    {
+                        var answer = Model.Question.Anwsers[i];
 
-        <hr />
-        <div class="prev-next-btns">
-            @if (Model.Question.NumQ != 1)
-            {
-                <a class="btn btn-outline-dark prev-btn question-btn" asp-controller="Session" asp-action="Question" asp-route-SessionId="@Model.SessionId" asp-route-NumQ="@(Model.Question.NumQ-1)" asp->Предыдущий вопрос</a>
+
+                        string className = "";
+                        var mybool = Model.Enter.Any(x => x.Id == answer.Id);
+                        if (mybool)
+                            className = "btn-primary";
+                        else
+                            className = "btn-light";
+
+
+                        <div class="question btn @className w-100">
+                            <input class="question-input disabled" @disable type="radio" value="@answer.Id" asp-for="Question.Anwsers[i]" checked="@mybool" />
+                            <span class="">@answer.Text</span>
+
+                            <br />
+                        </div>
+                    }
             }
 
-            @if (Model.Question.NumQ < CountQuestions)
-            {
-                <a class="btn btn-outline-primary next-btn question-btn" asp-controller="Session" asp-action="Question" asp-route-SessionId="@Model.SessionId" asp-route-NumQ="@(Model.Question.NumQ+1)">Следующий вопрос</a>
-            }
-
-        </div>
+            <hr />
 
 
-        @Html.Hidden("SessionId", Model.SessionId)
-        @Html.Hidden("NumQ", Model.Question.NumQ)
-    </form>
+            @Html.Hidden("SessionId", Model.SessionId)
+            @Html.Hidden("NumQ", Model.Question.NumQ)
+        </form>
 
+    </div>
+    <div class="next-tab">
+    </div>
+</div>
+
+<div class="prev-next-btns">
+    @if (Model.Question.NumQ != 1)
+    {
+        <a class="btn btn-outline-dark prev-btn question-btn" asp-controller="Session" asp-action="Question" asp-route-SessionId="@Model.SessionId" asp-route-NumQ="@(Model.Question.NumQ-1)" asp->Предыдущий вопрос</a>
+    }
+
+    @if (Model.Question.NumQ < CountQuestions)
+    {
+        <a class="btn btn-outline-primary next-btn question-btn" asp-controller="Session" asp-action="Question" asp-route-SessionId="@Model.SessionId" asp-route-NumQ="@(Model.Question.NumQ+1)">Следующий вопрос</a>
+    }
+
+    <a class="btn btn-outline-dark prev-btn show-anwser-btn"
+       asp-controller="Session"
+       asp-action="ShowAnwser"
+       SessionId="@Model.SessionId"
+       NumQ="@(Model.Question.NumQ)">Показать/спрятать ответ</a>
+
+
+    <div class="hidden show-anwser-container">
+    </div>
 
 </div>
 
@@ -99,90 +125,8 @@
 </style>
 
 
-<script type="text/javascript">
+<script src="~/js/question.js" asp-asp-append-version="true" type="text/javascript">
 
 
-    let elements = document.querySelectorAll(".question");
-
-    function clearClasses() {
-
-        for (var i = 0; i < elements.length; i++) {
-            const k = i;
-            elements[k].classList.remove("btn-primary");
-            elements[k].classList.add("btn-light");
-
-            if (elements[k].childNodes[1].checked == true) {
-                elements[k].classList.add("btn-primary");
-                elements[k].classList.remove("btn-light");
-            }
-            else {
-                elements[k].classList.add("btn-light");
-                elements[k].classList.remove("btn-primary");
-            }
-
-
-        }
-
-    }
-
-    //clearClasses();
-
-
-    // Навешивание событый
-    //Novariant == true
-    let elementInput = document.getElementById("Text");
-
-    if (elementInput != null)
-        elementInput.addEventListener('focusout', (event) => {
-            submitQuestion();
-        });
-
-
-    if (elementInput == null)
-        for (var i = 0; i < elements.length; i++) {
-            const k = i;
-            elements[k].onclick = function (event) {
-
-                if (elements[k].childNodes[1].checked)
-                    elements[k].childNodes[1].checked = false;
-                else
-                    elements[k].childNodes[1].checked = true;
-                /*elements[k].childNodes[1].checked = true;*/
-
-                var answerId = elements[k].childNodes[1].getAttribute("value");
-
-                submitQuestion(answerId);
-
-            };
-        }
-
-
-    function submitQuestion(answerId) {
-
-
-        var data = $("#qusetionForm").serialize();
-
-        data += `&AnswerId=${answerId}`
-
-        //alert(data);
-        $.ajax({
-            type: 'POST',
-            url: '/Session/Question',
-            contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
-            data: data,
-            success: function (result) {
-
-                $(".notsaved").removeClass("notsaved");
-                $(".notsaved").addClass("saved");
-                //alert('Successfully received Data');
-                clearClasses();
-                console.log(result);
-            },
-            error: function () {
-                alert('Failed to receive the Data');
-                console.log('Failed ');
-            }
-        })
-    }
 
 </script>

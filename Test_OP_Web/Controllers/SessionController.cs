@@ -5,12 +5,10 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Test_OP_Web.Data;
 using Test_OP_Web.Data.Options;
-using Test_OP_Web.Migrations;
 using Test_OP_Web.Models;
 using Test_OP_Web.Services;
 
@@ -205,76 +203,47 @@ namespace Test_OP_Web.Controllers
         {
             try
             {
-                //await Task.Run(() =>
-                //{
+                await Task.Run(async () =>
                 {
-                    Stopwatch stopwatch = new Stopwatch();
-                    Stopwatch stopwatch2 = new Stopwatch();
-                    stopwatch.Start();
-                    stopwatch2.Start();
-                    //UserAxe UserAxe = _userManager.GetUserAsync(HttpContext.User).Result;
-                    //Session ses;
-
-
-
-
-                    //if (_userManager.GetRolesAsync(UserAxe).Result.Contains("admin"))
-                    //    ses = _context.GetSessionById(SessionId);
-                    //else
-                    //    ses = _context.GetSessionById(SessionId, UserAxe);
-
-                    //if (ses == null)
-                    //    throw new Exception("NoSession");
-
-
-                    //if (ses.Сompleted)
-                    //    throw new Exception($"Session allready comleted\nSessionId {SessionId}, NumQ = {NumQ}, Text = {Text}");
-
-
-                    //var question = ses.SessionQuestions.FirstOrDefault(x => x.Question.NumQ == NumQ);
-                    //if (question == null)
-                    //    throw new Exception("NoQuestion");
-
-                    //Проверка на вопрос без вариантов ответа
-
-                    var question = await _context.SessionQuestions.Include(x => x.Question.Anwsers)
-                                .FirstOrDefaultAsync(x =>
-                         x.Question.NumQ == NumQ &&
-                         x.SessionId == SessionId);
-
-                    stopwatch2.Stop();
-                    if (question == null)
-                        throw new Exception("Question are not exist");
-
-
-                    if (question.Question.NoVariant)
                     {
-                        question.Enter.Clear();
-                        question.Enter.Add(new Anwser() { Text = Text });
-                    }
-                    else
-                    {
-                        int anwserId = int.TryParse(AnswerId, out int parsedResult) ? parsedResult : throw new Exception("Ошибка приведения.");
+                        //Проверка на вопрос без вариантов ответа
 
-                        var anwser = question.Question.Anwsers.FirstOrDefault(x => x.Id == anwserId)
-                            ?? throw new Exception("NoAnwser");
+                        var question = await _context.SessionQuestions.Include(x => x.Question.Anwsers)
+                                    .FirstOrDefaultAsync(x =>
+                             x.Question.NumQ == NumQ &&
+                             x.SessionId == SessionId);
 
 
-                        if (question.Enter.Any(x => x.Id == anwser.Id))
-                            question.Enter.Remove(anwser);
+                        if (question == null)
+                            throw new Exception("Question are not exist");
+
+                        if (question.Blocked)
+                            throw new Exception("blocked");
+
+
+                        if (question.Question.NoVariant)
+                        {
+                            question.Enter.Clear();
+                            question.Enter.Add(new Anwser() { Text = Text });
+                        }
                         else
-                            question.Enter.Add(anwser);
+                        {
+                            int anwserId = int.TryParse(AnswerId, out int parsedResult) ? parsedResult : throw new Exception("Ошибка приведения.");
 
-                        stopwatch.Stop();
-                        _logger.LogInformation($"DB SELECT: {stopwatch2.ElapsedMilliseconds} ms\n" +
-                                               $"\tALLTIME: {stopwatch.ElapsedMilliseconds} ms");
+                            var anwser = question.Question.Anwsers.FirstOrDefault(x => x.Id == anwserId)
+                                ?? throw new Exception("NoAnwser");
 
-                        //_logger.LogInformation($"{UserAxe.Email} send questionID {question.Id}");
+
+                            if (question.Enter.Any(x => x.Id == anwser.Id))
+                                question.Enter.Remove(anwser);
+                            else
+                                question.Enter.Add(anwser);
+
+
+                        }
 
                     }
-
-                }
-                //});
+                });
             }
             catch (Exception exc)
             {
@@ -287,6 +256,30 @@ namespace Test_OP_Web.Controllers
             return "ok";
         }
 
+        public async Task<IActionResult> ShowAnwser(int SessionId, int NumQ)
+        {
+            try
+            {
+                var question = await _context.SessionQuestions
+                                    .Include(x => x.Question)
+                                    .ThenInclude(x => x.Anwsers)
+                                    .FirstOrDefaultAsync(x =>
+                                    x.Question.NumQ == NumQ &&
+                                    x.SessionId == SessionId) ?? throw new Exception("NoQuestion");
+
+                question.Blocked = true;
+                await _context.SaveChangesAsync();
+
+
+                return View(question);
+            }
+            catch (Exception exc)
+            {
+                _logger.LogWarning(exc.Message);
+                return NotFound();
+            }
+
+        }
 
 
         public IActionResult Complete(int SessionId)
