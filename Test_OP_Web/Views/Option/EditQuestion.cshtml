@@ -1,0 +1,45 @@
+﻿@model Question
+@{
+
+    Random rnd = new Random();
+}
+
+<form id="@rnd.Next(0, 30000)" asp-action="EditQuestion">
+
+    <div class="edit-question">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <hr />
+        <input type="hidden" asp-for="Id" />
+        <div class="edit-question-item edit-questionString">
+            <input asp-for="QuestionString" class="form-control" />
+            <span asp-validation-for="QuestionString" class="text-danger"></span>
+        </div>
+        <hr />
+        <div class="edit-question-item edit-anwsers">
+            @{
+                for (int i = 0; i < Model.Anwsers.Count; i++)
+                {
+                    var anwser = Model.Anwsers[i];
+
+                    <div class="input-group edit-anwsers-item">
+                        <div class="checkboxAnwser">
+                            <input type="checkbox" asp-for="Anwsers[i].Right" />
+                        </div>
+                        <div class="inputAnwser">
+                            <input asp-for="Anwsers[i].Text" class="form-control" />
+                            <span asp-validation-for="Anwsers[i]" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <input type="hidden" asp-for="Anwsers[i].Id" />
+                }
+            }
+
+        </div>
+        <hr />
+        <div class="form-group">
+            <input type="submit" value="Save" class="btn btn-primary question-edit-submit" />
+        </div>
+        <hr />
+    </div>
+</form>

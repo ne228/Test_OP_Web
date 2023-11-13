@@ -5,20 +5,18 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Test_OP_Web.Models
+namespace Test_OP_Web.Data.Options
 {
     public class Option
     {
         [Key]
         public int Id { get; set; }
 
+
+        [Required]
         public int NumVar { get; set; }
 
         public List<Question> Questions { get; set; } = new();
 
-        //public Option(int NumVar)
-        //{
-        //    this.NumVar = NumVar;
-        //}
     }
 }

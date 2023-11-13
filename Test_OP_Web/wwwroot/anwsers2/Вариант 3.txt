@@ -1,0 +1,85 @@
+{
+"NumVar": 3,
+"Anwsers": [
+{
+"NumQ": 1,
+"Answer": "иницииирующие"
+},
+{
+"NumQ": 2,
+"Answer": "1,4"
+},
+{
+"NumQ": 3,
+"Answer": "в первом"
+},
+{
+"NumQ": 4,
+"Answer": "1,2,4"
+},
+{
+"NumQ": 5,
+"Answer": "2"
+},
+{
+"NumQ": 6,
+"Answer": "150"
+},
+{
+"NumQ": 7,
+"Answer": "4"
+},
+{
+"NumQ": 8,
+"Answer": "2"
+},
+{
+"NumQ": 9,
+"Answer": "1000"
+},
+{
+"NumQ": 10,
+"Answer": "530"
+},
+{
+"NumQ": 11,
+"Answer": "1"
+},
+{
+"NumQ": 12,
+"Answer": "3"
+},
+{
+"NumQ": 13,
+"Answer": "3"
+},
+{
+"NumQ": 14,
+"Answer": "3"
+},
+{
+"NumQ": 15,
+"Answer": "4"
+},
+{
+"NumQ": 16,
+"Answer": "2"
+},
+{
+"NumQ": 17,
+"Answer": "3"
+},
+{
+"NumQ": 18,
+"Answer": "1,3,4"
+},
+{
+"NumQ": 19,
+"Answer": "2"
+},
+{
+"NumQ": 20,
+"Answer": "4"
+}
+]
+}

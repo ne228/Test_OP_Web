@@ -11,19 +11,26 @@
 
     <div class="m-1">
         <label class="form-label" asp-validation-for="NumVar"> Введите вариант</label>
-        <input class="form-control" asp-for="NumVar" />
-        <span class="text-danger" asp-validation-for="NumVar"></span>
+
+        <select class="custom-select" asp-for="NumVar">
+            @{
+                foreach (var numVar in ViewBag.NumVars)
+                {
+                    <option value="@numVar">@numVar</option>
+                }
+            }
+        </select>
     </div>
     <div class="m-1">
         @*<label class="form-label" asp-validation-for="Name"> Введите Имя</label>
-            <input class="form-control" asp-for="Name" />
-            <span class="text-danger" asp-validation-for="Name"></span>*@
+        <input class="form-control" asp-for="Name" />
+        <span class="text-danger" asp-validation-for="Name"></span>*@
         @Html.Hidden("Name", name)
 
 
     </div>
     <div class="m-1">
-        <input class="btn btn-primary" type="submit" value="Создать" />
+        <input class="btn btn-primary" type="submit" id="CreateSession_btn"  value="Создать" />
     </div>
 
 

@@ -1,75 +1,113 @@
-﻿@model Test_OP_Web.Data.SessionQuestion
+﻿@model SessionQuestion
 @{
+    //Title = $"Тест огневая подготовка. Вариант {Model.Question.NumVar}";
+
+    int CountQuestions = (int)ViewData["CountQuestions"];
+    Model.Question.Anwsers = Model.Question.Anwsers.OrderBy(x => x.Text).ToList();
+
+    string disable = Model.Blocked ? "disable" : String.Empty;
 
 }
 
-<h1>Тест огневая подготовка. Вариант @Model.Question.NumVar</h1>
+<div id="customAlert" class="custom-alert-overlay" style="display: none;">
+    <div class="custom-alert-box">
+        <p class="custom-alert-text"></p>
+        <button class="btn btn-outline-primary w-100" onclick="hideCustomAlert()">Закрыть</button>
+    </div>
+</div>
 
 
-<a class="btn btn-secondary" asp-controller="Session" asp-action="Session" asp-route-Id="@Model.SessionId">Просмотр сессии</a>
-<a class="btn btn-success justify-content-end" asp-controller="Session" asp-action="Complete" asp-route-SessionId="@Model.SessionId">Закончить сессию</a>
+<h3 class="text-center">Тест огневая подготовка. Вариант @Model.Question.NumVar</h3>
 
+<div class="show-comlete-sessions-btn">
+    <a class="btn btn-info show-session-btn question-btn" asp-controller="Session" asp-action="Session" asp-route-Id="@Model.SessionId">Просмотр сессии</a>
+
+
+    <a class="btn btn-outline-success justify-content-end complete-session-btn question-btn" asp-controller="Session" asp-action="Complete" asp-route-SessionId="@Model.SessionId">Закончить сессию</a>
+</div>
 <hr />
 
-<div>
+<div class="tabs">
+    <div class="prev-tab">
+    </div>
+    <div class="tab">
+        <form id="qusetionForm" asp-controller="Session" asp-action="Question" method="post">
+            <h3>
+                @Model.Question.NumQ @Model.Question.QuestionString
+                <a class="align-self-center" asp-action="Create" asp-controller="Reports" asp-route-questionId="@Model.Question.Id">
+                    <img class="warning" src="~/img/warning.png" alt="Сообщить об ошибке" />
 
-    <form id="qusetionForm" asp-controller="Session" asp-action="Question" method="post">
-        <h3>@Model.Question.QuestionString</h3>
+                </a>
+            </h3>
 
-        <hr />
-
-        <div class="question btn btn-light w-100">
-            <input class="question-input" type="radio" value="1" asp-for="Enter" />
-            <span class="text-body">@Model.Question.One</span>
-
-
-            <br />
-        </div>
-
-
-        <div class="question btn btn-light w-100">
-            <input class="question-input" type="radio" value="2" asp-for="Enter" />
-
-            <span class="text">@Model.Question.Two</span>
-
-            <br />
-        </div>
-
-
-        <div class="question btn btn-light w-100">
-            <input class="question-input" type="radio" value="3" asp-for="Enter" />
-
-            <span class="">@Model.Question.Three</span>
-
-            <br />
-
-        </div>
-
-        <div class="question btn btn-light w-100">
-            <input class="question-input" type="radio" value="4" asp-for="Enter" />
-
-            <span class="">@Model.Question.Four</span>
-
-            <br />
-        </div>
-        <hr />
-        @*<input  class="btn btn-warning submit-question" type="submit" value="Сохранить" />*@
-        @*<span class="notsaved">Сохранено</span>
-        <br />*@
-
-        @if (Model.NumQ != 1)
-        {
-            <a class="btn btn-dark" asp-controller="Session" asp-action="Question" asp-route-SessionId="@Model.SessionId" asp-route-NumQ="@(Model.NumQ-1)" asp->Предыдущий вопрос</a>
-        }
-        <a class="btn btn-primary" asp-controller="Session" asp-action="Question" asp-route-SessionId="@Model.SessionId" asp-route-NumQ="@(Model.NumQ+1)">Следующий вопрос</a>
+            <hr />
+            @{
+                if (Model.Question.NoVariant)
+                {
+                    var text = "";
+                    if (Model.Enter.Count > 0)
+                        text = Model.Enter.FirstOrDefault().Text;
+                    <div class="">
+                        <input class="form-control" @disable
+                               value="@text" asp-for="Enter.FirstOrDefault().Text" />
+                        <br />
+                    </div>
+                }
+                else
+                    for (int i = 0; i < Model.Question.Anwsers.Count; i++)
+                    {
+                        var answer = Model.Question.Anwsers[i];
 
 
+                        string className = "";
+                        var mybool = Model.Enter.Any(x => x.Id == answer.Id);
+                        if (mybool)
+                            className = "btn-primary";
+                        else
+                            className = "btn-light";
 
 
-        @Html.Hidden("SessionId", Model.SessionId)
-        @Html.Hidden("NumQ", Model.NumQ)
-    </form>
+                        <div class="question btn @className w-100">
+                            <input class="question-input disabled" @disable type="radio" value="@answer.Id" asp-for="Question.Anwsers[i]" checked="@mybool" />
+                            <span class="">@answer.Text</span>
 
+                            <br />
+                        </div>
+                    }
+            }
+
+            <hr />
+
+
+            @Html.Hidden("SessionId", Model.SessionId)
+            @Html.Hidden("NumQ", Model.Question.NumQ)
+        </form>
+
+    </div>
+    <div class="next-tab">
+    </div>
+</div>
+
+<div class="prev-next-btns">
+    @if (Model.Question.NumQ != 1)
+    {
+        <a class="btn btn-outline-dark prev-btn question-btn" asp-controller="Session" asp-action="Question" asp-route-SessionId="@Model.SessionId" asp-route-NumQ="@(Model.Question.NumQ-1)" asp->Предыдущий вопрос</a>
+    }
+
+    @if (Model.Question.NumQ < CountQuestions)
+    {
+        <a class="btn btn-outline-primary next-btn question-btn" asp-controller="Session" asp-action="Question" asp-route-SessionId="@Model.SessionId" asp-route-NumQ="@(Model.Question.NumQ+1)">Следующий вопрос</a>
+    }
+
+    <a class="btn btn-outline-dark prev-btn show-anwser-btn"
+       asp-controller="Session"
+       asp-action="ShowAnwser"
+       SessionId="@Model.SessionId"
+       NumQ="@(Model.Question.NumQ)">Показать/спрятать ответ</a>
+
+
+    <div class="hidden show-anwser-container">
+    </div>
 
 </div>
 
@@ -87,67 +125,8 @@
 </style>
 
 
-<script type="text/javascript">
+<script src="~/js/question.js" asp-asp-append-version="true" type="text/javascript">
 
 
-    let elements = document.querySelectorAll(".question");
-
-    function clearClasses() {
-
-        for (var i = 0; i < 4; i++) {
-            const k = i;
-            elements[k].classList.remove("btn-primary");
-            elements[k].classList.add("btn-light");
-
-            if (elements[k].childNodes[1].checked == true) {
-                elements[k].classList.add("btn-primary");
-                elements[k].classList.remove("btn-light");
-            }
-                
-
-            
-        }
-
-    }
-
-    clearClasses();
-
-    for (var i = 0; i < 4; i++) {
-        const k = i;
-        elements[k].onclick = function () {
-
-            
-            elements[k].childNodes[1].checked = true;
-            clearClasses();
-            submitQuestion();
-
-        };
-    }
-
-
-    function submitQuestion() {
-
-
-        var data = $("#qusetionForm").serialize();
-        console.log(data);
-        //alert(data);
-        $.ajax({
-            type: 'POST',
-            url: '/Session/Question',
-            contentType: 'application/x-www-form-urlencoded; charset=UTF-8', // when we use .serialize() this generates the data in query string format. this needs the default contentType (default content type is: contentType: 'application/x-www-form-urlencoded; charset=UTF-8') so it is optional, you can remove it
-            data: data,
-            success: function (result) {
-
-                $(".notsaved").removeClass("notsaved");
-                $(".notsaved").addClass("saved");
-                //alert('Successfully received Data ');
-                console.log(result);
-            },
-            error: function () {
-                alert('Failed to receive the Data');
-                console.log('Failed ');
-            }
-        })
-    }
 
 </script>

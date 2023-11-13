@@ -5,24 +5,13 @@ using System.IO;
 using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
-using Test_OP_Web;
-using Test_OP_Web.Data;
-using Test_OP_Web.Models;
+using Test_OP_Web.Data.Options;
+using Test_OP_Web.Logging;
 
-namespace WebAxe.Data
+namespace Test_OP_Web.Data
 {
     public class DbInitializer
     {
-
-        static bool Right(string text)
-        {
-            if (text.Contains("*") || text.Contains("="))
-                return true;
-            else
-                return false;
-        }
-
-
         static async Task CreateUserWithoutEmailConfirm(
             UserManager<UserAxe> userManager,
             RoleManager<IdentityRole> roleManager,
@@ -50,10 +39,8 @@ namespace WebAxe.Data
 
 
 
-        public static async Task RoleInitialize(UserManager<UserAxe> userManager, RoleManager<IdentityRole> roleManager)
+        public static async Task RoleInitialize(UserManager<UserAxe> userManager, RoleManager<IdentityRole> roleManager, ILogger logger)
         {
-
-      
 
             //Roles
             string adminEmail = "potter27.05@mail.ru";
@@ -69,124 +56,46 @@ namespace WebAxe.Data
 
 
             await CreateUserWithoutEmailConfirm(userManager, roleManager, adminEmail, password, "admin");
+            logger.WriteLine($"User {adminEmail} was created with role \"admin\"");
 
-            foreach (var item in Parse().Result)
+
+            var usersInFile = ParseUsersJson();
+            foreach (var item in usersInFile)
             {
                 await CreateUserWithoutEmailConfirm(userManager, roleManager, item.Email, item.Password, "user");
+
+                logger.WriteLine($"User {item.Email} was created with role \"user\"");
             }
 
         }
 
-
-        public static void Initialize(OptionContext context)
+        public static void Initialize(OptionContext context, ILogger logger)
         {
-            //context.Database.EnsureDeleted();
 
+            //await GetAnswerFronJson.GenerateTestJson();
 
             if (context.Database.CanConnect())
             {
-                var sadads = "asd";
-            }
-
-
-            if (!context.Database.EnsureCreated())
-                return;
+                logger.WriteLine("goo connect to db");
 
 
 
-
-            string path = @"C:\Users\smallaxe\source\repos\TEST_OP\TEST_OP\test.txt";
-
-            int numVar = 0;
-            int numQ = 1;
-
-
-            List<Option> options = new();
-
-            if (!File.Exists(path))
-                return;
-
-            string[] lines = File.ReadAllLines(path);
-            // асинхронное чтение
-
-            for (int i = 0; i < lines.Length; i++)
-            {
-                string line = lines[i];
-
-
-                if (line.Contains("ариант №"))
+                if (context.Options.ToList().Count > 0)
                 {
-                    numQ = 1;
-                    numVar++;
-                    options.Add(new Option() { NumVar = numVar });
-                    continue;
-                }
+                    List<Option> options = ParserOptioncs.GetOptionsFromTxtFile();
 
-                if (line.Contains($"{numQ}.\t") || line.Contains($"{numQ}\t"))
-                {
-                    Question question = new Question();
-
-                    question.QuestionString = line;
-
-                    question.One = lines[i + 1];
-
-                    question.Two = lines[i + 2];
-                    question.Three = lines[i + 3];
-
-                    if (lines[i + 4].Contains($"{numQ}.\t"))
-                        question.Four = " ";
-                    else
-                        question.Four = lines[i + 4];
-
-
-                    if (Right(question.One))
-                    {
-                        question.Right = 1;
-                        question.One = question.One.Substring(1);
-                    }
-
-                    if (Right(question.Two))
-                    {
-                        question.Right = 2;
-                        question.Two = question.Two.Substring(1);
-                    }
-                    if (Right(question.Three))
-                    {
-                        question.Right = 3;
-                        question.Three = question.Three.Substring(1);
-                    }
-                    if (Right(question.Four))
-                    {
-                        question.Right = 4;
-                        question.Four = question.Four.Substring(1);
-                    }
-
-
-                    question.NumVar = numVar;
-                    question.NumQ = numQ;
-
-                    options[numVar - 1].Questions.Add(question);
-                    numQ++;
+                    context.Options.AddRange(options);
 
                 }
 
+                context.SaveChanges();
             }
-
-            context.Options.AddRange(options);
-
-            context.SaveChanges();
-
         }
-
-
-
 
 
         static async Task<List<RegUser>> Parse()
         {
             //C:\Users\smallaxe\source\repos\Test_OP_Web\Test_OP_Web\wwwroot\users.json
-
-
             string path = "wwwroot\\users.txt";
             List<RegUser> users = new();
 
@@ -194,12 +103,13 @@ namespace WebAxe.Data
             {
                 using (StreamReader reader = new StreamReader(path))
                 {
-                    string? line;
+                    string line;
                     while ((line = await reader.ReadLineAsync()) != null)
                     {
                         Console.WriteLine(line);
 
                         var str = line.Split("\t");
+
 
                         users.Add(new RegUser()
                         {
@@ -207,14 +117,36 @@ namespace WebAxe.Data
                             Password = str[1],
                             SurName = str[2],
                             Name = str[3],
-                            Email = str[4].ToLower()
+                            Email = str[4].ToLower(),
+                            VkId = Convert.ToInt64(str[5])
+
                         }); ;
 
                     }
                 }
             }
 
+            string jsonString = JsonSerializer.Serialize(users);
+
+            using (StreamWriter writer = new StreamWriter("wwwroot\\users.json", false))
+            {
+                await writer.WriteLineAsync(jsonString);
+            }
+
             return users;
+        }
+
+        public static List<RegUser> ParseUsersJson()
+        {
+            string path = Path.Combine("wwwroot/users.json");
+
+
+            var jsonString = File.ReadAllText(path);
+            var users =
+                JsonSerializer.Deserialize<List<RegUser>>(jsonString);
+
+            return users;
+
         }
     }
 }

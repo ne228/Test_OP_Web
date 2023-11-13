@@ -1,0 +1,23 @@
+﻿@model Option
+
+
+<div class="option">
+    <div class="list-group">
+
+        <div class="list-group-item">@Model.NumVar Вариант</div>
+        <a asp-action="Delete" asp-controller="Option" asp-route-Id="@Model.Id">Delete</a>
+        @{ foreach (var question in Model.Questions)
+            {
+                @await Html.PartialAsync("EditQuestion", question);
+                <hr />
+
+            }
+        }
+
+    </div>
+</div>
+
+<script src="~/js/editQuestion.js" type="text/javascript"></script>
+
+
+

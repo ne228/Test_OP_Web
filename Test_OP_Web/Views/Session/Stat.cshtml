@@ -1,0 +1,58 @@
+﻿@model IEnumerable<Test_OP_Web.Services.PersonStat>
+
+@{
+    ViewData["Title"] = "Stat";
+    int cc = 0;
+}
+
+<h1>Stat</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Position
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AveragePercent)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Count)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+    
+            @foreach (var item in Model)
+            {
+                cc++;
+
+            <tr>
+                <td>
+                    @cc
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.AveragePercent)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Count)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                @*<td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                </td>*@
+            </tr>
+        }
+    </tbody>
+</table>

@@ -1,0 +1,35 @@
+﻿@using Test_OP_Web.Models.Reports;
+@model CreateReporViewModel
+
+@{
+    ViewData["Title"] = "Отчет об ошибке";
+}
+
+
+<h4>Отчет об ошибке</h4>
+<hr />
+<div class="createReport">
+   
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            @await Html.PartialAsync("QuestionDetails", Model.Question)
+
+            <div class="form-group">
+                <label asp-for="Message" class="control-label">Сообщение. (Отправь подробное описание ошибки)</label>
+                <input asp-for="Message" class="form-control" />
+                <span asp-validation-for="Message" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Отправить" class="btn btn-primary" />
+            </div>
+
+        <input type="hidden" asp-for="QuestionId" value="@Model.Question.Id" />
+        </form>
+
+</div>
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

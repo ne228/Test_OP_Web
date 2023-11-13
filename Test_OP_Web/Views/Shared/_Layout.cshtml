@@ -3,57 +3,73 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - Test_OP_Web</title>
+    <title>FireTests</title>
+    <link rel="icon" href="~/img/logoFT.png">
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" />
-    <link rel="stylesheet" href="~/css/pie.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/pie.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/editOption.css" asp-append-version="true" />
 </head>
 <body>
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
+            <div class="nav-container">
 
-
-                <a class="navbar-brand" asp-area="" asp-controller="Session" asp-action="Index">Главная</a>
-
-                <div class="nav-item">
-                    <a class="nav-link active text-dark" asp-area="" asp-controller="Session" asp-action="CreateSession">Новый вариант</a>
-                </div>
-
-
-                @if (User.Identity.IsAuthenticated)
-                {
-                    <div class="nav-item nav-item-username">
-
-                        <div class="dropdown">
-                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                @User.Identity.Name
-                            </button>
-
-                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                @*<div class="dropdown-item">*@
-
-                                   <a class="dropdown-item" asp-controller="Account" asp-action="Logout">Выход</a>
-                                    @*<form asp-controller="Account" asp-action="Logout">
-                                        <input class="nav-link active btn btn-dark" type="submit" value="Выход" />
-                                    </form>*@
-                                @*</div>*@
-                            </div>
+                <div class="nav-items">
+                    <div class="nav-item1 nav-item-main">
+                        <div class="nav-main-text">
+                            <a class="nav-link active text-dark" asp-controller="Session" asp-action="Index">
+                                <img id="logo" src="~/img/logoFT.png" alt="logo" />Главная
+                            </a>
                         </div>
 
+                        <div class="nav-show-btn" onclick="burgerMenu(this)">
+                            <div class="bar1"></div>
+                            <div class="bar2"></div>
+                            <div class="bar3"></div>
+
+                        </div>
+                    </div>
+
+                    <div class="nav-item1">
+                        <a class="nav-link active text-dark" asp-controller="Session" asp-action="CreateSession">Новый вариант</a>
                     </div>
 
 
-                }
-                else
-                {
-                    <div class="nav-item m-1">
-                        <a class="nav-link active  btn btn-primary" asp-controller="Account" asp-action="Login">Вход</a>
-                    </div>
-                    <div class="nav-item m-1">
-                        <a class="nav-link active  btn btn-success" asp-controller="Account" asp-action="Register">Регистрация</a>
-                    </div>
-                }
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        if (User.IsInRole("admin"))
+                        {
+                            <div class="nav-item1 nav-link active nav-item-username">
+                                <a asp-controller="Admin" asp-action="Index">ADMIN</a>
+                            </div>
+
+                            <div class="nav-item1 nav-link active nav-item-username">
+                                <a asp-controller="Reports" asp-action="Index">Reports</a>
+                            </div>
+                        }
+
+
+                        <div class="nav-item1 nav-link active nav-item-username">
+                            <a asp-controller="Session" asp-action="Stat">@User.Identity.Name</a>
+                        </div>
+
+                        <div class="nav-item1 nav-item-logout">
+                            <a class="nav-link active text-dark" asp-controller="Account" asp-action="Logout">Выход</a>
+                        </div>
+
+
+                    }
+                    else
+                    {
+                        <div class="nav-item1 m-1">
+                            <a class="nav-link active text-dark" asp-controller="Account" asp-action="Login">Вход</a>
+                        </div>
+                        <div class="nav-item1 m-1">
+                            <a class="nav-link active text-dark" asp-controller="Account" asp-action="Register">Регистрация</a>
+                        </div>
+                    }
+                </div>
 
             </div>
         </nav>
@@ -66,7 +82,7 @@
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2022 - Test_OP_Web SmallAxe
+            &copy; @DateTime.Now.Year - FT  SmallAxe
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>

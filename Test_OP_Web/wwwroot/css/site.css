@@ -3,7 +3,7 @@ for details on configuring this project to bundle and minify static web assets. 
 
 a.navbar-brand {
     white-space: normal;
-    text-align: center;
+    /*text-align: center;*/
     word-break: break-all;
 }
 
@@ -73,15 +73,101 @@ body {
     line-height: 60px; /* Vertically center the text there */
 }
 
-.nav-item-username {
-    border: gray solid 1px;
-    margin-right: 5px;
+.nav-container {
+    max-height: 50px;
+    overflow: hidden;
+    width: 100%;
+    transition: .5s linear;
+}
+
+.nav-items {
+    overflow: visible;
+    display: flex;
+    justify-content: space-between;
+    transition: .5s linear;
+    font-size: 20px;
+}
+
+.nav-item-main {
+    display: flex;
+    flex-direction: row;
+    flex-basis: auto;
+    justify-content: start;
+}
+
+.nav-main-text {
+    min-width: 300px;
+    max-height: 50px;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+}
+
+.nav-show-btn {
+    cursor: pointer;
+    max-width: 0;
+    overflow: hidden;
+    /*width: 36px;*/
+    margin: 3px;
+}
+
+
+.bar1, .bar2, .bar3 {
+    width: 35px;
+    height: 5px;
+    background-color: #333;
+    margin: 6px 0;
+    transition: 0.4s;
+}
+
+/* Rotate first bar */
+.change .bar1 {
+    -webkit-transform: rotate(-45deg) translate(-9px, 6px);
+    transform: rotate(-45deg) translate(-9px, 6px);
+}
+
+/* Fade out the second bar */
+.change .bar2 {
+    opacity: 0;
+}
+
+/* Rotate last bar */
+.change .bar3 {
+    -webkit-transform: rotate(45deg) translate(-8px, -8px);
+    transform: rotate(45deg) translate(-8px, -8px);
+}
+
+
+
+.nav-container-active {
+    max-height: none;
+}
+
+@media screen and (max-width: 600px) {
+    .nav-items {
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .nav-container {
+        overflow: hidden;
+    }
+
+    .nav-show-btn {
+        max-width: none;
+    }
+}
+
+
+.nav-item1 {
+    /*border: gray solid 1px;*/
+    margin: 5px;
     border-radius: 5px;
     cursor: pointer;
     transition: .1s linear;
-    
 }
-    .nav-item-username:hover {
+
+    .nav-item1:hover {
         background-color: #E9E9E9;
     }
 
@@ -89,11 +175,11 @@ body {
 
 
 
-    .pie {
-        min-width: 300px;
-        margin-right: auto;
-        /*position:center;*/
-    }
+
+.pie {
+    margin-right: auto;
+    width: 100%;
+}
 
 .new-pie {
     width: 100%;
@@ -109,8 +195,9 @@ body {
 }
 
 .info-item {
-    min-width: 300px;
-    margin: 0px;
+    /*min-width: 300px;*/
+    width: 100%;
+    margin: 5px;
     padding: 20px;
     border-radius: 10px;
     background-color: #0062cc;
@@ -118,6 +205,7 @@ body {
     color: white;
     transition: .2s linear;
 }
+
     .info-item:hover {
         /*box-shadow: 15px 0 0 3px white inset;*/
         box-shadow: 0 0 0 2px #0062cc inset, 0 0 0 4px white inset;
@@ -157,12 +245,11 @@ body {
 /*Question region*/
 
 .question-item {
-   /* margin: 3px;*/
+    /* margin: 3px;*/
 }
 
     .question-item p {
         vertical-align: middle;
-        
     }
 
 .question-anwser {
@@ -171,16 +258,16 @@ body {
     border-radius: 10px;
     cursor: pointer;
     box-shadow: 0 0 1px rgba(0,0,0,0.5); /* Параметры тени */
-    border: 1px solid gray;
+    /*border: 1px solid gray;*/
     transition: width 2s, height 2s, background-color 2s, transform 2s;
-    width: 96%;
+    width: 100%;
     display: block;
     margin-left: auto;
     margin-right: auto;
 }
 
     .question-anwser:hover {
-        border: 1px solid #0062cc;
+        /*border: 1px solid #0062cc;*/
         transition: width 2s, height 2s, background-color 2s, transform 2s;
     }
 
@@ -191,16 +278,24 @@ body {
     margin-right: auto;
     color: gray;
     padding: 0% 0% 0 1%;
-    font-weight:200;
-    font-size:14px;
+    font-weight: 200;
+    font-size: 14px;
+}
+
+.question-anwser-true-div {
+    border: 0.1px solid limegreen;
+}
+
+.question-anwser-false-div {
+    border: 0.1px solid orangered;
 }
 
 .question-anwser-true {
     color: limegreen;
 }
+
 .question-anwser-false {
-    color:orangered;
-   
+    color: orangered;
 }
 
 /*Question in form region*/
@@ -211,6 +306,193 @@ body {
     margin: 10px;
 }
 
-.question-input{
-    visibility:hidden;
+.question-input {
+    visibility: hidden;
 }
+
+
+.prev-next-btns {
+    display: flex;
+    flex-direction: column-reverse;
+}
+
+
+.question-btn {
+    margin: 3px;
+}
+
+.complete-session-btn {
+}
+
+.show-comlete-sessions-btn {
+    display: flex;
+    flex-direction: column;
+}
+
+
+
+
+.question-details {
+}
+
+.createReport {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+#logo {
+    max-width: 32px;
+    max-height: 32px;
+    margin-right: 10px;
+    /*  margin-top:-2px;*/
+    margin-left: 5px;
+    border-radius: 100px;
+}
+
+.select-num-var {
+    width: 100%;
+    padding: 10px;
+    font-size: 1.3em;
+}
+
+.warning {
+    width: 32px;
+    height: 32px;
+    font-size: 12px;
+}
+
+    .warning:hover {
+        background: darken(@button-colour, 10%);
+    }
+
+
+
+.custom-select {
+    position: relative;
+    display: inline-block;
+}
+
+    .custom-select select {
+        appearance: none; /* Скрываем стандартный внешний вид */
+        padding: 5px;
+        border: 1px solid #ccc;
+        width: 200px;
+        max-height: 100px; /* Здесь можно ограничить высоту */
+        overflow-y: auto; /* Добавляем вертикальную прокрутку при необходимости */
+    }
+
+        .custom-select select option {
+            padding: 5px;
+        }
+
+    /* Стилизация стрелочки выпадающего списка */
+    .custom-select::after {
+        content: "\25BC"; /* Unicode символ стрелки вниз */
+        position: absolute;
+        top: 8px;
+        right: 10px;
+    }
+
+
+/* Стили для всплывающего окна */
+.custom-alert-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    opacity: 1; /* Начальная прозрачность 0 */
+    transition: opacity 0.3s ease, transform 0.3s ease; /* Анимация для прозрачности и позиции */
+}
+
+    .custom-alert-overlay.show {
+        opacity: 1; /* Конечная прозрачность 1 */
+        transform: translate(-50%, -50%); /* Пример смещения позиции */
+    }
+
+.custom-alert-box {
+    background-color: white;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.2);
+    transition: transform 0.5s ease-in-out;
+}
+.custom-alert-text{
+
+    text-align:center;
+}
+.custom-alert-button {
+    margin-top: 10px;
+    padding: 5px 10px;
+    border: none;
+    background-color: #007bff;
+    color: white;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: transform 0.5s ease-in-out;
+}
+
+
+/*// SHOW ANWSER CLASSEES*/
+
+.show-anwser-container {
+    border: solid 1px groove;
+    border-radius: 8px;
+    padding: 10px;
+    margin-top: 10px;
+    /*opacity: 0.1;*/
+    width: 100%;
+    min-height: 200px;
+    text-align: center;
+    transform: translateX(-200%);
+    transition: transform 0.5s ease-in-out;
+    z-index: -100;
+}
+
+.show {
+    transform: translateX(0);
+    /*opacity: 1;*/
+}
+
+/*.hidden {*/
+/*display: none;*/
+/*width: 0px;
+    height: 0px;
+    overflow:hidden;
+    opacity: 0;
+    transformY()*/
+/*animation: appearAnimation 1s forwards;*/
+/*transition: all 0.5s ease-out;*/
+/*transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;*/
+/*}
+
+.appear {
+    animation: appearAnimation 1s forwards;
+    transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+}
+
+@keyframes appearAnimation {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes lowerAnimation {
+    from {
+        opacity: 1;
+    }
+
+    to {
+        opacity: 0;
+    }
+}*/

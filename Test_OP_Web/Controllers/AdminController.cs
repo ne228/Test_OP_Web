@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Test_OP_Web.Data;
+using Test_OP_Web.Data.Options;
 using Test_OP_Web.Models;
 
 namespace Test_OP_Web.Controllers
@@ -19,10 +20,8 @@ namespace Test_OP_Web.Controllers
 
         private readonly ILogger<AdminController> _logger;
         private readonly OptionContext _context;
-        private UserManager<UserAxe> _userManager;
+        private readonly UserManager<UserAxe> _userManager;
         //UserAxe UserAxe { get; set; }
-
-
 
         public AdminController(ILogger<AdminController> logger, OptionContext context, UserManager<UserAxe> userManager)
         {
@@ -33,25 +32,33 @@ namespace Test_OP_Web.Controllers
 
         public IActionResult Index(FilterModel filterModel)
         {
-            if (!ModelState.IsValid)
+
+            try
+            {
+
+                _logger.LogInformation($"Index ");
+                if (!ModelState.IsValid)
+                    return View(filterModel);
+
+                if (filterModel.DateTimeFinish == new DateTime())
+                    filterModel.DateTimeFinish = DateTime.Now;
+
+                if (filterModel.NumVFinish == 0)
+                    filterModel.NumVFinish = 25;
+
+                List<Session> ses1 = _context.GetSessionsByFilter(filterModel);
+                return View(ses1);
+            }
+            catch (Exception exc)
+            {
+                _logger.LogError(exc.Message);
                 return View(filterModel);
-
-
-            if (filterModel.DateTimeFinish == new DateTime())
-                filterModel.DateTimeFinish = DateTime.Now;
-
-            if (filterModel.NumVFinish == 0)
-                filterModel.NumVFinish = 25;
-
-            var ses = _context.GetSessionsByFilter(filterModel);
-
-            return View(ses);
+            }
         }
 
 
         public IActionResult Session(Session session)
         {
-
 
             var ses = _context.GetSessionById(session.Id);
 
@@ -88,6 +95,11 @@ namespace Test_OP_Web.Controllers
 
             return View(users);
         }
+
+
+
+
+
     }
 }
 

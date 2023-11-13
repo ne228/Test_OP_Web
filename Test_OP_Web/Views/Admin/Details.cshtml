@@ -6,7 +6,7 @@
 
         <h1>Тест огневая подготовка. Вариант @Model.NumVar</h1>
 
-        <p class="text-dark">Результат: @Model.GetRight()/@Model.SessionQuestions.Count</p>
+        <p class="text-dark">Результат: @Model.getRight()/@Model.SessionQuestions.Count</p>
 
         <p>Время начала: @Model.TimeStart.ToLongDateString() @Model.TimeStart.ToShortTimeString()</p>
         <p>Время окночания: @Model.TimeFinsih.ToLongDateString() @Model.TimeFinsih.ToShortTimeString()</p>
@@ -21,7 +21,7 @@
 
 
             string className = "text-danger";
-            if (item.Enter == item.Question.Right)
+            if (item.GetRight())
             {
                 className = "text-success";
 
@@ -31,9 +31,16 @@
             <div class="accordion-item">
                 <p>Вопрос: @item.Question.QuestionString</p>
 
-                <p class="@className">Выбранный ответ: @item.Question.GetNum(item.Enter)</p>
-
-                <p class="@className">Верный ответ: @item.Question.GetNum(item.Question.Right)</p>
+                @{foreach (var answer in item.Enter)
+                    {
+                        <p class="@className">Выбранный ответ: @answer.Text</p>
+                    }
+                }
+                @{foreach (var answer in item.Question.Anwsers.Where(x => x.Right))
+                    {
+                        <p class="@className">Выбранный ответ: @answer.Text</p>
+                    }
+                }
 
                 <hr />
 

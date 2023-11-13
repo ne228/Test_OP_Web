@@ -8,7 +8,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Test_OP_Web.Data;
+using Test_OP_Web.Data.Options;
 using Test_OP_Web.Models;
+using Test_OP_Web.Services;
 
 namespace Test_OP_Web.Controllers
 {
@@ -17,8 +19,9 @@ namespace Test_OP_Web.Controllers
     {
         private readonly ILogger<SessionController> _logger;
         private readonly OptionContext _context;
-        private UserManager<UserAxe> _userManager;
-        private RoleManager<IdentityRole> _roleManager;
+        private readonly UserManager<UserAxe> _userManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly StatisticsService _statisticsService;
         //UserAxe UserAxe { get; set; }
 
 
@@ -26,31 +29,37 @@ namespace Test_OP_Web.Controllers
         public SessionController(ILogger<SessionController> logger,
             OptionContext context,
             UserManager<UserAxe> userManager,
-            RoleManager<IdentityRole> roleManager)
+            RoleManager<IdentityRole> roleManager,
+            StatisticsService statisticsService)
         {
             _logger = logger;
             _context = context;
             _userManager = userManager;
             _roleManager = roleManager;
+            _statisticsService = statisticsService;
 
         }
 
-
-
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
 
-            UserAxe UserAxe = _userManager.GetUserAsync(HttpContext.User).Result;
-            var ses = _context.Sessions.Where(x => x.UserAxe == UserAxe).Include(x => x.SessionQuestions).ThenInclude(x => x.Question).ToList();
+            var UserAxe = _userManager.GetUserAsync(HttpContext.User).Result;
+            var ses = await _context.Sessions.Where(x => x.UserAxe == UserAxe)
+
+                .Include(x => x.SessionQuestions)
+                    .ThenInclude(x => x.Question)
+                        .ThenInclude(x => x.Anwsers)
+                .Include(x => x.SessionQuestions).ThenInclude(x => x.Enter)
+
+                .ToListAsync();
+
 
             return View(ses);
         }
 
-        [Authorize]
         public IActionResult Session(Session session)
         {
             UserAxe UserAxe = _userManager.GetUserAsync(HttpContext.User).Result;
-
 
             Session ses;
             if (_userManager.GetRolesAsync(UserAxe).Result.Contains("admin"))
@@ -76,10 +85,7 @@ namespace Test_OP_Web.Controllers
             UserAxe UserAxe = _userManager.GetUserAsync(HttpContext.User).Result;
 
             Session ses;
-            if (_userManager.GetRolesAsync(UserAxe).Result.Contains("admin"))
-                ses = _context.GetSessionById(session.Id);
-            else
-                ses = _context.GetSessionById(session.Id, UserAxe);
+            ses = _userManager.GetRolesAsync(UserAxe).Result.Contains("admin") ? _context.GetSessionById(session.Id) : _context.GetSessionById(session.Id, UserAxe);
 
             if (ses == null)
                 return View("NoSession");
@@ -96,10 +102,16 @@ namespace Test_OP_Web.Controllers
         [HttpGet]
         public IActionResult CreateSession()
         {
+
+
+            var options = _context.Options.OrderBy(x => x.NumVar).ToList();
+            var numVars = new List<int>();
+            foreach (var option in options)
+                numVars.Add(option.NumVar);
+
+            ViewBag.NumVars = numVars;
             return View();
         }
-
-
 
         [HttpPost]
         public IActionResult CreateSession(CreateSessionModel createSessionModel)
@@ -109,9 +121,8 @@ namespace Test_OP_Web.Controllers
             if (!ModelState.IsValid)
                 return View(createSessionModel);
 
-            Option option = _context.Options.Include(x => x.Questions).FirstOrDefault(x => x.NumVar == createSessionModel.NumVar);
-
-
+            Option option = _context.Options.Include(x => x.Questions)
+                .FirstOrDefault(x => x.NumVar == createSessionModel.NumVar);
 
 
             if (option == null)
@@ -132,9 +143,7 @@ namespace Test_OP_Web.Controllers
             {
                 SessionQuestion sessionQuestion = new()
                 {
-                    Question = item,
-                    Enter = 0,
-                    NumQ = item.NumQ
+                    Question = item
                 };
 
                 session.SessionQuestions.Add(sessionQuestion);
@@ -145,7 +154,7 @@ namespace Test_OP_Web.Controllers
             _context.Sessions.Add(session);
             _context.SaveChanges();
 
-
+            _logger.LogInformation($"{UserAxe.Email} {session.Name} created session {session.NumVar}");
 
             return RedirectToAction("Session", "Session", new { Id = session.Id });
         }
@@ -172,83 +181,154 @@ namespace Test_OP_Web.Controllers
 
 
 
-            var question = ses.SessionQuestions.FirstOrDefault(x => x.NumQ == qusetionModel.NumQ);
+            var question = ses.SessionQuestions.FirstOrDefault(x => x.Question.NumQ == qusetionModel.NumQ);
             if (question == null)
                 return View("NoQuestion");
 
 
 
 
-
+                Ё++
             qusetionModel.Question = question;
+
+
+            ViewData["CountQuestions"] = ses.SessionQuestions.Count;
 
             return View("Question", question);
 
         }
         [HttpPost]
-        public string Question(Question enterQuestion, int SessionId, int NumQ)
+        [Authorize]
+        public async Task<string> Question(string AnswerId, int SessionId, int NumQ, string Text)
         {
+            try
+            {
+                await Task.Run(async () =>
+                {
+                    {
+                        //Проверка на вопрос без вариантов ответа
 
-            UserAxe UserAxe = _userManager.GetUserAsync(HttpContext.User).Result;
-            Session ses;
-            if (_userManager.GetRolesAsync(UserAxe).Result.Contains("admin"))
-                ses = _context.GetSessionById(SessionId);
-            else
-                ses = _context.GetSessionById(SessionId, UserAxe);
-
-            if (ses == null)
-                return "NoSession";
-
-
-            if (ses.Сompleted)
-                return "Session allready comleted";
+                        var question = await _context.SessionQuestions.Include(x => x.Question.Anwsers)
+                                    .FirstOrDefaultAsync(x =>
+                             x.Question.NumQ == NumQ &&
+                             x.SessionId == SessionId);
 
 
-            var question = ses.SessionQuestions.FirstOrDefault(x => x.NumQ == NumQ);
-            if (question == null)
-                return "NoQuestion";
+                        if (question == null)
+                            throw new Exception("Question are not exist");
+
+                        if (question.Blocked)
+                            throw new Exception("blocked");
 
 
-            question.Enter = enterQuestion.Enter;
+                        if (question.Question.NoVariant)
+                        {
+                            question.Enter.Clear();
+                            question.Enter.Add(new Anwser() { Text = Text });
+                        }
+                        else
+                        {
+                            int anwserId = int.TryParse(AnswerId, out int parsedResult) ? parsedResult : throw new Exception("Ошибка приведения.");
 
-            _context.SaveChanges();
+                            var anwser = question.Question.Anwsers.FirstOrDefault(x => x.Id == anwserId)
+                                ?? throw new Exception("NoAnwser");
 
-            question = ses.SessionQuestions.FirstOrDefault(x => x.NumQ == NumQ);
+
+                            if (question.Enter.Any(x => x.Id == anwser.Id))
+                                question.Enter.Remove(anwser);
+                            else
+                                question.Enter.Add(anwser);
 
 
+                        }
+
+                    }
+                });
+            }
+            catch (Exception exc)
+            {
+                _logger.LogError(exc.Message);
+                return exc.Message;
+            }
+
+            await _context.SaveChangesAsync();
 
             return "ok";
-            //return RedirectToAction("Question", "Session", new { SessionId = SessionId, NumQ = NumQ });
-            //return View(question);
-
         }
 
+        public async Task<IActionResult> ShowAnwser(int SessionId, int NumQ)
+        {
+            try
+            {
+                var question = await _context.SessionQuestions
+                                    .Include(x => x.Question)
+                                    .ThenInclude(x => x.Anwsers)
+                                    .FirstOrDefaultAsync(x =>
+                                    x.Question.NumQ == NumQ &&
+                                    x.SessionId == SessionId) ?? throw new Exception("NoQuestion");
+
+                question.Blocked = true;
+                await _context.SaveChangesAsync();
+
+
+                return View(question);
+            }
+            catch (Exception exc)
+            {
+                _logger.LogWarning(exc.Message);
+                return NotFound();
+            }
+
+        }
 
 
         public IActionResult Complete(int SessionId)
         {
+            try
+            {
+                UserAxe UserAxe = _userManager.GetUserAsync(HttpContext.User).Result;
+
+                Session ses;
+                if (_userManager.GetRolesAsync(UserAxe).Result.Contains("admin"))
+                    ses = _context.GetSessionById(SessionId);
+                else
+                    ses = _context.GetSessionById(SessionId, UserAxe);
+
+                if (ses == null)
+                    return View("NoSession");
+
+                ses.Сompleted = true;
+                ses.TimeFinsih = DateTime.Now;
+                //ses.GetRight = ses.getRight();
 
 
-            UserAxe UserAxe = _userManager.GetUserAsync(HttpContext.User).Result;
+                _context.SaveChanges();
 
-            Session ses;
-            if (_userManager.GetRolesAsync(UserAxe).Result.Contains("admin"))
-                ses = _context.GetSessionById(SessionId);
-            else
-                ses = _context.GetSessionById(SessionId, UserAxe);
+                _logger.LogInformation($"{UserAxe.Email} complete sessiod {SessionId}");
+                return RedirectToAction("Details", "Session", new { Id = SessionId });
+            }
+            catch (Exception exc)
+            {
+                _logger.LogError(exc.Message);
+                throw exc;
+            }
 
-            if (ses == null)
-                return View("NoSession");
 
-            ses.Сompleted = true;
-            ses.TimeFinsih = DateTime.Now;
-
-            _context.SaveChanges();
-
-            return RedirectToAction("Details", "Session", new { Id = SessionId });
 
         }
-    }
 
+
+
+        [HttpGet]
+        public async Task<IActionResult> Stat()
+        {
+            UserAxe UserAxe = _userManager.GetUserAsync(HttpContext.User).Result;
+            var stat = await _statisticsService.PersonStat(UserAxe.Email);
+
+
+            var stats = await _statisticsService.PersonsStat();
+            return View(stats);
+        }
+    }
 
 }

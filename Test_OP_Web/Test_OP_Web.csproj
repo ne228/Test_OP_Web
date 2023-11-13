@@ -1,24 +1,111 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
+    <TargetFramework>net7.0</TargetFramework>
+    <GenerateRuntimeConfigurationFiles>true</GenerateRuntimeConfigurationFiles>
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Include="resourses\users.txt" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\anwsers2\Вариант 1.txt" />
+    <None Include="wwwroot\anwsers2\Вариант 10.txt" />
+    <None Include="wwwroot\anwsers2\Вариант 11.txt" />
+    <None Include="wwwroot\anwsers2\Вариант 12.txt" />
+    <None Include="wwwroot\anwsers2\Вариант 13.txt" />
+    <None Include="wwwroot\anwsers2\Вариант 14.txt" />
+    <None Include="wwwroot\anwsers2\Вариант 15.txt" />
+    <None Include="wwwroot\anwsers2\Вариант 16.txt" />
+    <None Include="wwwroot\anwsers2\Вариант 17.txt" />
+    <None Include="wwwroot\anwsers2\Вариант 18.txt" />
+    <None Include="wwwroot\anwsers2\Вариант 19.txt" />
+    <None Include="wwwroot\anwsers2\Вариант 2.txt" />
+    <None Include="wwwroot\anwsers2\Вариант 20.txt" />
+    <None Include="wwwroot\anwsers2\Вариант 21.txt" />
+    <None Include="wwwroot\anwsers2\Вариант 22.txt" />
+    <None Include="wwwroot\anwsers2\Вариант 23.txt" />
+    <None Include="wwwroot\anwsers2\Вариант 24.txt" />
+    <None Include="wwwroot\anwsers2\Вариант 25.txt" />
+    <None Include="wwwroot\anwsers2\Вариант 26.txt" />
+    <None Include="wwwroot\anwsers2\Вариант 27.txt" />
+    <None Include="wwwroot\anwsers2\Вариант 28.txt" />
+    <None Include="wwwroot\anwsers2\Вариант 29.txt" />
+    <None Include="wwwroot\anwsers2\Вариант 3.txt" />
+    <None Include="wwwroot\anwsers2\Вариант 30.txt" />
+    <None Include="wwwroot\anwsers2\Вариант 4.txt" />
+    <None Include="wwwroot\anwsers2\Вариант 5.txt" />
+    <None Include="wwwroot\anwsers2\Вариант 6.txt" />
+    <None Include="wwwroot\anwsers2\Вариант 7.txt" />
+    <None Include="wwwroot\anwsers2\Вариант 8.txt" />
+    <None Include="wwwroot\anwsers2\Вариант 9.txt" />
+    <None Include="wwwroot\css\editOption.css" />
+    <None Include="wwwroot\css\pie.css" />
+    <None Include="wwwroot\css\site.css" />
+    <None Include="wwwroot\favicon.ico" />
+    <None Include="wwwroot\img\logo.svg" />
+    <None Include="wwwroot\js\editQuestion.js" />
+    <None Include="wwwroot\js\site.js" />
+    <None Include="wwwroot\lib\bootstrap\dist\css\bootstrap-grid.css" />
+    <None Include="wwwroot\lib\bootstrap\dist\css\bootstrap-grid.css.map" />
+    <None Include="wwwroot\lib\bootstrap\dist\css\bootstrap-grid.min.css" />
+    <None Include="wwwroot\lib\bootstrap\dist\css\bootstrap-grid.min.css.map" />
+    <None Include="wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.css" />
+    <None Include="wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.css.map" />
+    <None Include="wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.min.css" />
+    <None Include="wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.min.css.map" />
+    <None Include="wwwroot\lib\bootstrap\dist\css\bootstrap.css" />
+    <None Include="wwwroot\lib\bootstrap\dist\css\bootstrap.css.map" />
+    <None Include="wwwroot\lib\bootstrap\dist\css\bootstrap.min.css" />
+    <None Include="wwwroot\lib\bootstrap\dist\css\bootstrap.min.css.map" />
+    <None Include="wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.js" />
+    <None Include="wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.js.map" />
+    <None Include="wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.min.js" />
+    <None Include="wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.min.js.map" />
+    <None Include="wwwroot\lib\bootstrap\dist\js\bootstrap.js" />
+    <None Include="wwwroot\lib\bootstrap\dist\js\bootstrap.js.map" />
+    <None Include="wwwroot\lib\bootstrap\dist\js\bootstrap.min.js" />
+    <None Include="wwwroot\lib\bootstrap\dist\js\bootstrap.min.js.map" />
+    <None Include="wwwroot\lib\bootstrap\LICENSE" />
+    <None Include="wwwroot\lib\jquery-validation-unobtrusive\jquery.validate.unobtrusive.js" />
+    <None Include="wwwroot\lib\jquery-validation-unobtrusive\jquery.validate.unobtrusive.min.js" />
+    <None Include="wwwroot\lib\jquery-validation-unobtrusive\LICENSE.txt" />
+    <None Include="wwwroot\lib\jquery-validation\dist\additional-methods.js" />
+    <None Include="wwwroot\lib\jquery-validation\dist\additional-methods.min.js" />
+    <None Include="wwwroot\lib\jquery-validation\dist\jquery.validate.js" />
+    <None Include="wwwroot\lib\jquery-validation\dist\jquery.validate.min.js" />
+    <None Include="wwwroot\lib\jquery-validation\LICENSE.md" />
+    <None Include="wwwroot\lib\jquery\dist\jquery.js" />
+    <None Include="wwwroot\lib\jquery\dist\jquery.min.js" />
+    <None Include="wwwroot\lib\jquery\dist\jquery.min.map" />
+    <None Include="wwwroot\lib\jquery\LICENSE.txt" />
+    <None Include="wwwroot\test.txt" />
+    <None Include="wwwroot\test2.txt" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="MailKit" Version="3.3.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="5.0.17" />
-    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="5.0.17" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.17" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="5.0.17">
+    <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="7.0.10" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="7.0.10" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.10" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.10">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="7.0.10" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.17" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="5.0.17">
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="7.0.10">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="5.0.2" />
+    <PackageReference Include="Npgsql" Version="7.0.4" />
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="7.0.4" />
+    <PackageReference Include="Serilog" Version="2.12.0" />
+    <PackageReference Include="Serilog.AspNetCore" Version="7.0.0" />
+    <PackageReference Include="Serilog.Sinks.Telegram" Version="0.2.1" />
+    <PackageReference Include="Serilog.Sinks.TelegramClient" Version="2.0.1" />
+    <PackageReference Include="VkNet" Version="1.72.0" />
   </ItemGroup>
 
 </Project>

@@ -17,6 +17,8 @@ namespace Test_OP_Web.Data
 
         public string UserName { get; set; }
 
+        public long VkId { get; set; }
+
 
     }
 }
