@@ -188,7 +188,7 @@ namespace Test_OP_Web.Controllers
 
 
 
-
+                Ё++
             qusetionModel.Question = question;
 
 

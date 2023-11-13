@@ -79,10 +79,8 @@ namespace Test_OP_Web.Data
                 logger.WriteLine("goo connect to db");
 
 
-                var deleted = false;
-                //deleted = context.Database.EnsureDeleted();
-                //context.Database.EnsureCreated();
-                if (deleted)
+
+                if (context.Options.ToList().Count > 0)
                 {
                     List<Option> options = ParserOptioncs.GetOptionsFromTxtFile();
 
