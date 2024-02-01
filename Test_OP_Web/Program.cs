@@ -22,7 +22,7 @@ namespace Test_OP_Web
             var app = CreateHostBuilder(args);
 
             var logger = GetLogger();
-            //app.UseSerilog(logger);
+            app.UseSerilog(logger);
 
             var host = app.Build();
             CreateDbIfNotExists(host).Wait();
