@@ -1,0 +1,171 @@
+﻿.background {
+    display: flex;
+    /*height: 100vh;*/
+    /*overflow: hidden;*/
+}
+
+
+.background-item {
+}
+
+.background-left {
+    background: url('/img/background_left.svg') repeat;
+    transform: scaleX(-1) scaleY(1);
+    opacity: 0.3;
+}
+
+.background-right {
+    background: url('/img/background_left.svg') repeat;
+    background-size: auto;
+    opacity: 0.3;
+    /*background-color: rgba(0, 0, 0, 0.5);*/
+}
+
+.background-left, .background-right {
+    margin-top: -16px;
+    width: 10%;
+    height: 300px;
+}
+
+
+
+@media only screen and (max-width: 600px) {
+    .background-left, .background-right {
+        width: 0;
+    }
+}
+
+
+
+@media only screen and (max-width: 330px) {
+    .start-image-div {
+        /*margin-top: -85px;*/
+        margin-left: 10px;
+    }
+}
+
+.text-white {
+    color: white;
+}
+
+.start {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    overflow: hidden;
+    /*height: 70vh;*/
+    /*min-height:660px;*/
+    /*border: 1px solid black;*/
+}
+
+.start-item {
+    margin-top: 5%;
+    /*border: solid 1px black;*/
+    /*margin-top: 5%;*/
+    /*background-color: antiquewhite;*/
+}
+
+
+.start-text {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-start;
+    align-self: center;
+    flex: 1;
+    color: white;
+    font-weight: 1000;
+    max-width: 25%;
+    white-space: nowrap;
+    position: relative;
+    z-index: 1;
+    max-height: 300px;
+}
+
+    .start-text h1 {
+        font-size: 80px;
+    }
+
+    .start-text h3 {
+        font-size: 25px;
+    }
+
+    .start-text div {
+        font-size: 23px;
+    }
+
+@media screen and (max-width: 1024px) {
+    .start-text {
+    }
+}
+
+.font-kulag {
+    font-family: 'KulagRegular', sans-serif;
+    font-size: 4em;
+}
+
+.start-btn {
+    border: 3px solid white;
+    background-color: white;
+    color: #6F2232;
+    padding: 2%;
+    border-radius: 10px;
+    font-weight: 900;
+    min-width: 150px;
+    transition: all 0.3s ease-in-out;
+    text-align: center;
+    cursor: pointer;
+    margin-top: 1%;
+}
+
+    .start-btn:hover {
+        background-color: rgba(1,1,1,0);
+        color: white;
+    }
+
+.start-image-div {
+    flex-grow: 1;
+    /*background-color: gold;*/
+    position: relative;
+    z-index: 0;
+    /*max-width: 75%;*/
+}
+
+.start-image {
+    width: 100%;
+    height: 100%;
+}
+
+.red-background {
+    background: radial-gradient(50% 50% at 54.83% 50%, #C3083F 0%, #6F2232 100%) /* warning: gradient uses a rotation that is not supported by CSS and may not behave as expected */;
+}
+
+
+@media screen and (max-width: 600px) {
+    .start {
+        flex-direction: column;
+        height: 80vh;
+    }
+
+    .start-text {
+        align-self: flex-start;
+    }
+
+        .start-text h1 {
+            font-size: 50px;
+            /*background-color: black;*/
+        }
+
+        .start-text h3 {
+            font-size: 25px;
+        }
+
+        .start-text div {
+            font-size: 20px;
+            min-width: 120px;
+        }
+
+        .start-text h1, .start-text h3 {
+            /*        color: black;*/
+        }
+}

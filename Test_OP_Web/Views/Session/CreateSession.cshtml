@@ -5,35 +5,157 @@
     @model CreateSessionModel
 
     string name = User.Identity.Name;
+    int countVar = ViewBag.NumVars.Count;
+    List<Session> sessions = ViewBag.Sessions;
+
+    List<Session> todaySessions = sessions.Where(x => DateTime.Now - x.TimeStart <= TimeSpan.FromDays(1)).ToList();
+
+    foreach (var session in todaySessions)
+        sessions.Remove(session);
+
+    List<Session> yesterdaySessions = sessions.Where(x => DateTime.Now - x.TimeStart <= TimeSpan.FromDays(2)).ToList();
+    foreach (var session in yesterdaySessions)
+        sessions.Remove(session);
+
+    todaySessions = todaySessions.OrderByDescending(x => x.TimeStart).ToList();
+    sessions = sessions.OrderByDescending(x => x.TimeStart).ToList(); ;
+    yesterdaySessions = yesterdaySessions.OrderByDescending(x => x.TimeStart).ToList(); ;
+
 }
-<form asp-controller="Session" asp-action="CreateSession">
+
+<div id="customAlert" class="custom-alert-overlay" style="display: none;">
+    <div class="custom-alert-box ">
+        <p class="custom-alert-text"></p>
+        <div class="custom-alert-btn-list">
+            <button class="btn custom-alert-btn-ok" onclick="okCustomAlert()">Начать</button>
+            <button class="btn custom-alert-btn" onclick="hideCustomAlert()">Закрыть</button>
+        </div>
+    </div>
+</div>
 
 
-    <div class="m-1">
-        <label class="form-label" asp-validation-for="NumVar"> Введите вариант</label>
+<h1 class="question-create-title display-5" aling="center">РЕШАТЬ НОВЫЙ ТЕСТ</h1>
+<h2 class="question-create-title">ВЫБЕРИ ВАРИАНТ:</h2>
+<div class="question-create-list" id="question-create-list">
+    @{
+        for (int i = 0; i <= ViewBag.NumVars.Count / 10; i++)
+        {
+            for (int j = 0; j < 10; j++)
+            {
+                if ((i * 10 + j) >= ViewBag.NumVars.Count)
+                    break;
+                int numVar = ViewBag.NumVars[i * 10 + j];
 
-        <select class="custom-select" asp-for="NumVar">
-            @{
-                foreach (var numVar in ViewBag.NumVars)
-                {
-                    <option value="@numVar">@numVar</option>
-                }
+                <div class="question-create numVar" NumVar="@numVar" Name="@name">
+                    @numVar
+                </div>
             }
-        </select>
-    </div>
+        }
+    }
+
+</div>
+
+<form id="form" asp-controller="Session" asp-action="CreateSession">
+
     <div class="m-1">
-        @*<label class="form-label" asp-validation-for="Name"> Введите Имя</label>
-        <input class="form-control" asp-for="Name" />
-        <span class="text-danger" asp-validation-for="Name"></span>*@
-        @Html.Hidden("Name", name)
-
-
+        <input type="hidden" id="NumVar" name="NumVar" />
+        <input type="hidden" id="NameInput" name="Name" value="@name" />
     </div>
-    <div class="m-1">
-        <input class="btn btn-primary" type="submit" id="CreateSession_btn"  value="Создать" />
-    </div>
-
-
-
 
 </form>
+<br />
+<div class="question-create-toggle" onclick="changeSVG()">
+    <img id="arrow_down" src="/img/arrow_down.svg" style="display: none;" alt="arrow_down" />
+    <img id="arrow_up" src="/img/arrow_up.svg" alt="arrow_up" />
+</div>
+
+
+<br />
+
+<h1 class="question-create-title display-5">МОИ ТЕСТЫ</h1>
+
+@if (todaySessions.Count != 0)
+{
+    <h2 class="question-create-title">СЕГОДНЯ</h2>
+    <div class="list-and-arrow">
+        <div class="variant-btn-list" id="variant-list-today">
+            @foreach (var item in todaySessions)
+            {
+                string className = item.Сompleted ? "variant-btn-fin" : "variant-btn-start";
+                <a class="btn m-1 variant-btn @className" asp-action="Session" asp-controller="Session" asp-route-Id="@item.Id">
+                    <span>@item.NumVar Вариант</span>
+                    @if (item.Сompleted)
+                    {
+                        <span>@item.getRight()/@item.SessionQuestions.Count</span>
+                    }
+                </a>
+            }
+        </div>
+        <div class="question-create-toggle-right" onclick="changeSVGToday()">
+            <img id="arrow_right_today" src="/img/arrow_right.svg" alt="arrow_right" />
+            <img id="arrow_left_today" src="/img/arrow_left.svg" alt="arrow_left" style="display: none;" />
+        </div>
+    </div>
+    <br />
+}
+
+
+@if (yesterdaySessions.Count != 0)
+{
+    <h2 class="question-create-title">ВЧЕРА</h2>
+    <div class="list-and-arrow">
+        <div class="variant-btn-list" id="variant-list-yesterday">
+            @foreach (var item in yesterdaySessions)
+            {
+                string className = item.Сompleted ? "variant-btn-fin" : "variant-btn-start";
+                <a class="btn m-1 variant-btn @className" asp-action="Session" asp-controller="Session" asp-route-Id="@item.Id">
+                    <span>@item.NumVar Вариант</span>
+                    @if (item.Сompleted)
+                    {
+                        <span>@item.getRight()/@item.SessionQuestions.Count</span>
+                    }
+                </a>
+            }
+        </div>
+        <div class="question-create-toggle-right" onclick="changeSVGyesterday()">
+            <img id="arrow_right_yesterday" src="/img/arrow_right.svg" alt="arrow_right" />
+            <img id="arrow_left_yesterday" src="/img/arrow_left.svg" alt="arrow_left" style=" display: none;" />
+        </div>
+    </div>
+    <br />
+}
+
+
+
+@if (sessions.Count != 0)
+{
+    <h2 class="question-create-title">ДАВНО</h2>
+    <div class="list-and-arrow">
+        <div class="variant-btn-list" id="variant-list-sessions">
+            @foreach (var item in sessions)
+            {
+                string className = item.Сompleted ? "variant-btn-fin" : "variant-btn-start";
+                <a class="btn m-1 variant-btn @className" asp-action="Session" asp-controller="Session" asp-route-Id="@item.Id">
+                    <span>@item.NumVar Вариант</span>
+                    @if (item.Сompleted)
+                    {
+                        <span>@item.getRight()/@item.SessionQuestions.Count</span>
+                    }
+                </a>
+            }
+        </div>
+        <div class="question-create-toggle-right" onclick="changeSVGsessions()">
+            <img id="arrow_right_sessions" src="/img/arrow_right.svg" alt="arrow_right" />
+            <img id="arrow_left_sessions" src="/img/arrow_left.svg" alt="arrow_left" style=" display: none;" />
+        </div>
+    </div>
+    <br />
+
+}
+
+
+
+<script src="~/js/createVar.js" asp-append-version="true" type="text/javascript">
+
+
+</script>

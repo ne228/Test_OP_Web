@@ -66,11 +66,14 @@ namespace Test_OP_Web.Controllers
         {
             UserAxe UserAxe = _userManager.GetUserAsync(HttpContext.User).Result;
 
-            var question = _context.Questions.Include(x => x.Anwsers).FirstOrDefault(x => x.Id == questionId);
+            var copyQuestion = _context.CopyQuestions.Include(x => x.Anwsers).FirstOrDefault(x => x.Id == questionId);
 
-            if (question == null)
+            if (copyQuestion == null)
                 return NotFound();
 
+            Question question = _context.Questions
+                .Include(x => x.Anwsers)
+                .FirstOrDefault(x => x.NumQ == copyQuestion.NumQ && x.NumVar == copyQuestion.NumVar);
 
             var report = new CreateReporViewModel()
             {

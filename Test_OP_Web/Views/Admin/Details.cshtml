@@ -31,7 +31,7 @@
             <div class="accordion-item">
                 <p>Вопрос: @item.Question.QuestionString</p>
 
-                @{foreach (var answer in item.Enter)
+                @{foreach (var answer in item.Question.Anwsers.Where(x=> x.Enter && x.Right))
                     {
                         <p class="@className">Выбранный ответ: @answer.Text</p>
                     }

@@ -1,40 +1,47 @@
-﻿
-@model Session
+﻿@model Session
 
 
 
 @{
     double percent = Math.Round((Convert.ToDouble(Model.GetEnterd()) / Convert.ToDouble(Model.SessionQuestions.Count)) * 100);
-    <h1>
-        Тест огневая подготовка. Варианта @Model.NumVar
+    <div class="session-title">
+        <div class="question-create-title question-create-title1">
+            <p>ВАРИАНТ @Model.NumVar</p>
+        </div>
+        <div class="question-create-title2"><p>Тест по огневой подготовке</p></div>
+    </div>
 
-        <a class="btn btn-success w-100" asp-controller="Session" asp-action="Complete" asp-route-SessionId="@Model.Id">Закончить сессию</a>
-    </h1>
-
-    <div class="w-100">
-        <div class="progress">
+    <div class="progress-session-complete">
+        <div class="progress progress-session-complete-item">
             <div class="progress-bar p-1" role="progressbar" style="width:@percent%" aria-valuenow="@percent" aria-valuemin="0" aria-valuemax="100">@percent%</div>
         </div>
 
-    </div>
-    <hr />
-
-
-    foreach (var item in Model.SessionQuestions.OrderBy(x => x.Question.NumQ))
-    {
-        string colorClass = "btn-light";
-
-
-
-        if (item.GetEnter())
-            colorClass = "btn-primary";
-
-        <a class="btn @colorClass w-100 text-left m-1" asp-action="Question" asp-controller="Session"
-           asp-route-SessionId="@Model.Id"
-           asp-route-NumQ="@item.Question.NumQ">
-            @item.Question.NumQ @item.Question.QuestionString
+        <a class="btn session-complete progress-session-complete-item" asp-controller="Session" asp-action="Complete" asp-route-SessionId="@Model.Id">
+            <div>
+                Закончить сессию
+            </div>
         </a>
-        <br />
-    }
+    </div>
+
+
+
+    <div class="question-session-list">
+        @foreach (var item in Model.SessionQuestions.OrderBy(x => x.Question.NumQ))
+        {
+            string colorClass = "question-session-start";
+
+            if (item.GetEnter())
+                colorClass = "question-session-fin";
+
+            <a class="btn m-1 question-session @colorClass" asp-action="Question" asp-controller="Session"
+               asp-route-SessionId="@Model.Id"
+               asp-route-NumQ="@item.Question.NumQ">
+                <div class="question-session-card">
+                    <div class="question-session-numvar">   @item.Question.NumQ </div>
+                    <div class="question-session-text">@item.Question.QuestionString</div>
+                </div>
+            </a>
+        }
+    </div>
 
 }

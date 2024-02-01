@@ -13,6 +13,18 @@ namespace Test_OP_Web.Data.Options
 
         public bool Right { get; set; }       
 
+        public Question question { get; set; }
+
+        public SessionAnwser ToSessionAnwser()
+        {
+            var res = new SessionAnwser()
+            {
+                Text = this.Text,
+                Right = this.Right,
+            };
+
+            return res;
+        }
 
     }
 }

@@ -45,12 +45,9 @@ namespace Test_OP_Web.Controllers
 
             var UserAxe = _userManager.GetUserAsync(HttpContext.User).Result;
             var ses = await _context.Sessions.Where(x => x.UserAxe == UserAxe)
-
                 .Include(x => x.SessionQuestions)
                     .ThenInclude(x => x.Question)
                         .ThenInclude(x => x.Anwsers)
-                .Include(x => x.SessionQuestions).ThenInclude(x => x.Enter)
-
                 .ToListAsync();
 
 
@@ -100,9 +97,14 @@ namespace Test_OP_Web.Controllers
 
 
         [HttpGet]
-        public IActionResult CreateSession()
+        public async Task<IActionResult> CreateSession()
         {
-
+            var UserAxe = _userManager.GetUserAsync(HttpContext.User).Result;
+            var sessions = await _context.Sessions.Where(x => x.UserAxe == UserAxe)
+                .Include(x => x.SessionQuestions)
+                    .ThenInclude(x => x.Question)
+                        .ThenInclude(x => x.Anwsers)
+                .ToListAsync();
 
             var options = _context.Options.OrderBy(x => x.NumVar).ToList();
             var numVars = new List<int>();
@@ -110,6 +112,7 @@ namespace Test_OP_Web.Controllers
                 numVars.Add(option.NumVar);
 
             ViewBag.NumVars = numVars;
+            ViewBag.Sessions = sessions;
             return View();
         }
 
@@ -122,6 +125,7 @@ namespace Test_OP_Web.Controllers
                 return View(createSessionModel);
 
             Option option = _context.Options.Include(x => x.Questions)
+                .ThenInclude(q => q.Anwsers)
                 .FirstOrDefault(x => x.NumVar == createSessionModel.NumVar);
 
 
@@ -138,18 +142,14 @@ namespace Test_OP_Web.Controllers
             };
 
 
-
-            foreach (var item in option.Questions.OrderBy(x => x.NumQ))
+            foreach (var question in option.Questions.OrderBy(x => x.NumQ))
             {
                 SessionQuestion sessionQuestion = new()
                 {
-                    Question = item
+                    Question = question.ToCopyQuestion(),
                 };
-
                 session.SessionQuestions.Add(sessionQuestion);
             }
-
-
 
             _context.Sessions.Add(session);
             _context.SaveChanges();
@@ -185,10 +185,6 @@ namespace Test_OP_Web.Controllers
             if (question == null)
                 return View("NoQuestion");
 
-
-
-
-                Ё++
             qusetionModel.Question = question;
 
 
@@ -209,6 +205,7 @@ namespace Test_OP_Web.Controllers
                         //Проверка на вопрос без вариантов ответа
 
                         var question = await _context.SessionQuestions.Include(x => x.Question.Anwsers)
+                                       .Include(e => e.Question)
                                     .FirstOrDefaultAsync(x =>
                              x.Question.NumQ == NumQ &&
                              x.SessionId == SessionId);
@@ -223,8 +220,15 @@ namespace Test_OP_Web.Controllers
 
                         if (question.Question.NoVariant)
                         {
-                            question.Enter.Clear();
-                            question.Enter.Add(new Anwser() { Text = Text });
+                            // 1 элемент списка - это верный ответ
+                            // если кол-во элементов равно 1 значит user ответ не вводил
+                            // введенный ответ - это последний ответ пользователя
+                            if (question.Question.Anwsers.Count > 1)                            {
+                                // Удалаяем второй элемент // тоесть последний
+                                question.Question.Anwsers.RemoveRange(1, 1);
+                            }
+                            
+                            question.Question.Anwsers.Add(new SessionAnwser() { Text = Text });
                         }
                         else
                         {
@@ -233,11 +237,12 @@ namespace Test_OP_Web.Controllers
                             var anwser = question.Question.Anwsers.FirstOrDefault(x => x.Id == anwserId)
                                 ?? throw new Exception("NoAnwser");
 
-
-                            if (question.Enter.Any(x => x.Id == anwser.Id))
-                                question.Enter.Remove(anwser);
-                            else
-                                question.Enter.Add(anwser);
+                            // Меняем на противополоэное
+                            anwser.Enter = !anwser.Enter;
+                            //if (question.Enter.Any(x => x.Text == anwser.Text))
+                            //    question.Enter.Remove(anwser.ToSessionAnwser());
+                            //else
+                            //    question.Enter.Add(anwser.ToSessionAnwser());
 
 
                         }

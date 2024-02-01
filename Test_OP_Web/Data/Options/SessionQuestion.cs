@@ -1,19 +1,18 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using System.Security.Cryptography;
-using System.Threading.Tasks;
 
 namespace Test_OP_Web.Data.Options
 {
     public class SessionQuestion
     {
+        [Key]
         public int Id { get; set; }
 
         public int SessionId { get; set; }
-        public Question Question { get; set; }
+        public CopyQuestion Question { get; set; }
 
-        public List<Anwser> Enter { get; set; } = new();
+        //public List<SessionAnwser> Enter { get; set; } = new();
 
         public bool Right { get; set; }
 
@@ -40,15 +39,17 @@ namespace Test_OP_Web.Data.Options
 
             if (Question.NoVariant)
             {
-                var enter = Enter.FirstOrDefault();
+                var enter = Question.Anwsers.FirstOrDefault();
                 if (enter == null)
                     return false;
 
+                if (Question.Anwsers.Count >= 2)
+                    if (Normilize(Question.Anwsers.LastOrDefault().Text) ==
+                         Normilize(Question.Anwsers.FirstOrDefault().Text))
+                        return true;
 
-                if (Question.Anwsers.Any(x => Normilize(x.Text) == Normilize(enter.Text)))
-                    return true;
-                else
-                    return false;
+
+                return false;
             }
 
 
@@ -56,28 +57,20 @@ namespace Test_OP_Web.Data.Options
 
             foreach (var anwser in Question.Anwsers)
             {
-                foreach (var enter in Enter)
-                {
-                    if (enter.Id == anwser.Id && anwser.Right)
-                        countTrue++;
-                }
+                if (anwser.Enter == anwser.Right)
+                    continue;
 
-            }
-            var countEnterTrue = Enter.Count(x => x.Right);
-
-            var countTrueTrue = Question.Anwsers.Count(x => x.Right);
-
-            if (countEnterTrue == countTrueTrue && Enter.ToList().Count == countTrueTrue)
-                return true;
-            else
                 return false;
+            }
+
+            return true;
 
 
         }
 
         public bool GetEnter()
         {
-            if (Enter.Count > 0)
+            if (Question.Anwsers.Count(x => x.Enter) > 0)
                 return true;
             else
                 return false;

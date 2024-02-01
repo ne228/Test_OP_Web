@@ -45,15 +45,8 @@ namespace Test_OP_Web.Data.Options
 
         public int GetEnterd()
         {
-            int count = 0;
-            foreach (var item in SessionQuestions)
-            {
-                var nullAnwsers = item.Question.Anwsers.FirstOrDefault();
-                if (nullAnwsers == null)
-                    count++;
-            }
-
-            return count;
+            int res = SessionQuestions.Count(x => x.GetEnter());
+            return res;
         }
     }
 }

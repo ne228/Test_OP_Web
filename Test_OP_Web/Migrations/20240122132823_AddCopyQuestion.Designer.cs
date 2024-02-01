@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Test_OP_Web.Data.Options;
 
@@ -10,9 +11,11 @@ using Test_OP_Web.Data.Options;
 namespace Test_OP_Web.Migrations
 {
     [DbContext(typeof(OptionContext))]
-    partial class OptionContextModelSnapshot : ModelSnapshot
+    [Migration("20240122132823_AddCopyQuestion")]
+    partial class AddCopyQuestion
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "7.0.10");
@@ -188,7 +191,7 @@ namespace Test_OP_Web.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("CopyQuestions");
+                    b.ToTable("CopyQuestion");
                 });
 
             modelBuilder.Entity("Test_OP_Web.Data.Options.Option", b =>

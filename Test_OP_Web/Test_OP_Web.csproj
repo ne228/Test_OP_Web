@@ -1,9 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <TargetFramework>net7.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <GenerateRuntimeConfigurationFiles>true</GenerateRuntimeConfigurationFiles>
   </PropertyGroup>
+
+  <ItemGroup>
+  </ItemGroup>
 
   <ItemGroup>
     <Content Include="resourses\users.txt" />
@@ -40,10 +43,16 @@
     <None Include="wwwroot\anwsers2\Вариант 7.txt" />
     <None Include="wwwroot\anwsers2\Вариант 8.txt" />
     <None Include="wwwroot\anwsers2\Вариант 9.txt" />
+    <None Include="wwwroot\css\nav.css" />
+    <None Include="wwwroot\css\question.css" />
+    <None Include="wwwroot\css\background.css" />
+    <None Include="wwwroot\css\session.css" />
     <None Include="wwwroot\css\editOption.css" />
     <None Include="wwwroot\css\pie.css" />
+    <None Include="wwwroot\css\createVar.css" />
     <None Include="wwwroot\css\site.css" />
     <None Include="wwwroot\favicon.ico" />
+    <None Include="wwwroot\img\plus.svg" />
     <None Include="wwwroot\img\logo.svg" />
     <None Include="wwwroot\js\editQuestion.js" />
     <None Include="wwwroot\js\site.js" />

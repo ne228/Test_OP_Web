@@ -33,10 +33,11 @@ namespace Test_OP_Web
 
             
             services.AddDbContext<OptionContext>(options =>
-            options.UseNpgsql(Configuration.GetConnectionString("LocalPostgresConnection")
-            //,
-            //o => o.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery)
-            ));
+                        options.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
+            //options.UseNpgsql(Configuration.GetConnectionString("PostgresConnection")
+            ////,
+            ////o => o.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery)
+            //));
             // For data in posgtes
             AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
             //options.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));

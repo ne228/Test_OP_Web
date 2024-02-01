@@ -1,6 +1,8 @@
 ﻿@model RegisterViewModel
+<div class="question-create-title">
+    <h1>РЕГИСТРАЦИЯ</h1>
+</div>
 
-<h2>Регистрация нового пользователя</h2>
 <form method="post" asp-controller="Account" asp-action="Register">
     <div asp-validation-summary="ModelOnly"></div>
     <div>
@@ -18,8 +20,10 @@
         <input class="form-control" asp-for="PasswordConfirm" />
         <span class="text-danger" asp-validation-for="PasswordConfirm"></span>
     </div>
+
+    <br />
     <div>
-        <br />
-        <input class="btn btn-primary" type="submit" value="Регистрация" />
+        <input class="login-btn custom-alert-btn-ok" type="submit" value="Регистрация" id="login_btn" />
     </div>
+
 </form>

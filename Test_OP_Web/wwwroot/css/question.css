@@ -1,0 +1,113 @@
+﻿.question-string {
+    color: #4E4E50;
+    font-weight: 1000;
+    font-size:1.5em;
+}
+
+.question {
+    color: #4E4E50;
+    font-weight: 600;
+    border-radius: 10px;
+    border: 1px;
+    background-color: #e7e7e7;
+    min-height: 45px;
+    padding: 1%;
+    margin-top: 2%;   
+    display: flex;
+    transition: all 0.3s ease-in-out;
+    align-items: center;
+    max-width:95%;
+}
+
+    .question:hover {
+        background-color: #c6c4c4;
+    }
+
+.question-active {
+    color: white;
+    background-color: #6F2232;
+}
+
+    .question-active:hover {
+        color: white;
+        background-color: rgba(111, 34, 50, 1);
+    }
+
+.question-text {
+    border: 2px solid rgba(111, 34, 50, 0.2);
+    padding: 10px;
+    border-radius: 5px;
+    transition: box-shadow 0.3s ease;
+    width: 100%;
+}
+
+    .question-text:focus {
+        border: 2px solid rgba(111, 34, 50, 0.5);
+        outline: none;
+        box-shadow: 0 0 10px rgba(111, 34, 50, 0.2);
+    }
+
+
+
+
+.prev-next-btns {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: space-between;
+    justify-items: stretch;
+}
+
+@media screen and (max-width: 480px) {
+    .prev-next-btns {
+        display: flex;
+        flex: none;
+        flex-direction: column-reverse;
+        /*background-color: antiquewhite;*/
+    }
+}
+
+.question-btn {
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #4E4E50;
+    border: 2px solid #CFCFCF;
+    transition: all 0.3s ease-in-out;
+    transition: transform 0.1s ease-in-out;
+    padding:1%;
+}
+
+    .question-btn:hover {
+        /*background-color: #6F2232;*/
+        color: #6F2232;
+        border: 2px solid #6F2232;
+        transform:scale(1.03);
+    }
+
+.show-anwser-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2%;
+    color: #6F2232;
+    background-color: white;
+    border: solid 2px white;
+    border-radius: 10px;
+    text-decoration: underline;
+    transition: all 0.3s ease-in-out;
+    transition: transform 0.1s ease-in-out;
+}
+
+    .show-anwser-btn:hover {
+        text-decoration: underline;
+        color: #6F2232;
+        border: solid 2px #6F2232;
+        transform: scale(1.03);
+    }
+
+.no-vision-block {
+    background-color: rgba(1,1,1,0);
+    border: solid 1px black;
+}

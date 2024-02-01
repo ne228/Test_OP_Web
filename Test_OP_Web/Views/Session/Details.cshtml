@@ -5,12 +5,17 @@
 <div class="accordion accordion-flush">
     @{
 
+        // Вычисляем разницу между двумя датами
+        TimeSpan duration = Model.TimeFinsih - Model.TimeStart;
+        String durationStr = $"{duration.Hours}ч. {duration.Minutes}м. {duration.Seconds}с.";
         Stat stat = Statisctic.GetStatVar(Model.NumVar, Model.Id).Result;
 
-
-        <h1>Тест огневая подготовка. Вариант @Model.NumVar</h1>
-        <hr />
-        <br />
+        <div class="session-title">
+            <div class="question-create-title question-create-title1">
+                <p>ВАРИАНТ @Model.NumVar</p>
+            </div>
+            <div class="question-create-title2"><p>Тест по огневой подготовке</p></div>
+        </div>
 
         <div class="info-container">
             <div class="info-item">
@@ -19,29 +24,26 @@
                 <div class="info-item-texts">
                     <div class="info-item-text">
                         <dl>
-                            <dt>Имя:</dt>
-                            <dd>@Model.Name</dd>
+                            <dt>Имя: @Model.Name</dt>
                         </dl>
                     </div>
 
                     <div class="info-item-text">
                         <dl>
-                            <dt>Результат:</dt>
-                            <dd>@Model.getRight()/@Model.SessionQuestions.Count</dd>
+                            <dt>Результат: @Model.getRight()/@Model.SessionQuestions.Count</dt>
                         </dl>
                     </div>
 
                     <div class="info-item-text">
                         <dl>
-                            <dt>Время начала:</dt>
-                            <dd>@Model.TimeStart.ToLongDateString() @Model.TimeStart.ToShortTimeString()</dd>
+                            <dt>Время начала: @Model.TimeStart.ToShortDateString() @Model.TimeStart.ToShortTimeString()</dt>
+
                         </dl>
                     </div>
 
                     <div class="info-item-text">
                         <dl>
-                            <dt>Время окночания:</dt>
-                            <dd>@Model.TimeFinsih.ToLongDateString() @Model.TimeFinsih.ToShortTimeString()</dd>
+                            <dt>Время выполнения: @durationStr</dt>
                         </dl>
                     </div>
                 </div>
@@ -51,7 +53,7 @@
             <div class="info-item">
                 <div class="newpie text-center">
                     <p class="info-item-title">Ваш результат</p>
-                    <div class="pie animate no-round component" style="--p: @stat.CurrentPercent; --c: rgb(218,239,20) "> @stat.CurrentPercent% </div>
+                    <div class="pie animate no-round component" style="--p: @stat.CurrentPercent; --c: #6F2232 "> @stat.CurrentPercent% </div>
                 </div>
             </div>
 
@@ -59,14 +61,14 @@
             <div class="info-item">
                 <div class="newpie text-center">
                     <p class="info-item-title">Средний результат</p>
-                    <div class="pie animate no-round component" style="--p: @stat.AveragePercent; --c: rgba(117, 255, 23, 1); "> @stat.AveragePercent% </div>
+                    <div class="pie animate no-round component" style="--p: @stat.AveragePercent; --c: #6F2232; "> @stat.AveragePercent% </div>
                 </div>
             </div>
 
         </div>
 
 
-        <hr />
+
 
         //Questions
 
@@ -83,16 +85,14 @@
             <div class="accordion-item">
                 <div class="question-item question-string">
                     <p>
-                        Вопрос @item.Question.NumQ: @item.Question.QuestionString
-                        <a class="text-warning" asp-action="Create" asp-controller="Reports" asp-route-questionId="@item.Question.Id">
-                            <img class="warning" src="~/img/warning.png" alt="Сообщить о ошибке">
-                        </a>
+                        @item.Question.NumQ: @item.Question.QuestionString
+                       
                     </p>
                 </div>
 
                 <div class="question-item question-anwser @classNameForDiv">
                     @{
-                        foreach (var answer in item.Enter)
+                        foreach (var answer in item.Question.Anwsers.Where(x => x.Enter))
                         {
                             if (answer.Right || right)
                             {
@@ -106,15 +106,26 @@
                     }
                 </div>
 
-                <div class="question-item question-right">
-                    @{
-                        foreach (var answer in item.Question.Anwsers.Where(x => x.Right))
-                        {
-                            <p>@answer.Text</p>
+                <div class="question-item question-right-warning">
+                    
+                    <div class="question-right">
+                        @{
+                            if (!right)
+                                foreach (var answer in item.Question.Anwsers.Where(x => x.Right))
+                                {
+                                    <p>@answer.Text</p>
+                                }
                         }
-                    }
+                    </div>
+
+                    <div class="question-warning">
+                        <a  asp-action="Create" asp-controller="Reports" asp-route-questionId="@item.Question.Id">
+                           Сообщить об ошибке
+                        </a>
+                    </div>
                 </div>
-                <hr />
+                
+                <br />
             </div>
         }
     }

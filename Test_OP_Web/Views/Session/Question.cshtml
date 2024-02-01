@@ -1,4 +1,4 @@
-﻿@model SessionQuestion
+﻿@model Test_OP_Web.Data.Options.SessionQuestion
 @{
     //Title = $"Тест огневая подготовка. Вариант {Model.Question.NumVar}";
 
@@ -12,103 +12,110 @@
 <div id="customAlert" class="custom-alert-overlay" style="display: none;">
     <div class="custom-alert-box">
         <p class="custom-alert-text"></p>
-        <button class="btn btn-outline-primary w-100" onclick="hideCustomAlert()">Закрыть</button>
+        <button class="btn custom-alert-btn w-100" onclick="hideCustomAlert()">Закрыть</button>
     </div>
 </div>
 
 
-<h3 class="text-center">Тест огневая подготовка. Вариант @Model.Question.NumVar</h3>
-
-<div class="show-comlete-sessions-btn">
-    <a class="btn btn-info show-session-btn question-btn" asp-controller="Session" asp-action="Session" asp-route-Id="@Model.SessionId">Просмотр сессии</a>
-
-
-    <a class="btn btn-outline-success justify-content-end complete-session-btn question-btn" asp-controller="Session" asp-action="Complete" asp-route-SessionId="@Model.SessionId">Закончить сессию</a>
+<div class="session-title">
+    <div class="question-create-title question-create-title1">
+        <p>ВАРИАНТ @Model.Question.NumVar</p>
+    </div>
+    <div class="question-create-title2"><p>Тест по огневой подготовке</p></div>
 </div>
-<hr />
+
+<div class="progress-session-complete">
+    <a class="btn  progress-session-complete-item show-session" asp-controller="Session" asp-action="Session" asp-route-Id="@Model.SessionId">
+        <div>
+            Просмотр сессии
+        </div>
+    </a>
+
+    <a class="btn  progress-session-complete-item session-complete" asp-controller="Session" asp-action="Complete" asp-route-SessionId="@Model.SessionId">
+        <div>
+            Закончить сессию
+        </div>
+    </a>
+</div>
+<br/>
+
+
 
 <div class="tabs">
-    <div class="prev-tab">
-    </div>
-    <div class="tab">
-        <form id="qusetionForm" asp-controller="Session" asp-action="Question" method="post">
-            <h3>
-                @Model.Question.NumQ @Model.Question.QuestionString
-                <a class="align-self-center" asp-action="Create" asp-controller="Reports" asp-route-questionId="@Model.Question.Id">
-                    <img class="warning" src="~/img/warning.png" alt="Сообщить об ошибке" />
 
-                </a>
-            </h3>
+    <form id="qusetionForm" asp-controller="Session" asp-action="Question" method="post">
+        <h3>
+            <p class="question-string">@Model.Question.NumQ @Model.Question.QuestionString</p>
+            <a class="alig  n-self-center" asp-action="Create" asp-controller="Reports" asp-route-questionId="@Model.Question.Id">
+                @* <img class="warning" src="~/img/warning.png" alt="Сообщить об ошибке" /> *@
+            </a>
+        </h3>
 
-            <hr />
-            @{
-                if (Model.Question.NoVariant)
+        @{
+            if (Model.Question.NoVariant)
+            {
+                var text = "";
+                if (Model.Question.Anwsers.Count > 1)
+                    text = Model.Question.Anwsers.FirstOrDefault().Text;
+                <div class="">
+                    <input class="question-text" @disable id="Text"
+                           value="@text" name="Text" />
+                    <br />
+                </div>
+            }
+            else
+            {
+                for (int i = 0; i < Model.Question.Anwsers.Count; i++)
                 {
-                    var text = "";
-                    if (Model.Enter.Count > 0)
-                        text = Model.Enter.FirstOrDefault().Text;
-                    <div class="">
-                        <input class="form-control" @disable
-                               value="@text" asp-for="Enter.FirstOrDefault().Text" />
+                    var answer = Model.Question.Anwsers[i];
+
+                    string className = "";
+                    var mybool = answer.Enter;
+                    if (mybool)
+                        className = "question-active";
+                    else
+                        className = "";
+
+
+                    <div class="question btn @className w-100" checked="@mybool.ToString()">
+                        <input class="question-input disabled" @disable type="radio" value="@answer.Id" asp-for="Question.Anwsers[i]" checked="@mybool" />
+                        <span class="">@answer.Text</span>
+
                         <br />
                     </div>
                 }
-                else
-                    for (int i = 0; i < Model.Question.Anwsers.Count; i++)
-                    {
-                        var answer = Model.Question.Anwsers[i];
-
-
-                        string className = "";
-                        var mybool = Model.Enter.Any(x => x.Id == answer.Id);
-                        if (mybool)
-                            className = "btn-primary";
-                        else
-                            className = "btn-light";
-
-
-                        <div class="question btn @className w-100">
-                            <input class="question-input disabled" @disable type="radio" value="@answer.Id" asp-for="Question.Anwsers[i]" checked="@mybool" />
-                            <span class="">@answer.Text</span>
-
-                            <br />
-                        </div>
-                    }
             }
+        }
+      
 
-            <hr />
-
-
-            @Html.Hidden("SessionId", Model.SessionId)
-            @Html.Hidden("NumQ", Model.Question.NumQ)
-        </form>
-
-    </div>
-    <div class="next-tab">
-    </div>
+        @Html.Hidden("SessionId", Model.SessionId)
+        @Html.Hidden("NumQ", Model.Question.NumQ)
+    </form>
 </div>
-
+<br />
 <div class="prev-next-btns">
     @if (Model.Question.NumQ != 1)
     {
-        <a class="btn btn-outline-dark prev-btn question-btn" asp-controller="Session" asp-action="Question" asp-route-SessionId="@Model.SessionId" asp-route-NumQ="@(Model.Question.NumQ-1)" asp->Предыдущий вопрос</a>
+        <a class="prev-btn question-btn" asp-controller="Session" asp-action="Question" asp-route-SessionId="@Model.SessionId" asp-route-NumQ="@(Model.Question.NumQ-1)" asp->Предыдущий вопрос</a>
     }
 
-    @if (Model.Question.NumQ < CountQuestions)
-    {
-        <a class="btn btn-outline-primary next-btn question-btn" asp-controller="Session" asp-action="Question" asp-route-SessionId="@Model.SessionId" asp-route-NumQ="@(Model.Question.NumQ+1)">Следующий вопрос</a>
-    }
-
-    <a class="btn btn-outline-dark prev-btn show-anwser-btn"
+    <a class="show-anwser-btn"
        asp-controller="Session"
        asp-action="ShowAnwser"
        SessionId="@Model.SessionId"
-       NumQ="@(Model.Question.NumQ)">Показать/спрятать ответ</a>
+       NumQ="@(Model.Question.NumQ)">Показать ответ</a>
+
+    @if (Model.Question.NumQ < CountQuestions)
+    {
+        <a class="next-btn question-btn" asp-controller="Session" asp-action="Question" asp-route-SessionId="@Model.SessionId" asp-route-NumQ="@(Model.Question.NumQ+1)">Следующий вопрос</a>
+    }
 
 
-    <div class="hidden show-anwser-container">
-    </div>
 
+
+
+</div>
+<div class="hidden show-anwser-container">
 </div>
 
 
@@ -125,7 +132,7 @@
 </style>
 
 
-<script src="~/js/question.js" asp-asp-append-version="true" type="text/javascript">
+<script src="~/js/question.js" asp-append-version="true" type="text/javascript">
 
 
 

@@ -1,61 +1,18 @@
-﻿@using System.Collections
-
-@{
-
-    @model List<Session>
-
-
-    List<Session> Completed = Model.Where(x => x.Сompleted == true).ToList();
-    List<Session> unComleted = Model.Where(x => x.Сompleted == false).ToList();
-
-}
-
-
-@{
-    <div>
-        <h1><a asp-action="Create" asp-controller="Option">Добавить вариант!</a></h1>
+﻿<div class="start">
+    <div class="start-item start-text">
+        <h3>Решай тесты</h3>
+        <h1 class="font-kulag">ПО ОГНЕВОЙ </h1>
+        <h1 class="font-kulag text-lg-left">ПОДГОТОВКЕ</h1>
+        <a asp-controller="Session" asp-action="CreateSession">
+            <div class="start-btn">Решать</div>
+        </a>
     </div>
 
-
-    // НЕЗАВЕРЕШЕННЫЕ ТЕСТЫ
-
-    if (unComleted.Count == 0)
-    {
-        <h2 class="text-center">В данный момент у вас нет начатых тестов. Для выбора варианта нажмите на кнопку</h2>
-        <div class="w-100">
-            <a class="btn btn-info w-100" asp-area="" asp-controller="Session" asp-action="CreateSession">Новый вариант</a>
-        </div>
-    }
-    else
-    {
-
-        <h2 class="text-center">Незавершенные тесты</h2>
-        foreach (var item in unComleted)
-        {
-            <a class="btn btn-info w-100 m-1" asp-action="Session" asp-controller="Session" asp-route-Id="@item.Id">
-                @item.NumVar Вариант
-
-            </a>
-
-            <br />
-        }
-    }
-    <br />
-    <hr />
+    <div class="start-item start-image-div">
 
 
-    // ЗАВЕРЕШЕННЫЕ ТЕСТЫ
-
-    if (Completed.Count != 0)
-    {
-        <h2 class="text-center">Завершенные тесты</h2>
-        foreach (var item in Completed)
-        {
-            <a class="btn btn-success w-100 m-1 variant-btn" asp-action="Session" asp-controller="Session" asp-route-Id="@item.Id">
-                @item.NumVar Вариант
-                <span class="badge badge-light">@item.getRight()/@item.SessionQuestions.Count</span>
-            </a>
-            <br />
-        }
-    }
-}
+        @* <div class="start-image">
+        </div> *@
+        <img class="start-image" id="start-image" src="/img/start.svg" alt="start" />
+    </div>
+</div>

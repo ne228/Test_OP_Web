@@ -80,7 +80,7 @@ namespace Test_OP_Web.Data
 
 
 
-                if (context.Options.ToList().Count > 0)
+                if (context.Options.ToList().Count == 0)
                 {
                     List<Option> options = ParserOptioncs.GetOptionsFromTxtFile();
 
