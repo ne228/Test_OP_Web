@@ -49,7 +49,7 @@ namespace Test_OP_Web.Data.Options
         public Session GetSessionById(int Id)
         {
             var ses = Sessions
-                .Include(x => x.SessionQuestions).ThenInclude(x => x.Question).ThenInclude(x => x.Anwsers)do
+                .Include(x => x.SessionQuestions).ThenInclude(x => x.Question).ThenInclude(x => x.Anwsers)
                 .FirstOrDefault(x => x.Id == Id);
 
             if (ses == null)
