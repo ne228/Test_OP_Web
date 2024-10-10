@@ -228,7 +228,7 @@ namespace Test_OP_Web.Controllers
                                 question.Question.Anwsers.RemoveRange(1, 1);
                             }
                             
-                            question.Question.Anwsers.Add(new SessionAnwser() { Text = Text });
+                            question.Question.Anwsers.Add(new SessionAnwser() { Text = Text, Enter = true});
                         }
                         else
                         {

@@ -86,28 +86,55 @@
                 <div class="question-item question-string">
                     <p>
                         @item.Question.NumQ: @item.Question.QuestionString
-                       
+
                     </p>
                 </div>
 
                 <div class="question-item question-anwser @classNameForDiv">
                     @{
-                        foreach (var answer in item.Question.Anwsers.Where(x => x.Enter))
+
+                        if (item.Question.NoVariant)
                         {
-                            if (answer.Right || right)
+                            var answer = item.Question.Anwsers.LastOrDefault();
+                            if (right)
                             {
                                 <p class="question-anwser-true">@answer.Text</p>
                             }
                             else
                             {
-                                <p class="question-anwser-false">@answer.Text</p>
+                                if (item.Question.Anwsers.Count > 1)
+                                {
+                                    <p class="question-anwser-false">@answer.Text</p>
+                                }
+                              
+                            }
+
+                        }
+                        else
+                        {
+                            foreach (var answer in item.Question.Anwsers)
+                            {
+
+                                if (!answer.Enter)
+                                    continue;
+
+                                if (answer.Right || right)
+                                {
+                                    <p class="question-anwser-true">@answer.Text</p>
+                                }
+                                else
+                                {
+                                    <p class="question-anwser-false">@answer.Text</p>
+                                }
+
                             }
                         }
+
                     }
                 </div>
 
                 <div class="question-item question-right-warning">
-                    
+
                     <div class="question-right">
                         @{
                             if (!right)
@@ -119,12 +146,12 @@
                     </div>
 
                     <div class="question-warning">
-                        <a  asp-action="Create" asp-controller="Reports" asp-route-questionId="@item.Question.Id">
-                           Сообщить об ошибке
+                        <a asp-action="Create" asp-controller="Reports" asp-route-questionId="@item.Question.Id">
+                            Сообщить об ошибке
                         </a>
                     </div>
                 </div>
-                
+
                 <br />
             </div>
         }

@@ -9,7 +9,7 @@ namespace Test_OP_Web.Logging
         public Logger()
         {
 
-            string DirectoryPath = $"{Directory.GetCurrentDirectory()}\\logs";
+            string DirectoryPath = System.IO.Path.Combine(Directory.GetCurrentDirectory(), "logs");
             if (!Directory.Exists(DirectoryPath))
                 Directory.CreateDirectory(DirectoryPath);
 
