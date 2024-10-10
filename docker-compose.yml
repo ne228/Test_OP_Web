@@ -1,0 +1,8 @@
+version: '3.4'
+
+services:
+  test_op_web:
+    image: ${DOCKER_REGISTRY-}testopweb
+    build:
+      context: .
+      dockerfile: Test_OP_Web/Dockerfile
