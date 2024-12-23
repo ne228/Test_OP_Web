@@ -37,7 +37,7 @@ namespace Test_OP_Web
 
 
             services.AddDbContext<OptionContext>(options =>
-                          options.UseNpgsql(Configuration.GetConnectionString("LocalPostgresConnection")));
+                          options.UseNpgsql(Configuration.GetConnectionString("PostgresConnection")));
 
             ////,
             ////o => o.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery)
