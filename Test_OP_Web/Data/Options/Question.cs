@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,6 +12,7 @@ namespace Test_OP_Web.Data.Options
     {
 
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)] // Автоинкремент
         public int Id { get; set; }
 
         [Required]

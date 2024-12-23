@@ -1,0 +1,59 @@
+﻿@model IEnumerable<QuestionTemplate>
+
+@{
+    ViewData["Title"] = "Список Вопросов";
+}
+
+<div class="container mt-5">
+    <h2 class="mb-4 text-center">Список Вопросов</h2>
+
+    <div class="row">
+        @if (Model.Any())
+        {
+            @foreach (var question in Model)
+            {
+                <div class="col-md-6 col-lg-4 mb-4">
+                    <div class="card shadow-sm">
+                        <div class="card-body">
+                            <h5 class="card-title">@question.Id. @question.QuestionString</h5>
+                            @if (question.Anwsers != null && question.Anwsers.Any())
+                            {
+                                <ul class="list-group">
+                                    @foreach (var answer in question.Anwsers)
+                                    {
+                                        <li class="list-group-item d-flex justify-content-between align-items-center @(answer.Right ? "text-success" : "")">
+                                            @answer.Text
+                                        </li>
+                                    }
+                                </ul>
+                            }
+                            else
+                            {
+                                <p class="text-muted">Ответы отсутствуют.</p>
+                            }
+                        </div>
+                        <div class="card-footer text-center">
+                 
+                            <a href="@Url.Action("Edit", "Question", new { id = question.Id })"
+                               class="btn btn-outline-primary btn-sm">
+                                Редактировать
+                            </a>
+                            <a href="@Url.Action("Delete", "Question", new { id = question.Id })"
+                               class="btn btn-outline-danger btn-sm">
+                                Удалить
+                            </a>
+
+                            
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+        else
+        {
+            <div class="col-12 text-center">
+                <p class="text-muted">Список вопросов пуст.</p>
+            </div>
+        }
+    </div>
+</div>

@@ -1,0 +1,50 @@
+﻿@model QuestionTemplate
+
+@{
+    ViewData["Title"] = "Редактировать Вопрос";
+}
+
+<div class="container mt-3">
+    <h1 class="mb-4 question-create-title">РЕДАКТИРОВАТЬ ВОПРОС</h1>
+
+    <form asp-action="Edit" asp-controller="Question"  method="post" class="needs-validation" novalidate>
+        <input asp-for="Id" value="@Model?.Id" hidden />
+        <!-- Поле для ввода вопроса -->
+        <div class="form-group mb-4">
+            <h4 for="QuestionString" class="form-label question-create-title">ВОПРОС</h4>
+            <input type="text" asp-for="QuestionString" class="form-control" value="@Model?.QuestionString" placeholder="Введите ваш вопрос" required />
+            <span asp-validation-for="QuestionString" class="text-danger"></span>
+        </div>
+
+        <!-- Секция для ввода ответов -->
+        <div class="form-group mb-4">
+            <h4 for="Anwsers" class="form-label question-create-title">ОТВЕТЫ</h4>
+   
+            <div id="answers-container" class="mt-3">
+                @if (Model?.Anwsers != null && Model.Anwsers.Count > 0)
+                {
+                    @for (int i = 0; i < Model.Anwsers.Count; i++)
+                    {
+                        <div class="input-group edit-anwsers-item">
+                            <div class="checkboxAnwser">
+                                <input type="checkbox" asp-for="Anwsers[i].Right" />
+                            </div>
+                            <div class="inputAnwser">
+                                <input asp-for="Anwsers[i].Text" class="form-control" />
+                                <span asp-validation-for="Anwsers[i]" class="text-danger"></span>
+                            </div>
+                        </div>
+                    }
+                }
+            </div>
+            <span asp-validation-for="Anwsers" class="text-danger"></span>
+        </div>
+
+        <!-- Кнопка отправки -->
+        <div class="mt-4">
+            <button type="submit" class="btn variant-btn-fin">Сохранить вопрос</button>
+            <a href="/Question/Index" class="btn variant-btn-start">К списку вопросв</a>
+        </div>
+    </form>
+</div>
+

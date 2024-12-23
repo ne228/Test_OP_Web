@@ -43,7 +43,6 @@ namespace Test_OP_Web.Controllers
 
 
         [HttpGet]
-        [Authorize(Roles = "user")]
         public async Task<IActionResult> Create()
         {
             Option option = new Option { Questions = new() { } };
@@ -63,7 +62,6 @@ namespace Test_OP_Web.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "user")]
         public async Task<IActionResult> Create(Option option)
         {
             for (int i = 0; i < option.Questions.Count; i++)

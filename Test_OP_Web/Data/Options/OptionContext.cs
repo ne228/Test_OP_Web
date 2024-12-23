@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using Test_OP_Web.Data.OptionTemplate;
 using Test_OP_Web.Models;
 using Test_OP_Web.Services;
 
@@ -22,6 +23,9 @@ namespace Test_OP_Web.Data.Options
         public DbSet<SessionAnwser> SessionAnwsers { get; set; }
         public DbSet<PersonStat> PersonStat { get; set; }
         public DbSet<Report> Reports { get; set; }
+
+        public DbSet<QuestionTemplate> QuestionTemplates { get; set; }
+        public DbSet<AnwserTemplate> AnwserTemplates { get; set; }
 
         public OptionContext(DbContextOptions<OptionContext> options) : base(options)
         {
@@ -57,7 +61,6 @@ namespace Test_OP_Web.Data.Options
 
             return ses;
         }
-
 
         public async Task<List<Session>> GetSessionsByNumVar(int NumVar)
         {
@@ -127,6 +130,13 @@ namespace Test_OP_Web.Data.Options
                 );
 
             return sessions.ToList();
+        }
+
+        public async Task<QuestionTemplate> QuestionCreate(QuestionTemplate question)
+        {
+            var result = await QuestionTemplates.AddAsync(question);
+            await SaveChangesAsync();
+            return result.Entity;
         }
 
     }

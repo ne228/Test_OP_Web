@@ -109,6 +109,7 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.19.5" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.7" />
     <PackageReference Include="Npgsql" Version="7.0.4" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="7.0.4" />
     <PackageReference Include="Serilog" Version="2.12.0" />
@@ -116,6 +117,10 @@
     <PackageReference Include="Serilog.Sinks.Telegram" Version="0.2.1" />
     <PackageReference Include="Serilog.Sinks.TelegramClient" Version="2.0.1" />
     <PackageReference Include="VkNet" Version="1.72.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Migrations\" />
   </ItemGroup>
 
 </Project>

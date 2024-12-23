@@ -1,32 +1,36 @@
 ﻿@model LoginViewModel
+
 <div class="question-create-title">
     <h1>ВХОД В ПРИЛОЖЕНИЕ</h1>
 </div>
-<form method="post" asp-controller="Account" asp-action="Login" id="login_form"
-      asp-route-returnUrl="@Model.ReturnUrl">
-    <div asp-validation-summary="ModelOnly"></div>
+
+<form method="post" asp-controller="Account" asp-action="Login" id="login_form" asp-route-returnUrl="@Model.ReturnUrl">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
     <div class="mb-3">
-        <label class="form-label" asp-for="Email"></label>
-        <input class="form-control login-input" asp-for="Email" />
+        <label class="form-label" for="Email">Электронная почта</label>
+        <input class="form-control login-input" id="Email" name="Email" type="email" asp-for="Email" required aria-describedby="emailHelp" />
         <span class="text-danger" asp-validation-for="Email"></span>
     </div>
+
     <div class="mb-3">
-        <label class="form-label" asp-for="Password"></label>
-        <input class="form-control login-password" asp-for="Password" />
+        <label class="form-label" for="Password">Пароль</label>
+        <input class="form-control login-password" id="Password" name="Password" type="password" asp-for="Password" required aria-describedby="passwordHelp" />
         <span class="text-danger" asp-validation-for="Password"></span>
     </div>
+
     <div class="mb-3 form-check">
-        <input class="form-check-input" asp-for="RememberMe" />
-        <label class="form-check-label" asp-for="RememberMe"></label>
+        <input class="form-check-input" type="checkbox" id="RememberMe" asp-for="RememberMe" />
+        <label class="form-check-label" for="RememberMe">Запомнить меня</label>
     </div>
 
     <div>
-        <input class="login-btn custom-alert-btn-ok" type="submit" value="Войти" id="login_btn" />
+        <button class="login-btn custom-alert-btn-ok" type="submit" id="login_btn">Войти</button>
     </div>
-    <div class="">
+
+    <div>
         <a class="nav-link active text-dark question-warning" asp-controller="Account" asp-action="Register">Регистрация</a>
     </div>
 
     @* @Html.ActionLink("Напомнить пароль", "GetPassword", "Account") *@
-
 </form>

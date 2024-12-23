@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Test_OP_Web.Data;
@@ -64,14 +61,14 @@ namespace Test_OP_Web.Controllers
         // GET: Reports/Create //https://localhost:5001/reports/create?questionId=1
         public IActionResult Create(int questionId)
         {
-            UserAxe UserAxe = _userManager.GetUserAsync(HttpContext.User).Result;
+            var UserAxe = _userManager.GetUserAsync(HttpContext.User).Result;
 
             var copyQuestion = _context.CopyQuestions.Include(x => x.Anwsers).FirstOrDefault(x => x.Id == questionId);
 
             if (copyQuestion == null)
                 return NotFound();
 
-            Question question = _context.Questions
+            var question = _context.Questions
                 .Include(x => x.Anwsers)
                 .FirstOrDefault(x => x.NumQ == copyQuestion.NumQ && x.NumVar == copyQuestion.NumVar);
 
@@ -87,7 +84,6 @@ namespace Test_OP_Web.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-
         public async Task<IActionResult> Create(CreateReporViewModel model)
         {
             if (ModelState.IsValid)
@@ -135,7 +131,6 @@ namespace Test_OP_Web.Controllers
 
         public IActionResult ThanksReport()
         {
-
             return View();
         }
 

@@ -72,7 +72,7 @@ namespace Test_OP_Web.Data
         public static void Initialize(OptionContext context, ILogger logger)
         {
 
-            //await GetAnswerFronJson.GenerateTestJson();
+            //await GetAnswerFronJson.GenerateTeuEstJson();
 
             if (context.Database.CanConnect())
             {

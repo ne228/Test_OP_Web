@@ -22,8 +22,6 @@ namespace Test_OP_Web.Controllers
         private readonly UserManager<UserAxe> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly StatisticsService _statisticsService;
-        //UserAxe UserAxe { get; set; }
-
 
 
         public SessionController(ILogger<SessionController> logger,
@@ -223,12 +221,13 @@ namespace Test_OP_Web.Controllers
                             // 1 элемент списка - это верный ответ
                             // если кол-во элементов равно 1 значит user ответ не вводил
                             // введенный ответ - это последний ответ пользователя
-                            if (question.Question.Anwsers.Count > 1)                            {
+                            if (question.Question.Anwsers.Count > 1)
+                            {
                                 // Удалаяем второй элемент // тоесть последний
                                 question.Question.Anwsers.RemoveRange(1, 1);
                             }
-                            
-                            question.Question.Anwsers.Add(new SessionAnwser() { Text = Text, Enter = true});
+
+                            question.Question.Anwsers.Add(new SessionAnwser() { Text = Text, Enter = true });
                         }
                         else
                         {

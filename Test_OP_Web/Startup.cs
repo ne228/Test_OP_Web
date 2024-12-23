@@ -31,10 +31,14 @@ namespace Test_OP_Web
 
             services.AddTransient<IStatisticsService, StatisticsService>();
 
-            
+
+            //services.AddDbContext<OptionContext>(options =>
+            //            options.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
+
+
             services.AddDbContext<OptionContext>(options =>
-                        options.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
-            //options.UseNpgsql(Configuration.GetConnectionString("PostgresConnection")
+                          options.UseNpgsql(Configuration.GetConnectionString("LocalPostgresConnection")));
+
             ////,
             ////o => o.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery)
             //));

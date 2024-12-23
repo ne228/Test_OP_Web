@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Test_OP_Web.Data.Options;
@@ -11,9 +12,11 @@ using Test_OP_Web.Data.Options;
 namespace Test_OP_Web.Migrations
 {
     [DbContext(typeof(OptionContext))]
-    partial class OptionContextModelSnapshot : ModelSnapshot
+    [Migration("20241223071846_AddQuestionAndAnwserTemplates")]
+    partial class AddQuestionAndAnwserTemplates
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -152,50 +155,6 @@ namespace Test_OP_Web.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens", (string)null);
-                });
-
-            modelBuilder.Entity("Test_OP_Web.Data.OptionTemplate.AnwserTemplate", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<bool>("Right")
-                        .HasColumnType("boolean");
-
-                    b.Property<string>("Text")
-                        .HasColumnType("text");
-
-                    b.Property<int?>("questionId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("questionId");
-
-                    b.ToTable("AnwserTemplates");
-                });
-
-            modelBuilder.Entity("Test_OP_Web.Data.OptionTemplate.QuestionTemplate", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<bool>("NoVariant")
-                        .HasColumnType("boolean");
-
-                    b.Property<string>("QuestionString")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("QuestionTemplates");
                 });
 
             modelBuilder.Entity("Test_OP_Web.Data.Options.Anwser", b =>
@@ -559,15 +518,6 @@ namespace Test_OP_Web.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Test_OP_Web.Data.OptionTemplate.AnwserTemplate", b =>
-                {
-                    b.HasOne("Test_OP_Web.Data.OptionTemplate.QuestionTemplate", "question")
-                        .WithMany("Anwsers")
-                        .HasForeignKey("questionId");
-
-                    b.Navigation("question");
-                });
-
             modelBuilder.Entity("Test_OP_Web.Data.Options.Anwser", b =>
                 {
                     b.HasOne("Test_OP_Web.Data.Options.Question", "question")
@@ -632,11 +582,6 @@ namespace Test_OP_Web.Migrations
                     b.Navigation("Question");
 
                     b.Navigation("UserAxe");
-                });
-
-            modelBuilder.Entity("Test_OP_Web.Data.OptionTemplate.QuestionTemplate", b =>
-                {
-                    b.Navigation("Anwsers");
                 });
 
             modelBuilder.Entity("Test_OP_Web.Data.Options.CopyQuestion", b =>
